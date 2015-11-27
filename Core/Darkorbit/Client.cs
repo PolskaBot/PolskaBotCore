@@ -56,13 +56,17 @@ namespace Core.Darkorbit
                 switch(command.GetID())
                 {
                     case ServerVersionCheck.ID:
-                        ServerVersionCheck packet = (ServerVersionCheck)command;
-                        if(packet.compatible)
+                        ServerVersionCheck versionCheckPacket = (ServerVersionCheck)command;
+
+                        if(versionCheckPacket.compatible)
                         {
                             Send(new ClientRequestCode());
                         }
                         break;
-
+                    case ServerRequestCode.ID:
+                        ServerRequestCode requestCodePacket = (ServerRequestCode)command;
+                        // TODO: Connect to Vanilla
+                        break;
                     default:
                         Console.WriteLine(command.GetID());
                         break;

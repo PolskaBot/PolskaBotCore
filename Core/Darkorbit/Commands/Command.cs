@@ -41,6 +41,8 @@ namespace Core.Darkorbit.Commands
             {
                 case ServerVersionCheck.ID:
                     return new ServerVersionCheck(reader);
+                case ServerRequestCode.ID:
+                    return new ServerRequestCode(reader);
                 default:
                     return new ServerUknown(id);
             }
