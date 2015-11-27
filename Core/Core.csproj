@@ -45,10 +45,10 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Darkorbit\Client.cs" />
+    <Compile Include="Darkorbit\Commands\ClientProxy.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
-    <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerUknown.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
