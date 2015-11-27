@@ -38,6 +38,11 @@ namespace Core.Darkorbit
             command.Write(dataStream);
         }
 
+        public void Send(byte[] buffer)
+        {
+            dataStream.Write(buffer, 0, buffer.Length);
+        }
+
 
         private void Run()
         {
