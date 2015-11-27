@@ -29,23 +29,6 @@ namespace Core.Darkorbit.Commands
             stream.Write(buffer, 0, buffer.Length);
         }
 
-        public static Command Read(byte[] buffer)
-        {
-            MemoryStream memoryStream = new MemoryStream(buffer);
-            EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Big, memoryStream);
-
-            short length = reader.ReadInt16();
-            short id = reader.ReadInt16();
-
-            switch(id)
-            {
-                case ServerVersionCheck.ID:
-                    return new ServerVersionCheck(reader);
-                default:
-                    return new ServerUknown(id);
-            }
-        }
-
         public abstract void Write();
         public abstract short GetID();
     }

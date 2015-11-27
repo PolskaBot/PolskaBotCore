@@ -76,17 +76,16 @@ namespace Core.Darkorbit
                 byte[] buffer = new byte[BUFFER_SIZE];
                 dataStream.Read(buffer, 0, BUFFER_SIZE);
 
-                Command command = Command.Read(buffer);
+                MemoryStream memoryStream = new MemoryStream(buffer);
+                EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Big, memoryStream);
 
-                if(command == null)
-                {
-                    continue;
-                }
+                short length = reader.ReadInt16();
+                short id = reader.ReadInt16();
 
-                switch(command.GetID())
+                switch (id)
                 {
                     case ServerVersionCheck.ID:
-                        ServerVersionCheck versionCheckPacket = (ServerVersionCheck)command;
+                        ServerVersionCheck versionCheckPacket = new ServerVersionCheck(reader);
 
                         if(versionCheckPacket.compatible)
                         {
