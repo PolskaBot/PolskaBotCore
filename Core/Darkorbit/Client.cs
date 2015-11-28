@@ -74,7 +74,7 @@ namespace Core.Darkorbit
             while(true)
             {
                 byte[] buffer = new byte[BUFFER_SIZE];
-                dataStream.Read(buffer, 0, BUFFER_SIZE);
+                int size = dataStream.Read(buffer, 0, BUFFER_SIZE);
 
                 MemoryStream memoryStream = new MemoryStream(buffer);
                 EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Big, memoryStream);
@@ -93,6 +93,7 @@ namespace Core.Darkorbit
                         }
                         break;
                     default:
+                        Array.Resize(ref buffer, size);
                         SendVanilla(new ClientProxy(buffer));
                         break;
                         
