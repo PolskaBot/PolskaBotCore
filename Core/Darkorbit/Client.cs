@@ -42,7 +42,7 @@ namespace Core.Darkorbit
             dataStream = tcpClient.GetStream();
             thread.Start();
 
-            vanillaTcpClient.Connect("127.0.0.1", 8080);
+            vanillaTcpClient.Connect("127.0.0.1", 8081);
             vanillaDataStream = vanillaTcpClient.GetStream();
             vanillaThread.Start();
         }
