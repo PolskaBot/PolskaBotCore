@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace PolskaBot.Core.Darkorbit.Commands
 {
-    class ClientDecodeMessage : Command
+    class FadeDecodeMessage : Command
     {
         public const short ID = 70;
 
         public byte[] buffer { get; private set; }
 
-        public ClientDecodeMessage(byte[] buffer)
+        public FadeDecodeMessage(byte[] buffer)
         {
             this.buffer = buffer;
             Write();
