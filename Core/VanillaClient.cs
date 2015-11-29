@@ -28,10 +28,13 @@ namespace PolskaBot.Core
 
             Console.WriteLine("Received packet with ID {0} and length {1}", fadeID, fadeLength);
 
+            mergedClient.fadeClient.Send(new ClientDecodeMessage(reader.ReadBytes(fadeLength - 2)));
+
+
             switch(id)
             {
                 case ServerVersionCheck.ID:
-                    ServerVersionCheck serverVersionCheck = new ServerVersionCheck(reader);
+                    ServerVersionCheck serverVersionCheck = new ServerVersionCheck(fadeReader);
 
                     if(serverVersionCheck.compatible)
                     {
@@ -44,7 +47,7 @@ namespace PolskaBot.Core
                     }
                     break;
                 default:
-                    reader.ReadBytes(length - 2);
+                    fadeReader.ReadBytes(length - 2);
                     break;
             }
         }

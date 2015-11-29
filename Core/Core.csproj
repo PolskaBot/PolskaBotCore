@@ -46,10 +46,11 @@
     <Compile Include="API.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Darkorbit\Commands\ClientDecodeHeader.cs" />
+    <Compile Include="Darkorbit\Commands\ClientDecodeMessage.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
-    <Compile Include="Darkorbit\Commands\ServerUknown.cs" />
+    <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
     <Compile Include="FadeClient.cs" />
