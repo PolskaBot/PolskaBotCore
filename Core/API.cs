@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Darkorbit;
-using Core.Darkorbit.Commands;
+using PolskaBot.Core.Darkorbit;
+using PolskaBot.Core.Darkorbit.Commands;
 
-namespace Core
+namespace PolskaBot.Core
 {
     public class API
     {

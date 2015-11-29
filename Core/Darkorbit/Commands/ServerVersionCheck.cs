@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MiscUtil.IO;
 
-namespace Core.Darkorbit.Commands
+namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ServerVersionCheck : Command
     {

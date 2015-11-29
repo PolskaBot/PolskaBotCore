@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.IO;
 using MiscUtil.IO;
 using MiscUtil.Conversion;
-using Core.Darkorbit.Commands;
+using PolskaBot.Core.Darkorbit.Commands;
 using System.Net.Sockets;
-using Core.Darkorbit;
+using PolskaBot.Core.Darkorbit;
 
-namespace Core.Darkorbit.Commands
+namespace PolskaBot.Core.Darkorbit.Commands
 {
     abstract class Command
     {

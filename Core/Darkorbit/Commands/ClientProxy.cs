@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Darkorbit.Commands
+namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ClientProxy : Command
     {

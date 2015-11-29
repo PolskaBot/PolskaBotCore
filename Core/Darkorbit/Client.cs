@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net.Sockets;
-using Core.Darkorbit.Commands;
+using PolskaBot.Core.Darkorbit.Commands;
 using MiscUtil.IO;
 using MiscUtil.Conversion;
 using System.IO;
 
-namespace Core.Darkorbit
+namespace PolskaBot.Core.Darkorbit
 {
     class Client
     {
