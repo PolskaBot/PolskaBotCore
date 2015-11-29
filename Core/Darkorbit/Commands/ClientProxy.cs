@@ -10,10 +10,14 @@ namespace Core.Darkorbit.Commands
     {
         public short ID = 69;
 
+        public short originalLength { get; private set; }
+        public short originalID { get; private set; }
         public byte[] buffer { get; private set; }
 
-        public ClientProxy(byte[] buffer)
+        public ClientProxy(short originalLength, short originalID, byte[] buffer)
         {
+            this.originalLength = originalLength;
+            this.originalLength = originalLength;
             this.buffer = buffer;
             Write();
         }
@@ -25,8 +29,11 @@ namespace Core.Darkorbit.Commands
 
         public override void Write()
         {
-            packetWriter.Write((short) buffer.Length);
+            short totalLength = (short) (buffer.Length  + 6);
+            packetWriter.Write(totalLength);
             packetWriter.Write(ID);
+            packetWriter.Write(originalLength);
+            packetWriter.Write(originalID);
             packetWriter.Write(buffer);
         }
     }

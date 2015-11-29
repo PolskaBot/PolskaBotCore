@@ -15,13 +15,13 @@ namespace Core.Darkorbit
     class Client
     {
         Thread thread;
-        Thread vanillaThread;
+        Thread fadeThread;
 
         TcpClient tcpClient;
-        TcpClient vanillaTcpClient;
+        TcpClient fadeTcpClient;
 
         NetworkStream dataStream;
-        NetworkStream vanillaDataStream;
+        NetworkStream fadeDataStream;
 
         public static int BUFFER_SIZE = 65536;
 
@@ -31,9 +31,9 @@ namespace Core.Darkorbit
             tcpClient = new TcpClient();
             tcpClient.ReceiveBufferSize = BUFFER_SIZE;
 
-            vanillaThread = new Thread(new ThreadStart(RunVanilla));
-            vanillaTcpClient = new TcpClient();
-            vanillaTcpClient.ReceiveBufferSize = BUFFER_SIZE;
+            fadeThread = new Thread(new ThreadStart(RunFade));
+            fadeTcpClient = new TcpClient();
+            fadeTcpClient.ReceiveBufferSize = BUFFER_SIZE;
         }
 
         public void Connect(string server, string sid)
@@ -42,9 +42,9 @@ namespace Core.Darkorbit
             dataStream = tcpClient.GetStream();
             thread.Start();
 
-            vanillaTcpClient.Connect("127.0.0.1", 8081);
-            vanillaDataStream = vanillaTcpClient.GetStream();
-            vanillaThread.Start();
+            fadeTcpClient.Connect("127.0.0.1", 8081);
+            fadeDataStream = fadeTcpClient.GetStream();
+            fadeThread.Start();
         }
 
         public void Send(Command command)
@@ -57,14 +57,14 @@ namespace Core.Darkorbit
             dataStream.Write(buffer, 0, buffer.Length);
         }
 
-        public void SendVanilla(Command command)
+        public void SendFade(Command command)
         {
-            command.Write(vanillaDataStream);
+            command.Write(fadeDataStream);
         }
 
-        public void SendVanilla(byte[] buffer)
+        public void SendFade(byte[] buffer)
         {
-            vanillaDataStream.Write(buffer, 0, buffer.Length);
+            fadeDataStream.Write(buffer, 0, buffer.Length);
         }
 
         #region private
@@ -73,40 +73,39 @@ namespace Core.Darkorbit
         {
             while(true)
             {
-                byte[] buffer = new byte[BUFFER_SIZE];
-                int size = dataStream.Read(buffer, 0, BUFFER_SIZE);
-
-                MemoryStream memoryStream = new MemoryStream(buffer);
-                EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Big, memoryStream);
+                EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Big, dataStream);
 
                 short length = reader.ReadInt16();
                 short id = reader.ReadInt16();
+
+                Console.WriteLine("Received packet of ID {0} and length {1}", id, length);
 
                 switch (id)
                 {
                     case ServerVersionCheck.ID:
                         ServerVersionCheck versionCheckPacket = new ServerVersionCheck(reader);
 
-                        if(versionCheckPacket.compatible)
+                        if (versionCheckPacket.compatible)
                         {
+                            Console.WriteLine("Is compatible");
                             Send(new ClientRequestCode());
                         }
                         break;
                     default:
-                        Array.Resize(ref buffer, size);
-                        SendVanilla(new ClientProxy(buffer));
+                        Console.WriteLine("sending packet with id {0} to fade", id);
+                        SendFade(new ClientProxy(length, id, reader.ReadBytes(length - 2)));
                         break;
-                        
+
                 }
             }
         }
 
-        private void RunVanilla()
+        private void RunFade()
         {
             while(true)
             {
                 byte[] buffer = new byte[BUFFER_SIZE];
-                vanillaDataStream.Read(buffer, 0, BUFFER_SIZE);
+                fadeDataStream.Read(buffer, 0, BUFFER_SIZE);
 
                 EndianBinaryReader reader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(buffer));
 
