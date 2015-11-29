@@ -28,7 +28,7 @@ namespace PolskaBot.Core
 
             Console.WriteLine("Received packet with ID {0} and length {1}", fadeID, fadeLength);
 
-            mergedClient.fadeClient.Send(new FadeDecodeMessage(reader.ReadBytes(fadeLength - 2)));
+            mergedClient.fadeClient.Send(new FadeDecodeBody(reader.ReadBytes(fadeLength - 2)));
 
 
             switch(id)

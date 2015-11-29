@@ -46,7 +46,7 @@
     <Compile Include="API.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Darkorbit\Commands\FadeDecodeHeader.cs" />
-    <Compile Include="Darkorbit\Commands\FadeDecodeMessage.cs" />
+    <Compile Include="Darkorbit\Commands\FadeDecodeBody.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
