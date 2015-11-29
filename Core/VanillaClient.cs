@@ -46,6 +46,11 @@ namespace PolskaBot.Core
                         thread.Abort();
                     }
                     break;
+
+                case ServerRequestCode.ID:
+                    ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
+                    Console.WriteLine(serverRequetCode.codeLength);
+                    break;
                 default:
                     fadeReader.ReadBytes(length - 2);
                     break;
