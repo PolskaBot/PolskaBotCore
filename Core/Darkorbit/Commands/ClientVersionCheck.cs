@@ -31,10 +31,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
             packetWriter.Write(minor);
             packetWriter.Write(build);
         }
-
-        public override short GetID()
-        {
-            return ID;
-        }
     }
 }

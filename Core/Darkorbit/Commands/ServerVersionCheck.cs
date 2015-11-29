@@ -29,9 +29,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
             return;
         }
 
-        public override short GetID()
-        {
-            return ID;
-        }
     }
 }

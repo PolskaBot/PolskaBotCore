@@ -22,11 +22,6 @@ namespace PolskaBot.Core.Darkorbit.Commands
             fakeSize = reader.ReadInt32();
         }
 
-        public override short GetID()
-        {
-            return ID;
-        }
-
         public override void Write()
         {
             return;

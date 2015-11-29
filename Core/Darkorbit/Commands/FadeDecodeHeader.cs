@@ -20,11 +20,6 @@ namespace PolskaBot.Core.Darkorbit.Commands
             Write();
         }
 
-        public override short GetID()
-        {
-            return ID;
-        }
-
         public override void Write()
         {
             packetWriter.Write((short) 6);

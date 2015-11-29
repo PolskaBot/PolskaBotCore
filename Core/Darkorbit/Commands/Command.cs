@@ -30,6 +30,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
         }
 
         public abstract void Write();
-        public abstract short GetID();
     }
 }
