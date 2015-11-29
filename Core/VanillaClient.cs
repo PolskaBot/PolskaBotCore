@@ -49,7 +49,18 @@ namespace PolskaBot.Core
 
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
-                    Console.WriteLine(serverRequetCode.codeLength);
+                    mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
+
+                    bool initialized = fadeReader.ReadBoolean();
+
+                    if(initialized)
+                    {
+                        Console.WriteLine("StageOne initialized");
+                    } else
+                    {
+                        Console.WriteLine("StageOne failed");
+                    }
+
                     break;
                 default:
                     fadeReader.ReadBytes(length - 2);
