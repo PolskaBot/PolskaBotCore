@@ -10,12 +10,12 @@ namespace PolskaBot.Core
 {
     public class API
     {
-        Client client = new Client();
+        MergedClient mergedClient = new MergedClient();
 
         public void Login(string server, string sid)
         {
-            client.Connect(server, sid);
-            client.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
+            mergedClient.Connect(server, sid);
+            mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
         }
     }
 }
