@@ -46,6 +46,11 @@ namespace PolskaBot.Core
             command.Write(stream);
         }
 
+        public void Send(byte[] buffer)
+        {
+            stream.Write(buffer, 0, buffer.Length);
+        }
+
         protected void Run()
         {
             while(true)

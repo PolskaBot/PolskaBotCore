@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MiscUtil.IO;
+using MiscUtil.Conversion;
 using PolskaBot.Core.Darkorbit.Commands;
 
 namespace PolskaBot.Core
@@ -20,7 +21,12 @@ namespace PolskaBot.Core
             short length = reader.ReadInt16();
             short id = reader.ReadInt16();
 
-            Console.WriteLine("Received packet with ID {0}", id);
+            mergedClient.fadeClient.Send(new ClientDecodeHeader(length, id));
+            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
+            short fadeLength = fadeReader.ReadInt16();
+            short fadeID = fadeReader.ReadInt16();
+
+            Console.WriteLine("Received packet with ID {0} and length {1}", fadeID, fadeLength);
 
             switch(id)
             {
