@@ -17,20 +17,7 @@ namespace PolskaBot.Core
 
         protected override void Parse(EndianBinaryReader reader)
         {
-            //short length = reader.ReadInt16();
-            //short id = reader.ReadInt16();
 
-            //switch(id)
-            //{
-            //    case 100:
-            //        Console.WriteLine("Received packet to forward");
-            //        mergedClient.vanillaClient.Send(reader.ReadBytes(length - 2));
-            //        break;
-            //    default:
-            //        Console.WriteLine("Received not known packet. Fast forwarding.");
-            //        reader.ReadBytes(length - 2);
-            //        break;
-            //}
         }
     }
 }

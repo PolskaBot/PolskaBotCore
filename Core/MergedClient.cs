@@ -15,6 +15,7 @@ namespace PolskaBot.Core
         {
             vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
+            fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
         }
 
         public void Connect(string IP, string sid)

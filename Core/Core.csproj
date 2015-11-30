@@ -11,6 +11,7 @@
     <AssemblyName>Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -45,6 +46,7 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Darkorbit\Commands\FadeEncodePacket.cs" />
     <Compile Include="Darkorbit\Commands\FadeDecodeHeader.cs" />
     <Compile Include="Darkorbit\Commands\FadeDecodeBody.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />

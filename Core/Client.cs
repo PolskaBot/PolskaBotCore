@@ -21,6 +21,8 @@ namespace PolskaBot.Core
         public string IP { get; set; }
         public int port { get; set; }
 
+        public event EventHandler<EventArgs> OnConnected;
+
         public Client(MergedClient mergedClient)
         {
             thread = new Thread(new ThreadStart(Run));
@@ -38,6 +40,7 @@ namespace PolskaBot.Core
             {
                 thread.Start();
                 stream = tcpClient.GetStream();
+                OnConnected?.Invoke(this, EventArgs.Empty);
             }
         }
 
