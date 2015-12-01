@@ -10,22 +10,20 @@ namespace PolskaBot.Core.Darkorbit.Commands
     {
         public const short ID = 79;
 
-        public short length { get; private set; }
-        public short id { get; private set; }
+        public byte[] buffer { get; private set; }
 
-        public FadeEncodePacket(short length, short id)
+        public FadeEncodePacket(byte[] buffer)
         {
-            this.length = length;
-            this.id = id;
+            this.buffer = buffer;
             Write();
         }
 
         public override void Write()
         {
-            packetWriter.Write((short) 6);
+            short totalLength = (short) (buffer.Length + 2);
+            packetWriter.Write(totalLength);
             packetWriter.Write(ID);
-            packetWriter.Write(length);
-            packetWriter.Write(id);
+            packetWriter.Write(buffer);
         }
     }
 }

@@ -16,6 +16,15 @@ namespace PolskaBot.Core
 
         }
 
+        public void SendEncoded(Command command)
+        {
+            byte[] rawBuffer = command.ToArray();
+            mergedClient.fadeClient.Send(new FadeEncodePacket(rawBuffer));
+            byte[] encodedBuffer = new byte[rawBuffer.Length];
+            mergedClient.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length - 4);
+            Send(encodedBuffer);
+        }
+
         protected override void Parse(EndianBinaryReader reader)
         {
             short length = reader.ReadInt16();
