@@ -46,7 +46,8 @@ namespace PolskaBot.Core
 
         public void Send(Command command)
         {
-            command.Write(stream);
+            byte[] buffer = command.ToArray();
+            stream.Write(buffer, 0, buffer.Length);
         }
 
         public void Send(byte[] buffer)

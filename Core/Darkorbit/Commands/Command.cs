@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.IO;
 using MiscUtil.IO;
 using MiscUtil.Conversion;
-using PolskaBot.Core.Darkorbit.Commands;
-using System.Net.Sockets;
-using PolskaBot.Core.Darkorbit;
 
 namespace PolskaBot.Core.Darkorbit.Commands
 {
@@ -23,10 +15,9 @@ namespace PolskaBot.Core.Darkorbit.Commands
             packetWriter = new EndianBinaryWriter(EndianBitConverter.Big, memoryStream);
         }
 
-        public void Write(NetworkStream stream)
+        public byte[] ToArray()
         {
-            byte[] buffer = memoryStream.ToArray();
-            stream.Write(buffer, 0, buffer.Length);
+            return memoryStream.ToArray();
         }
 
         public abstract void Write();
