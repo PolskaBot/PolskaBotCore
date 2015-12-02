@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class FadeDecodeBody : Command
     {
-        public const short ID = 70;
+        public const ushort ID = 70;
 
         public byte[] buffer { get; private set; }
 

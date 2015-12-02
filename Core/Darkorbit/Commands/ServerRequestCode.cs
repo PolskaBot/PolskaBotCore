@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ServerRequestCode : Command
     {
-        public const short ID = 14047;
+        public const ushort ID = 14047;
 
         public int codeLength { get; private set; }
         public byte[] code { get; private set; }

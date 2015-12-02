@@ -27,13 +27,17 @@ namespace PolskaBot.Core
 
         protected override void Parse(EndianBinaryReader reader)
         {
-            short length = reader.ReadInt16();
-            short id = reader.ReadInt16();
+            ushort length = reader.ReadUInt16();
+
+            ushort id = reader.ReadUInt16();
+
+            Console.WriteLine(string.Format("Raw packet: length: {0}, id: {1}", length, id));
+
+            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
 
             mergedClient.fadeClient.Send(new FadeDecodeHeader(length, id));
-            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
-            short fadeLength = fadeReader.ReadInt16();
-            short fadeID = fadeReader.ReadInt16();
+            ushort fadeLength = fadeReader.ReadUInt16();
+            ushort fadeID = fadeReader.ReadUInt16();
 
             Console.WriteLine("Received packet with ID {0} and length {1}", fadeID, fadeLength);
 
@@ -59,12 +63,17 @@ namespace PolskaBot.Core
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
                     mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
+                    Console.WriteLine(serverRequetCode.code.Length);
 
                     bool initialized = fadeReader.ReadBoolean();
 
                     if(initialized)
                     {
                         Console.WriteLine("StageOne initialized");
+                        mergedClient.fadeClient.Send(new FadeRequestCallback());
+                        short callbackLength = fadeReader.ReadInt16();
+                        byte[] buffer = fadeReader.ReadBytes(callbackLength);
+                        SendEncoded(new ClientRequestCallback(buffer));
                     } else
                     {
                         Console.WriteLine("StageOne failed");
@@ -72,6 +81,7 @@ namespace PolskaBot.Core
 
                     break;
                 default:
+                    Console.WriteLine("Not known packet");
                     fadeReader.ReadBytes(length - 2);
                     break;
             }

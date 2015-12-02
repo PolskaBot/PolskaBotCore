@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="API.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Darkorbit\Commands\ClientRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\FadeEncodePacket.cs" />
     <Compile Include="Darkorbit\Commands\FadeDecodeHeader.cs" />
     <Compile Include="Darkorbit\Commands\FadeDecodeBody.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
     <Compile Include="Darkorbit\Commands\FadeInitStageOne.cs" />
+    <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />

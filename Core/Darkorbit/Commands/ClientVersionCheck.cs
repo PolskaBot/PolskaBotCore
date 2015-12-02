@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ClientVersionCheck : Command
     {
-        public static short ID = 666;
+        public static ushort ID = 666;
         public short length { get; private set; } = 14;
 
         public int major { get; set; }

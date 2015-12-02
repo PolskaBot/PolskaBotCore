@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ServerVersionCheck : Command
     {
-        public const short ID = 667;
+        public const ushort ID = 667;
 
         public int major { get; set; }
         public int minor { get; set; }

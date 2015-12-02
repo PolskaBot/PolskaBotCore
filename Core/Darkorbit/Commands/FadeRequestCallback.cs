@@ -6,24 +6,20 @@ using System.Threading.Tasks;
 
 namespace PolskaBot.Core.Darkorbit.Commands
 {
-    class FadeInitStageOne : Command
+    class FadeRequestCallback : Command
     {
-        public const ushort ID = 101;
+        public const ushort ID = 201;
 
-        public byte[] code { get; private set; }
-
-        public FadeInitStageOne(byte[] code)
+        public FadeRequestCallback()
         {
-            this.code = code;
             Write();
         }
 
         public override void Write()
         {
-            short totalLength = (short) (code.Length + 2);
+            short totalLength = (short)2;
             packetWriter.Write(totalLength);
             packetWriter.Write(ID);
-            packetWriter.Write(code);
         }
     }
 }
