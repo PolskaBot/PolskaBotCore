@@ -28,19 +28,16 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public override void Write()
         {
-            short totalLength = (short)(sessionID.Length + version.Length + 14);
+            Console.WriteLine(packetWriter.Encoding.EncodingName);
+            short totalLength = (short)(sessionID.Length + version.Length + 16);
             packetWriter.Write(totalLength);
-            Console.WriteLine(ToArray().Length - 2);
             packetWriter.Write(ID);
-            Console.WriteLine(ToArray().Length - 2);
             packetWriter.Write((int)(instanceID >> 11 | instanceID << 21));
-            Console.WriteLine(ToArray().Length - 2);
             packetWriter.Write((short)factionID);
-            Console.WriteLine(ToArray().Length - 2);
+            packetWriter.Write((byte)0);
             packetWriter.Write(sessionID);
-            Console.WriteLine(ToArray().Length - 2);
+            packetWriter.Write((byte)0);
             packetWriter.Write(version);
-            Console.WriteLine(ToArray().Length - 2);
             packetWriter.Write((int)(userID >> 9 | userID << 23));
             Console.WriteLine("Calculated: {0}, real: {1} || SID: {2}, VERSION: {3}", totalLength, ToArray().Length - 2, sessionID.Length, version.Length);
         }

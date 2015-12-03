@@ -90,6 +90,8 @@ namespace PolskaBot.Core
                         SendEncoded(new Login(165206592, "94c37ff179d6f0bfd66b3db88dd45f79", 1, 578));
                     }
 
+                    //4c d3 48 40 00 00 00 01 00 20 39 34 63 33 37 66 66 31 37 39 64 36 66 30 62 66 64 36 36 62 33 64 62 38 38 64 64 34 356637390005382e332e322004ec6d
+
                     break;
                 default:
                     Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
