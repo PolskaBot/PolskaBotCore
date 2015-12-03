@@ -19,6 +19,7 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
+            Console.WriteLine(command.GetType().ToString());
             byte[] rawBuffer = command.ToArray();
             mergedClient.fadeClient.Send(new FadeEncodePacket(rawBuffer));
             byte[] encodedBuffer = new byte[rawBuffer.Length];
@@ -86,6 +87,7 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
+                        SendEncoded(new Login(165206592, "94c37ff179d6f0bfd66b3db88dd45f79", 1, 578));
                     }
 
                     break;
