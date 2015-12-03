@@ -21,30 +21,26 @@ namespace PolskaBot.Core
             byte[] rawBuffer = command.ToArray();
             mergedClient.fadeClient.Send(new FadeEncodePacket(rawBuffer));
             byte[] encodedBuffer = new byte[rawBuffer.Length];
-            mergedClient.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length - 4);
+            mergedClient.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
             Send(encodedBuffer);
         }
 
         protected override void Parse(EndianBinaryReader reader)
         {
-            ushort length = reader.ReadUInt16();
-
-            ushort id = reader.ReadUInt16();
-
-            Console.WriteLine(string.Format("Raw packet: length: {0}, id: {1}", length, id));
-
             EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
 
-            mergedClient.fadeClient.Send(new FadeDecodeHeader(length, id));
+            byte[] lengthBuffer = reader.ReadBytes(2);
+
+            mergedClient.fadeClient.Send(new FadeDecodePacket(lengthBuffer));
             ushort fadeLength = fadeReader.ReadUInt16();
+
+            byte[] contentBuffer = reader.ReadBytes(fadeLength);
+
+            mergedClient.fadeClient.Send(new FadeDecodePacket(contentBuffer));
+
             ushort fadeID = fadeReader.ReadUInt16();
 
-            Console.WriteLine("Received packet with ID {0} and length {1}", fadeID, fadeLength);
-
-            mergedClient.fadeClient.Send(new FadeDecodeBody(reader.ReadBytes(fadeLength - 2)));
-
-
-            switch(id)
+            switch(fadeID)
             {
                 case ServerVersionCheck.ID:
                     ServerVersionCheck serverVersionCheck = new ServerVersionCheck(fadeReader);
@@ -81,8 +77,8 @@ namespace PolskaBot.Core
 
                     break;
                 default:
-                    Console.WriteLine("Not known packet");
-                    fadeReader.ReadBytes(length - 2);
+                    Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
+                    fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
         }

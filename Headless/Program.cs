@@ -11,6 +11,7 @@ namespace Headless
     {
         static void Main(string[] args)
         {
+            Console.ReadLine();
             API api = new API();
             api.Login("178.132.244.66", "");
         }

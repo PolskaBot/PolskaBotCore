@@ -48,8 +48,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\FadeEncodePacket.cs" />
-    <Compile Include="Darkorbit\Commands\FadeDecodeHeader.cs" />
-    <Compile Include="Darkorbit\Commands\FadeDecodeBody.cs" />
+    <Compile Include="Darkorbit\Commands\FadeDecodePacket.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
