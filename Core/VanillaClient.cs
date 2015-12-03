@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MiscUtil.IO;
 using MiscUtil.Conversion;
 using PolskaBot.Core.Darkorbit.Commands;
+using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 
 namespace PolskaBot.Core
 {
@@ -84,6 +85,7 @@ namespace PolskaBot.Core
                     if(initializedStageTwo)
                     {
                         Console.WriteLine("StageTwo initialized");
+                        SendEncoded(new Ping());
                     }
 
                     break;
