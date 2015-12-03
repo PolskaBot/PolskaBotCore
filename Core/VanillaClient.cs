@@ -59,7 +59,6 @@ namespace PolskaBot.Core
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
                     mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
-                    Console.WriteLine(serverRequetCode.code.Length);
 
                     bool initialized = fadeReader.ReadBoolean();
 
@@ -73,6 +72,18 @@ namespace PolskaBot.Core
                     } else
                     {
                         Console.WriteLine("StageOne failed");
+                    }
+
+                    break;
+                case ServerRequestCallback.ID:
+                    ServerRequestCallback serverRequestCallback = new ServerRequestCallback(fadeReader);
+                    mergedClient.fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
+
+                    bool initializedStageTwo = fadeReader.ReadBoolean();
+
+                    if(initializedStageTwo)
+                    {
+                        Console.WriteLine("StageTwo initialized");
                     }
 
                     break;

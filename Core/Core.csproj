@@ -53,7 +53,9 @@
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
     <Compile Include="Darkorbit\Commands\FadeInitStageOne.cs" />
+    <Compile Include="Darkorbit\Commands\FadeInitStageTwo.cs" />
     <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
+    <Compile Include="Darkorbit\Commands\ServerRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
