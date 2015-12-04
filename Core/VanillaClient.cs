@@ -12,6 +12,9 @@ namespace PolskaBot.Core
 {
     class VanillaClient : Client
     {
+
+        public event EventHandler<PacketReceivedEventArgs> onPacketReceived;
+
         public VanillaClient(MergedClient mergedClient) : base(mergedClient)
         {
 
@@ -46,6 +49,7 @@ namespace PolskaBot.Core
             {
                 case ServerVersionCheck.ID:
                     ServerVersionCheck serverVersionCheck = new ServerVersionCheck(fadeReader);
+                    onPacketReceived?.Invoke(this, new PacketReceivedEventArgs(serverVersionCheck));
 
                     if(serverVersionCheck.compatible)
                     {
