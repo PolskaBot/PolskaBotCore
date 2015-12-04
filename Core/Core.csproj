@@ -55,6 +55,8 @@
     <Compile Include="Darkorbit\Commands\FadeInitStageOne.cs" />
     <Compile Include="Darkorbit\Commands\FadeInitStageTwo.cs" />
     <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\class_326.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Login.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Ping.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCallback.cs" />

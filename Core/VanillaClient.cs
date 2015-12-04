@@ -87,11 +87,14 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(165206592, "94c37ff179d6f0bfd66b3db88dd45f79", 1, 578));
+                        SendEncoded(new Login(165206592, "4112a8cafd36f7e51b0c03423e3b433f", 1, 578));
                     }
 
-                    //4c d3 48 40 00 00 00 01 00 20 39 34 63 33 37 66 66 31 37 39 64 36 66 30 62 66 64 36 36 62 33 64 62 38 38 64 64 34 356637390005382e332e322004ec6d
-
+                    break;
+                case HeroInit.ID:
+                    HeroInit heroInit = new HeroInit(fadeReader);
+                    Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8})", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
+                        heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y);
                     break;
                 default:
                     Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
