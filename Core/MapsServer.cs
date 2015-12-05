@@ -14,9 +14,11 @@ namespace PolskaBot.Core
 {
     class MapsServer : HttpServer
     {
-        public MapsServer(int port) : base(port)
-        {
+        public API api { get; private set; }
 
+        public MapsServer(API api) : base(9000)
+        {
+            this.api = api;
         }
 
         public override void handleGETRequest(HttpProcessor p)

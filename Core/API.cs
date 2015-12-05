@@ -30,7 +30,7 @@ namespace PolskaBot.Core
 
             if(mode == Mode.PROXY)
             {
-                mapsServer = new MapsServer(9000);
+                mapsServer = new MapsServer(this);
                 mapsThread = new Thread(new ThreadStart(mapsServer.listen));
                 mapsThread.Start();
             }
