@@ -71,19 +71,22 @@ namespace PolskaBot.Core
         {
             while (true)
             {
-                ushort length = reader.ReadUInt16();
-                ushort id = reader.ReadUInt16();
-                byte[] content = reader.ReadBytes(length - 2);
+                byte[] originalLength = reader.ReadBytes(2);
+                api.mergedClient.fadeClient.Send(new FadeMimicDecodePacket(originalLength));
+                EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, api.mergedClient.fadeClient.stream);
+                ushort length = fadeReader.ReadUInt16();
 
-                Console.WriteLine("Packet length: {0} ID: {1}", length, id);
+                byte[] originalBuffer = reader.ReadBytes(length);
 
-                //byte[] packet = { 0x00, 0x0F, 0x02, 0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4E, 0x00, 0x00, 0x00, 0x03, 0x01};
+                api.mergedClient.fadeClient.Send(new FadeMimicDecodePacket(originalBuffer));
+
+                Console.WriteLine($"Client sent packet of ID {fadeReader.ReadUInt16()}");
+                byte[] buffer = fadeReader.ReadBytes(length - 2);
 
                 MemoryStream memoryStream = new MemoryStream();
                 EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Big, memoryStream);
-                writer.Write(length);
-                writer.Write(id);
-                writer.Write(content);
+                writer.Write(originalLength);
+                writer.Write(originalBuffer);
 
                 api.mergedClient.vanillaClient.Send(memoryStream.ToArray());
             }

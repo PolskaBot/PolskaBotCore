@@ -30,7 +30,6 @@ namespace PolskaBot.Core
 
         public override void Parse(EndianBinaryReader reader)
         {
-            Console.WriteLine("Vanilla received packet");
             EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
 
             byte[] lengthBuffer = reader.ReadBytes(2);
@@ -44,23 +43,20 @@ namespace PolskaBot.Core
 
             ushort fadeID = fadeReader.ReadUInt16();
 
-            Console.WriteLine("ID of packet {0}", fadeID);
-
-            Console.WriteLine(fadeID);
-
-            if (mergedClient.api.mode == API.Mode.PROXY)
-            {
-                fadeReader.ReadBytes(fadeLength - 2);
-                SendBack(lengthBuffer, contentBuffer);
-                return;
-            }
+            Console.WriteLine($"Received packet of ID {fadeID}");
 
             switch (fadeID)
             {
                 case ServerVersionCheck.ID:
                     ServerVersionCheck serverVersionCheck = new ServerVersionCheck(fadeReader);
 
-                    if(serverVersionCheck.compatible)
+                    if (mergedClient.api.mode == API.Mode.PROXY)
+                    {
+                        SendBack(lengthBuffer, contentBuffer);
+                        return;
+                    }
+
+                    if (serverVersionCheck.compatible)
                     {
                         Console.WriteLine("Client is compatible");
                         Send(new ClientRequestCode());
@@ -73,6 +69,17 @@ namespace PolskaBot.Core
 
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
+
+                    Console.WriteLine("Received server code with length of {0}", serverRequetCode.codeLength);
+
+                    if (mergedClient.api.mode == API.Mode.PROXY)
+                    {
+                        mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
+                        if(fadeReader.ReadBoolean())
+                            SendBack(lengthBuffer, contentBuffer);
+                        return;
+                    }
+
                     mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
 
                     bool initialized = fadeReader.ReadBoolean();
