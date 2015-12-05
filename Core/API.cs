@@ -21,7 +21,7 @@ namespace PolskaBot.Core
         public MapCredentials mapCredentials;
         public string IP;
 
-        MergedClient mergedClient;
+        public MergedClient mergedClient;
 
         MapsServer mapsServer;
         Thread mapsThread;
@@ -43,9 +43,6 @@ namespace PolskaBot.Core
 
         public void Connect(string server = null)
         {
-            if(mode == Mode.PROXY) {
-                throw new NotSupportedException("Login cannot be called when in PROXY mode");
-            }
             mergedClient.Connect(server);
             mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
         }

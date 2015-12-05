@@ -4,7 +4,7 @@ using MiscUtil.Conversion;
 
 namespace PolskaBot.Core.Darkorbit.Commands
 {
-    abstract class Command
+    public abstract class Command
     {
         protected MemoryStream memoryStream;
         protected EndianBinaryWriter packetWriter;

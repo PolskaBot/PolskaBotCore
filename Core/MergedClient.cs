@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PolskaBot.Core
 {
-    class MergedClient
+    public class MergedClient
     {
         public API api { get; private set; }
         public VanillaClient vanillaClient { get; private set; }

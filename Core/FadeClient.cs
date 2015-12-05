@@ -8,7 +8,7 @@ using PolskaBot.Core.Darkorbit.Commands;
 
 namespace PolskaBot.Core
 {
-    class FadeClient : Client
+    public class FadeClient : Client
     {
         public FadeClient(MergedClient mergedClient) : base(mergedClient)
         {

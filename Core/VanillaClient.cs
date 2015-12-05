@@ -10,7 +10,7 @@ using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 
 namespace PolskaBot.Core
 {
-    class VanillaClient : Client
+    public class VanillaClient : Client
     {
 
         public VanillaClient(MergedClient mergedClient) : base(mergedClient)

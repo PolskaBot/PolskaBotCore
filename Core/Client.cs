@@ -11,7 +11,7 @@ using PolskaBot.Core.Darkorbit.Commands;
 
 namespace PolskaBot.Core
 {
-    abstract class Client
+    public abstract class Client
     {
         public Thread thread { get; private set; }
         public TcpClient tcpClient { get; private set; }
