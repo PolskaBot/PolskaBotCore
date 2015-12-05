@@ -18,6 +18,8 @@ namespace PolskaBot.Core
 
         public Mode mode;
 
+        public MapCredentials mapCredentials;
+
         MergedClient mergedClient;
 
         MapsServer mapsServer;

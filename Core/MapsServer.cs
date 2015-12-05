@@ -105,8 +105,7 @@ namespace PolskaBot.Core
             p.writeSuccess();
             string output = reader.ReadToEnd();
             IndexParser indexParser = new IndexParser(output);
-            Console.WriteLine("{0} {1} {2} {3}", indexParser.instanceID, indexParser.mapID,
-                indexParser.sid, indexParser.userID);
+            api.mapCredentials = indexParser.mapCredentials;
             p.outputStream.Write(output);
         }
 

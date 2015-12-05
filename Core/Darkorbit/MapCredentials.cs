@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PolskaBot.Core.Darkorbit
 {
-    class MapCredentials
+    public class MapCredentials
     {
         public int instanceID { get; set; }
         public int mapID { get; set; }

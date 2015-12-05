@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Parsers
 {
     class IndexParser
     {
-        MapCredentials mapCredentials = new MapCredentials();
+        public MapCredentials mapCredentials = new MapCredentials();
 
         public string content { get; private set; }
 
