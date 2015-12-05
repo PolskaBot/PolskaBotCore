@@ -17,7 +17,12 @@ namespace PolskaBot.Core
 
         Mode mode;
 
-        MergedClient mergedClient = new MergedClient();
+        MergedClient mergedClient;
+
+        public API()
+        {
+            mergedClient = new MergedClient(this);
+        }
 
         public void Login(string server, string sid)
         {

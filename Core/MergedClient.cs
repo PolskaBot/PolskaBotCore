@@ -8,11 +8,13 @@ namespace PolskaBot.Core
 {
     class MergedClient
     {
+        public API api { get; private set; }
         public VanillaClient vanillaClient { get; private set; }
         public FadeClient fadeClient { get; private set; }
 
-        public MergedClient()
+        public MergedClient(API api)
         {
+            this.api = api;
             vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
             fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
