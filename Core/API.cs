@@ -41,12 +41,12 @@ namespace PolskaBot.Core
             }
         }
 
-        public void Login(string server, string sid)
+        public void Login(string server)
         {
             if(mode == Mode.PROXY) {
                 throw new NotSupportedException("Login cannot be called when in PROXY mode");
             }
-            mergedClient.Connect(server, sid);
+            mergedClient.Connect(server);
             mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
         }
     }

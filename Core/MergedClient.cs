@@ -20,7 +20,7 @@ namespace PolskaBot.Core
             fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
         }
 
-        public void Connect(string IP, string sid)
+        public void Connect(string IP)
         {
             vanillaClient.Connect(IP, 8080);
             fadeClient.Connect("127.0.0.1", 8081);
