@@ -65,6 +65,7 @@
     <Compile Include="Darkorbit\Config.cs" />
     <Compile Include="Darkorbit\MapCredentials.cs" />
     <Compile Include="Darkorbit\Parsers\IndexParser.cs" />
+    <Compile Include="Darkorbit\Parsers\MapsParser.cs" />
     <Compile Include="FadeClient.cs" />
     <Compile Include="HttpServer.cs" />
     <Compile Include="MapsServer.cs" />
