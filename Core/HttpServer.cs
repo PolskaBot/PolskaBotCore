@@ -94,19 +94,15 @@ namespace Bend.Util
             http_method = tokens[0].ToUpper();
             http_url = tokens[1];
             http_protocol_versionstring = tokens[2];
-
-            Console.WriteLine("starting: " + request);
         }
 
         public void readHeaders()
         {
-            Console.WriteLine("readHeaders()");
             String line;
             while ((line = streamReadLine(inputStream)) != null)
             {
                 if (line.Equals(""))
                 {
-                    Console.WriteLine("got headers");
                     return;
                 }
 
@@ -123,7 +119,6 @@ namespace Bend.Util
                 }
 
                 string value = line.Substring(pos, line.Length - pos);
-                Console.WriteLine("header: {0}:{1}", name, value);
                 httpHeaders[name] = value;
             }
         }
@@ -142,7 +137,6 @@ namespace Bend.Util
             // we hand him needs to let him see the "end of the stream" at this content 
             // length, because otherwise he won't know when he's seen it all! 
 
-            Console.WriteLine("get post data start");
             int content_len = 0;
             MemoryStream ms = new MemoryStream();
             if (this.httpHeaders.ContainsKey("Content-Length"))
@@ -158,10 +152,7 @@ namespace Bend.Util
                 int to_read = content_len;
                 while (to_read > 0)
                 {
-                    Console.WriteLine("starting Read, to_read={0}", to_read);
-
                     int numread = this.inputStream.Read(buf, 0, Math.Min(BUF_SIZE, to_read));
-                    Console.WriteLine("read finished, numread={0}", numread);
                     if (numread == 0)
                     {
                         if (to_read == 0)
@@ -178,7 +169,6 @@ namespace Bend.Util
                 }
                 ms.Seek(0, SeekOrigin.Begin);
             }
-            Console.WriteLine("get post data end");
             srv.handlePOSTRequest(this, new StreamReader(ms));
 
         }
@@ -255,7 +245,6 @@ namespace Bend.Util
                 p.outputStream.BaseStream.Flush();
             }
 
-            Console.WriteLine("request: {0}", p.http_url);
             p.writeSuccess();
             p.outputStream.WriteLine("<html><body><h1>test server</h1>");
             p.outputStream.WriteLine("Current Time: " + DateTime.Now.ToString());
@@ -269,7 +258,6 @@ namespace Bend.Util
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
         {
-            Console.WriteLine("POST request: {0}", p.http_url);
             string data = inputData.ReadToEnd();
 
             p.writeSuccess();
@@ -280,25 +268,4 @@ namespace Bend.Util
 
         }
     }
-
-    public class TestMain
-    {
-        public static int Main(String[] args)
-        {
-            HttpServer httpServer;
-            if (args.GetLength(0) > 0)
-            {
-                httpServer = new MyHttpServer(Convert.ToInt16(args[0]));
-            }
-            else
-            {
-                httpServer = new MyHttpServer(8080);
-            }
-            Thread thread = new Thread(new ThreadStart(httpServer.listen));
-            thread.Start();
-            return 0;
-        }
-
-    }
-
 }
