@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using MiscUtil.IO;
+using MiscUtil.Conversion;
 
 namespace PolskaBot.Core
 {
@@ -15,6 +17,9 @@ namespace PolskaBot.Core
 
         TcpListener listener;
         Thread thread;
+
+        NetworkStream stream;
+        EndianBinaryReader reader;
 
         public ProxyServer(API api)
         {
@@ -27,11 +32,49 @@ namespace PolskaBot.Core
 
         public void Listen()
         {
+            bool policyFileRequest = false;
+
             while(true)
             {
                 TcpClient client = listener.AcceptTcpClient();
-                Console.WriteLine("Client connected to ProxySever");
+                stream = client.GetStream();
+                reader = new EndianBinaryReader(EndianBitConverter.Big, stream);
+
+                // Handle policy request
+                if(!policyFileRequest)
+                {
+                    int i = 0;
+                    byte[] buffer = new byte[100];
+
+                    while ((i = stream.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        string req = Encoding.ASCII.GetString(buffer, 0, i);
+
+                        if (req.StartsWith("<policy-file-request/>"))
+                        {
+                            string text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+                            text += "<cross-domain-policy xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"http://www.adobe.com/xml/schemas/PolicyFile.xsd\">";
+                            text += "   <site-control permitted-cross-domain-policies=\"all\"/>";
+                            text += "   <allow-access-from domain=\"*\" to-ports=\"*\"/>";
+                            text += "</cross-domain-policy>";
+                            SendText(text);
+                            policyFileRequest = true;
+                            client.Close();
+                            break;
+                        }
+                    }
+                } else
+                {
+                    // Handle and forward packet
+                }
             }
+        }
+
+        public void SendText(string text)
+        {
+            byte[] buffer = Encoding.ASCII.GetBytes(text);
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
     }
 }
