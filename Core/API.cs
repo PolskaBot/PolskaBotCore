@@ -10,17 +10,18 @@ namespace PolskaBot.Core
 {
     public class API
     {
-        enum Mode
+        public enum Mode
         {
             BOT, PROXY
         };
 
-        Mode mode;
+        public Mode mode;
 
         MergedClient mergedClient;
 
-        public API()
+        public API(Mode mode = Mode.BOT)
         {
+            this.mode = mode;
             mergedClient = new MergedClient(this);
         }
 
