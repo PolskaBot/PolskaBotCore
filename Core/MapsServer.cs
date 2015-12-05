@@ -45,20 +45,10 @@ namespace PolskaBot.Core
 
             Stream responeStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(responeStream);
-
-            string line = "";
-
             p.writeSuccess();
 
-            while(line != null)
-            {
-                line = reader.ReadLine();
-                if(line != null)
-                {
-                    line = Regex.Replace(line, "<gameserverIP>([0-9.]+)</gameserverIP>", "<gameserverIP>127.0.0.1</gameserverIP>");
-                    p.outputStream.Write(line);
-                }
-            }
+            string content = reader.ReadToEnd();
+            p.outputStream.Write(Regex.Replace(content, "<gameserverIP>([0-9.]+)</gameserverIP>", "<gameserverIP>127.0.0.1</gameserverIP>"));
         }
 
         private void handleIndex(HttpProcessor p)
