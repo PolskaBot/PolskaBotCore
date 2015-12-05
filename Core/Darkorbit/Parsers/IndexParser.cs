@@ -9,10 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Parsers
 {
     class IndexParser
     {
-        public int instanceID { get; private set; }
-        public int mapID { get; set; }
-        public string sid { get; private set; }
-        public int userID { get; private set; }
+        MapCredentials mapCredentials = new MapCredentials();
 
         public string content { get; private set; }
 
@@ -26,16 +23,16 @@ namespace PolskaBot.Core.Darkorbit.Parsers
         {
             Match match = Regex.Match(content, "pid\": \"([0-9]+)");
             if (match.Success)
-                instanceID = int.Parse(match.Groups[1].ToString());
+                mapCredentials.instanceID = int.Parse(match.Groups[1].ToString());
             match = Regex.Match(content, "mapID\": \"([0-9]+)");
             if (match.Success)
-                mapID = int.Parse(match.Groups[1].ToString());
+                mapCredentials.mapID = int.Parse(match.Groups[1].ToString());
             match = Regex.Match(content, "sessionID\": \"([0-9a-z]+)");
             if (match.Success)
-                sid = match.Groups[1].ToString();
+                mapCredentials.sid = match.Groups[1].ToString();
             match = Regex.Match(content, "userID\": \"([0-9]+)");
             if (match.Success)
-                userID = int.Parse(match.Groups[1].ToString());
+                mapCredentials.userID = int.Parse(match.Groups[1].ToString());
         }
     }
 }
