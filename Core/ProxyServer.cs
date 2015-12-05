@@ -59,6 +59,7 @@ namespace PolskaBot.Core
                             text += "</cross-domain-policy>";
                             SendText(text);
                             policyFileRequest = true;
+                            api.Connect(api.IP);
                             client.Close();
                             break;
                         }
