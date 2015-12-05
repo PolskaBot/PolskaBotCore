@@ -17,7 +17,25 @@ namespace PolskaBot.Core
 
         public override void handleGETRequest(HttpProcessor p)
         {
-            Console.WriteLine("Received GET request");
+            if (p.http_url == "/spacemap/xml/maps.php")
+                handleMaps(p);
+            else if (p.http_url == "/indexInternal.es?action=internalMapRevolution")
+                handleIndex(p);
+            else
+            {
+                p.writeFailure();
+                p.outputStream.WriteLine("Not supported");
+            }
+        }
+
+        private void handleMaps(HttpProcessor p)
+        {
+
+        }
+
+        private void handleIndex(HttpProcessor p)
+        {
+
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
