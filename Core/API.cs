@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands;
+using System.Threading;
 
 namespace PolskaBot.Core
 {
@@ -20,6 +21,7 @@ namespace PolskaBot.Core
         MergedClient mergedClient;
 
         MapsServer mapsServer;
+        Thread mapsThread;
 
         public API(Mode mode = Mode.BOT)
         {
@@ -29,6 +31,8 @@ namespace PolskaBot.Core
             if(mode == Mode.PROXY)
             {
                 mapsServer = new MapsServer(9000);
+                mapsThread = new Thread(new ThreadStart(mapsServer.listen));
+                mapsThread.Start();
             }
         }
 
