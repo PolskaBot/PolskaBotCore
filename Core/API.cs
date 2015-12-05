@@ -36,6 +36,8 @@ namespace PolskaBot.Core
                 mapsServer = new MapsServer(this);
                 mapsThread = new Thread(new ThreadStart(mapsServer.listen));
                 mapsThread.Start();
+
+                ProxyServer proxyServer = new ProxyServer(this);
             }
         }
 

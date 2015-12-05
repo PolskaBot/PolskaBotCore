@@ -71,6 +71,7 @@
     <Compile Include="MapsServer.cs" />
     <Compile Include="MergedClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyServer.cs" />
     <Compile Include="VanillaClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
