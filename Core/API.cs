@@ -45,7 +45,8 @@ namespace PolskaBot.Core
         public void Connect(string server = null)
         {
             mergedClient.Connect(server);
-            mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
+            if(mode == Mode.BOT)
+                mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
         }
     }
 }

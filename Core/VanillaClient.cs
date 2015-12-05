@@ -45,16 +45,16 @@ namespace PolskaBot.Core
 
             Console.WriteLine(fadeID);
 
-            switch(fadeID)
+            if (mergedClient.api.mode == API.Mode.PROXY)
+            {
+                SendBack(lengthBuffer, contentBuffer);
+                return;
+            }
+
+            switch (fadeID)
             {
                 case ServerVersionCheck.ID:
                     ServerVersionCheck serverVersionCheck = new ServerVersionCheck(fadeReader);
-
-                    if(mergedClient.api.mode == API.Mode.PROXY)
-                    {
-                        SendBack(lengthBuffer, contentBuffer);
-                        return;
-                    }
 
                     if(serverVersionCheck.compatible)
                     {
@@ -110,6 +110,14 @@ namespace PolskaBot.Core
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
+        }
+
+        public void SendForward(byte[] length, byte[] buffer)
+        {
+            List<byte> list = new List<byte>();
+            list.AddRange(length);
+            list.AddRange(buffer);
+            Send(list.ToArray());
         }
 
         public void SendBack(byte[] length, byte[] buffer)
