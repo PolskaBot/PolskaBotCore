@@ -9,6 +9,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Collections;
 using System.IO.Compression;
+using PolskaBot.Core.Darkorbit.Parsers;
 
 namespace PolskaBot.Core
 {
@@ -102,7 +103,11 @@ namespace PolskaBot.Core
             }
 
             p.writeSuccess();
-            p.outputStream.Write(reader.ReadToEnd());
+            string output = reader.ReadToEnd();
+            IndexParser indexParser = new IndexParser(output);
+            Console.WriteLine("{0} {1} {2} {3}", indexParser.instanceID, indexParser.mapID,
+                indexParser.sid, indexParser.userID);
+            p.outputStream.Write(output);
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
