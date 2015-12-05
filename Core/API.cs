@@ -41,7 +41,7 @@ namespace PolskaBot.Core
             }
         }
 
-        public void Login(string server)
+        public void Connect(string server = null)
         {
             if(mode == Mode.PROXY) {
                 throw new NotSupportedException("Login cannot be called when in PROXY mode");
