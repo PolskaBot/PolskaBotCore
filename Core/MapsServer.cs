@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Bend.Util;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Collections;
+using System.IO.Compression;
 
 namespace PolskaBot.Core
 {
@@ -22,7 +24,7 @@ namespace PolskaBot.Core
             Console.WriteLine(p.http_url);
             if (p.http_url.Contains("/spacemap/xml/maps.php"))
                 handleMaps(p);
-            else if (p.http_url == "/indexInternal.es?action=internalMapRevolution")
+            else if (p.http_url.Contains("/indexInternal.es?action=internalMapRevolution"))
                 handleIndex(p);
             else
             {
@@ -59,7 +61,56 @@ namespace PolskaBot.Core
 
         private void handleIndex(HttpProcessor p)
         {
+            Console.WriteLine("Parsing index");
 
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(p.http_url);
+            request.Proxy = new WebProxy();
+            
+            foreach(DictionaryEntry entry in p.httpHeaders)
+            {
+                string header = (string)entry.Key;
+
+                switch(header)
+                {
+                    case "Host":
+                        request.Host = (string)entry.Value;
+                        continue;
+                    case "User-Agent":
+                        request.UserAgent = (string)entry.Value;
+                        continue;
+                    case "Accept":
+                        request.Accept = (string)entry.Value;
+                        continue;
+                    case "Connection":
+                        request.KeepAlive = true;
+                        continue;
+                    case "Referer":
+                        request.Referer = (string)entry.Value;
+                        continue;
+                }
+
+                request.Headers[(string)entry.Key] = (string)entry.Value;
+            }
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            Console.WriteLine("Encoding: {0}", response.ContentEncoding);
+
+            Stream responeStream = response.GetResponseStream();
+
+            StreamReader reader;
+
+            if(response.ContentEncoding == "gzip")
+            {
+                GZipStream gzipStream = new GZipStream(responeStream, CompressionMode.Decompress);
+                reader = new StreamReader(gzipStream);
+            } else
+            {
+                reader = new StreamReader(responeStream);
+            }
+
+            p.writeSuccess();
+            p.outputStream.Write(reader.ReadToEnd());
         }
 
         public override void handlePOSTRequest(HttpProcessor p, StreamReader inputData)
