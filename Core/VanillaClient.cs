@@ -28,7 +28,7 @@ namespace PolskaBot.Core
             Send(encodedBuffer);
         }
 
-        protected override void Parse(EndianBinaryReader reader)
+        public override void Parse(EndianBinaryReader reader)
         {
             EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
 

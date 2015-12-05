@@ -69,6 +69,6 @@ namespace PolskaBot.Core
 
         }
 
-        protected abstract void Parse(EndianBinaryReader reader);
+        public abstract void Parse(EndianBinaryReader reader);
     }
 }

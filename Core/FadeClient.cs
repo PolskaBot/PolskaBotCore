@@ -15,7 +15,7 @@ namespace PolskaBot.Core
 
         }
 
-        protected override void Parse(EndianBinaryReader reader)
+        public override void Parse(EndianBinaryReader reader)
         {
 
         }

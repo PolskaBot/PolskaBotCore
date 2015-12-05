@@ -67,20 +67,7 @@ namespace PolskaBot.Core
                     }
                 } else
                 {
-                    // Handle and forward packet
-                    ushort length = reader.ReadUInt16();
-                    ushort id = reader.ReadUInt16();
-                    byte[] content = reader.ReadBytes(length - 2);
-
-                    Console.WriteLine(id);
-
-                    MemoryStream memoryStream = new MemoryStream();
-                    EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Big, memoryStream);
-                    writer.Write(length);
-                    writer.Write(id);
-                    writer.Write(content);
-
-                    api.mergedClient.vanillaClient.Send(memoryStream.ToArray());
+                    api.mergedClient.vanillaClient.Parse(reader);
                 }
             }
         }
