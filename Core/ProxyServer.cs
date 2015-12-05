@@ -77,12 +77,15 @@ namespace PolskaBot.Core
 
                 Console.WriteLine("Packet length: {0} ID: {1}", length, id);
 
-                MemoryStream stream = new MemoryStream();
-                EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Big, stream);
+                //byte[] packet = { 0x00, 0x0F, 0x02, 0x9b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4E, 0x00, 0x00, 0x00, 0x03, 0x01};
+
+                MemoryStream memoryStream = new MemoryStream();
+                EndianBinaryWriter writer = new EndianBinaryWriter(EndianBitConverter.Big, memoryStream);
                 writer.Write(length);
+                writer.Write(id);
                 writer.Write(content);
 
-                api.mergedClient.vanillaClient.Send(stream.ToArray());
+                api.mergedClient.vanillaClient.Send(memoryStream.ToArray());
             }
         }
 

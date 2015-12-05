@@ -30,6 +30,7 @@ namespace PolskaBot.Core
 
         public override void Parse(EndianBinaryReader reader)
         {
+            Console.WriteLine("Vanilla received packet");
             EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
 
             byte[] lengthBuffer = reader.ReadBytes(2);
@@ -43,10 +44,13 @@ namespace PolskaBot.Core
 
             ushort fadeID = fadeReader.ReadUInt16();
 
+            Console.WriteLine("ID of packet {0}", fadeID);
+
             Console.WriteLine(fadeID);
 
             if (mergedClient.api.mode == API.Mode.PROXY)
             {
+                fadeReader.ReadBytes(fadeLength - 2);
                 SendBack(lengthBuffer, contentBuffer);
                 return;
             }
@@ -110,14 +114,6 @@ namespace PolskaBot.Core
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
-        }
-
-        public void SendForward(byte[] length, byte[] buffer)
-        {
-            List<byte> list = new List<byte>();
-            list.AddRange(length);
-            list.AddRange(buffer);
-            Send(list.ToArray());
         }
 
         public void SendBack(byte[] length, byte[] buffer)
