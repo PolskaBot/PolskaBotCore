@@ -22,6 +22,7 @@ namespace PolskaBot.Core
         public string IP;
 
         public MergedClient mergedClient;
+        public ProxyServer proxyServer;
 
         MapsServer mapsServer;
         Thread mapsThread;
@@ -37,7 +38,7 @@ namespace PolskaBot.Core
                 mapsThread = new Thread(new ThreadStart(mapsServer.listen));
                 mapsThread.Start();
 
-                ProxyServer proxyServer = new ProxyServer(this);
+                proxyServer = new ProxyServer(this);
             }
         }
 

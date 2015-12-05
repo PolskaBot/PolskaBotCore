@@ -12,7 +12,7 @@ using System.IO;
 
 namespace PolskaBot.Core
 {
-    class ProxyServer
+    public class ProxyServer
     {
         public API api { get; private set; }
 
@@ -77,6 +77,11 @@ namespace PolskaBot.Core
             byte[] buffer = Encoding.ASCII.GetBytes(text);
             stream.Write(buffer, 0, buffer.Length);
             stream.Flush();
+        }
+
+        public void Send(byte[] buffer)
+        {
+            stream.Write(buffer, 0, buffer.Length);
         }
     }
 }
