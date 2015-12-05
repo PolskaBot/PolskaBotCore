@@ -49,6 +49,8 @@ namespace PolskaBot.Core
             p.writeSuccess();
 
             string content = reader.ReadToEnd();
+            MapsParser mapsParser = new MapsParser(content, api.mapCredentials.mapID);
+            api.IP = mapsParser.IP;
             p.outputStream.Write(Regex.Replace(content, "<gameserverIP>([0-9.]+)</gameserverIP>", "<gameserverIP>127.0.0.1</gameserverIP>"));
         }
 
