@@ -10,6 +10,13 @@ namespace PolskaBot.Core
 {
     public class API
     {
+        enum Mode
+        {
+            BOT, PROXY
+        };
+
+        Mode mode;
+
         MergedClient mergedClient = new MergedClient();
 
         public void Login(string server, string sid)
