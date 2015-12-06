@@ -152,6 +152,10 @@ namespace PolskaBot.Core
                 case 13944:
                     Console.WriteLine("Received box/cargo {0} {1} {2}", fadeReader.ReadString(), fadeReader.ReadUInt32(), fadeReader.ReadUInt32());
                     break;
+                case OldStylePacket.ID:
+                    OldStylePacket oldStylePacket = new OldStylePacket(fadeReader);
+                    Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.message);
+                    break;
                 default:
                     //Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
                     fadeReader.ReadBytes(fadeLength - 2);
