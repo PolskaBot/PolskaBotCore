@@ -45,7 +45,6 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public HeroInit(EndianBinaryReader reader)
         {
-            Console.WriteLine("Reading heroInit");
             for (int i = 0; i < reader.ReadInt32(); i++)
             {
                 class_326 class326 = new class_326(reader);

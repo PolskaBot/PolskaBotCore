@@ -28,7 +28,6 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public override void Write()
         {
-            Console.WriteLine(packetWriter.Encoding.EncodingName);
             short totalLength = (short)(sessionID.Length + version.Length + 16);
             packetWriter.Write(totalLength);
             packetWriter.Write(ID);
@@ -39,7 +38,6 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             packetWriter.Write((byte)0);
             packetWriter.Write(version);
             packetWriter.Write((int)(userID >> 9 | userID << 23));
-            Console.WriteLine("Calculated: {0}, real: {1} || SID: {2}, VERSION: {3}", totalLength, ToArray().Length - 2, sessionID.Length, version.Length);
         }
     }
 }

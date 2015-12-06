@@ -23,7 +23,6 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
-            Console.WriteLine(command.GetType().ToString());
             byte[] rawBuffer = command.ToArray();
             mergedClient.fadeClient.Send(new FadeEncodePacket(rawBuffer));
             byte[] encodedBuffer = new byte[rawBuffer.Length];
@@ -45,8 +44,6 @@ namespace PolskaBot.Core
             mergedClient.fadeClient.Send(new FadeDecodePacket(contentBuffer));
 
             ushort fadeID = fadeReader.ReadUInt16();
-
-            //Console.WriteLine($"Received packet of ID {fadeID}");
 
             switch (fadeID)
             {
@@ -72,8 +69,6 @@ namespace PolskaBot.Core
 
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
-
-                    Console.WriteLine("Received server code with length of {0}", serverRequetCode.codeLength);
 
                     if (mergedClient.api.mode == API.Mode.PROXY)
                     {
@@ -110,7 +105,6 @@ namespace PolskaBot.Core
                         if(initializedStageTwo)
                         {
                             SendBack(lengthBuffer, contentBuffer);
-                            Console.WriteLine("Send secret key");
                         }
                         return;
                     }
