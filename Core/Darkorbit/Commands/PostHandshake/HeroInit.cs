@@ -41,7 +41,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public uint factionID { get; private set; }
         public string clanTag { get; private set; } //name_138
         public uint maxHP { get; private set; } //var_1848
-        public int var_1596 { get; private set; } //something with hp
+        public uint maxNanoHP { get; private set; }
 
         public HeroInit(EndianBinaryReader reader)
         {
@@ -99,8 +99,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             this.clanTag = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
             this.maxHP = reader.ReadUInt32();
             this.maxHP = this.maxHP >> 1 | this.maxHP << 31;
-            this.var_1596 = reader.ReadInt32();
-            this.var_1596 = this.var_1596 >> 16 | this.var_1596 << 16;
+            this.maxNanoHP = reader.ReadUInt32();
+            this.maxNanoHP = this.maxNanoHP >> 16 | this.maxNanoHP << 16;
         }
 
         public override void Write()
