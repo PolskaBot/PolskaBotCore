@@ -119,7 +119,8 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(166211055, "c2122733bc5504c260b0ec2ae723f7d4", 1, 578));
+                        SendEncoded(new Login(165206592, "ff2f94e5cde6dc6cc63b428c2ced94dd", 1, 578)); // 0cf5e
+                        //SendEncoded(new Login(73464017, "98ddb72404598b960e39cc6f61dbdec5", 1, 578)); // Quake
                     }
 
                     break;
@@ -127,6 +128,7 @@ namespace PolskaBot.Core
                     HeroInit heroInit = new HeroInit(fadeReader);
                     Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8}) {9}/{10}", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
                         heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y, heroInit.freeCargoSpace, heroInit.cargoCapacity);
+                    Console.WriteLine("Testing: {0} {1}", heroInit.var_3378, heroInit.galaxyGatesDone);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);

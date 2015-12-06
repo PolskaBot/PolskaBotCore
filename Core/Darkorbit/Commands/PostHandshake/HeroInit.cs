@@ -29,8 +29,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public uint x { get; private set; }
         public uint y { get; private set; }
         public uint userID { get; private set; } //name_125
-        public int var_3378 { get; private set; }
-        public int var_3911 { get; private set; }
+        public uint var_3378 { get; private set; }
+        public uint galaxyGatesDone { get; private set; }
         public uint freeCargoSpace { get; private set; } //var_4295
         public string shipName { get; private set; } //name_122
         public uint hp { get; private set; } //var_1060
@@ -75,10 +75,10 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             this.x = this.x >> 14 | this.x << 18;
             this.userID = reader.ReadUInt32();
             this.userID = this.userID << 11 | this.userID >> 21;
-            this.var_3378 = reader.ReadInt32();
+            this.var_3378 = reader.ReadUInt32();
             this.var_3378 = this.var_3378 << 16 | this.var_3378 >> 16;
-            this.var_3911 = reader.ReadInt32();
-            this.var_3911 = this.var_3911 >> 3 | this.var_3911 << 29;
+            this.galaxyGatesDone = reader.ReadUInt32();
+            this.galaxyGatesDone = this.galaxyGatesDone >> 3 | this.galaxyGatesDone << 29;
             this.freeCargoSpace = reader.ReadUInt32();
             this.freeCargoSpace = this.freeCargoSpace >> 11 | this.freeCargoSpace << 21;
             this.shipName = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
