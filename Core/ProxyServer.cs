@@ -75,9 +75,7 @@ namespace PolskaBot.Core
                 api.mergedClient.fadeClient.Send(new FadeMimicDecodePacket(originalLength));
                 EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, api.mergedClient.fadeClient.stream);
                 ushort length = fadeReader.ReadUInt16();
-
                 byte[] originalBuffer = reader.ReadBytes(length);
-
                 api.mergedClient.fadeClient.Send(new FadeMimicDecodePacket(originalBuffer));
 
                 Console.WriteLine($"Client sent packet of ID {fadeReader.ReadUInt16()}");

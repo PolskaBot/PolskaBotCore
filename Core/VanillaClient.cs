@@ -100,8 +100,17 @@ namespace PolskaBot.Core
                 case ServerRequestCallback.ID:
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(fadeReader);
                     mergedClient.fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
-
                     bool initializedStageTwo = fadeReader.ReadBoolean();
+
+                    if (mergedClient.api.mode == API.Mode.PROXY)
+                    {
+                        if(initializedStageTwo)
+                        {
+                            SendBack(lengthBuffer, contentBuffer);
+                            Console.WriteLine("Send secret key");
+                        }
+                        return;
+                    }
 
                     if(initializedStageTwo)
                     {
