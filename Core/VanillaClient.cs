@@ -125,8 +125,8 @@ namespace PolskaBot.Core
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
-                    Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8})", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
-                        heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y);
+                    Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8}) {9}/{10}", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
+                        heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y, heroInit.freeCargoSpace, heroInit.cargoCapacity);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);
@@ -137,6 +137,9 @@ namespace PolskaBot.Core
                     fadeReader.ReadBytes(fadeLength - 2);
                     if(!pingThread.IsAlive)
                         pingThread.Start();
+                    break;
+                case 13944:
+                    Console.WriteLine("Received box/cargo {0} {1} {2}", fadeReader.ReadString(), fadeReader.ReadUInt32(), fadeReader.ReadUInt32());
                     break;
                 default:
                     Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
