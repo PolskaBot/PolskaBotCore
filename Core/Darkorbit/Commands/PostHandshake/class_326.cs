@@ -23,7 +23,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             this.activated = reader.ReadBoolean();
             reader.ReadUInt16();
             this.var_2742 = reader.ReadUInt32();
-            this.var_2554 = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            this.var_2554 = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
             this.attribute = reader.ReadInt32();
             this.attribute = this.attribute << 6 | this.attribute >> 26;
             this.name_125 = reader.ReadInt32();
