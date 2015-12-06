@@ -16,6 +16,8 @@ namespace PolskaBot.Core
 
         Thread pingThread;
 
+        bool isMoving = false;
+
         public VanillaClient(MergedClient mergedClient) : base(mergedClient)
         {
             pingThread = new Thread(new ThreadStart(PingLoop));
@@ -124,6 +126,11 @@ namespace PolskaBot.Core
                     Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8}) {9}/{10}", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
                         heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y, heroInit.freeCargoSpace, heroInit.cargoCapacity);
                     Console.WriteLine("Testing: {0} {1}", heroInit.var_3378, heroInit.galaxyGatesDone);
+                    if (!isMoving)
+                    {
+                        SendEncoded(new Move(300, 300));
+                        isMoving = true;
+                    }
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);
@@ -155,7 +162,7 @@ namespace PolskaBot.Core
                     Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.message);
                     break;
                 default:
-                    Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
+                    Console.WriteLine("Received packet of ID {0} with total size of {1} which is not supported", fadeID, fadeLength + 4);
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
