@@ -137,7 +137,7 @@ namespace PolskaBot.Core
                     break;
                 case Box.ID:
                     Box box = new Box(fadeReader);
-                    Console.WriteLine("Box ({0}) at {1}/{2}", box.hash, box.x, box.y);
+                    Console.WriteLine("Box ({0}) at {1}/{2} type {3}", box.hash, box.x, box.y, box.var_4309);
                     break;
                 case Ore.ID:
                     Ore ore = new Ore(fadeReader);
