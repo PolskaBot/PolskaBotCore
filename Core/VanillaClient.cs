@@ -130,7 +130,7 @@ namespace PolskaBot.Core
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);
-                    Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.var_3506);
+                    Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.duration);
                     break;
                 case 29794:
                     Console.WriteLine("Received pong");
