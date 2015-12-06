@@ -139,6 +139,10 @@ namespace PolskaBot.Core
                     Box box = new Box(fadeReader);
                     Console.WriteLine("Box ({0}) at {1}/{2}", box.hash, box.x, box.y);
                     break;
+                case Ore.ID:
+                    Ore ore = new Ore(fadeReader);
+                    Console.WriteLine("Ore ({0}) at {1}/{2} of type {3}", ore.hash, ore.x, ore.y, ore.type);
+                    break;
                 case 29794:
                     Console.WriteLine("Received pong");
                     fadeReader.ReadBytes(fadeLength - 2);
