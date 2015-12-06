@@ -7,15 +7,18 @@ using MiscUtil.IO;
 using MiscUtil.Conversion;
 using PolskaBot.Core.Darkorbit.Commands;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
+using System.Threading;
 
 namespace PolskaBot.Core
 {
     public class VanillaClient : Client
     {
 
+        Thread pingThread;
+
         public VanillaClient(MergedClient mergedClient) : base(mergedClient)
         {
-
+            pingThread = new Thread(new ThreadStart(PingLoop));
         }
 
         public void SendEncoded(Command command)
@@ -43,7 +46,7 @@ namespace PolskaBot.Core
 
             ushort fadeID = fadeReader.ReadUInt16();
 
-            Console.WriteLine($"Received packet of ID {fadeID}");
+            //Console.WriteLine($"Received packet of ID {fadeID}");
 
             switch (fadeID)
             {
@@ -116,7 +119,7 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(165206592, "4112a8cafd36f7e51b0c03423e3b433f", 1, 578));
+                        SendEncoded(new Login(166211055, "c2122733bc5504c260b0ec2ae723f7d4", 1, 578));
                     }
 
                     break;
@@ -125,10 +128,29 @@ namespace PolskaBot.Core
                     Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8})", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
                         heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y);
                     break;
+                case ShipMove.ID:
+                    ShipMove shipMove = new ShipMove(fadeReader);
+                    Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.var_3506);
+                    break;
+                case 29794:
+                    Console.WriteLine("Received pong");
+                    fadeReader.ReadBytes(fadeLength - 2);
+                    if(!pingThread.IsAlive)
+                        pingThread.Start();
+                    break;
                 default:
                     Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
+            }
+        }
+
+        private void PingLoop()
+        {
+            while(true)
+            {
+                Thread.Sleep(10000);
+                SendEncoded(new Ping());
             }
         }
 

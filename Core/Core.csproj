@@ -58,8 +58,10 @@
     <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\class_326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\HeroMove.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Login.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Ping.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\ShipMove.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
