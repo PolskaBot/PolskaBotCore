@@ -35,7 +35,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             switch(tempType)
             {
                 case 0:
-                    type = Type.PROMERIUM;
+                    type = Type.PROMETIUM;
                     break;
                 case 1:
                     type = Type.ENDURIUM;
