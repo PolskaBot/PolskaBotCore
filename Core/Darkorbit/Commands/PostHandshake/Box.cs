@@ -14,7 +14,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public string hash { get; private set; }
         public uint x { get; private set; }
         public uint y { get; private set; }
-        public string var_4309 { get; private set; }
+        public string type { get; private set; }
 
         public Box(EndianBinaryReader reader)
         {
@@ -23,7 +23,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             x = x >> 12 | x << 20;
             y = reader.ReadUInt32();
             y = y << 12 | y >> 20;
-            var_4309 = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            type = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
             reader.ReadUInt16();
             reader.ReadUInt16();
         }
