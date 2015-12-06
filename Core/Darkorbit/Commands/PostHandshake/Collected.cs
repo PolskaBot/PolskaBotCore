@@ -9,24 +9,20 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Collected : Command
     {
-        public const ushort ID = 5677;
+        public const ushort ID = 4308;
 
+        public bool name_44 { get; private set; }
         public string hash { get; private set; }
 
         public Collected(EndianBinaryReader reader)
         {
+            name_44 = reader.ReadBoolean();
             hash = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            reader.ReadUInt16();
         }
 
         public override void Write()
         {
-            short totalLength = (short)(hash.Length + 6);
-            packetWriter.Write(totalLength);
-            packetWriter.Write(ID);
-            packetWriter.Write((byte)0);
-            packetWriter.Write(hash);
-            packetWriter.Write((short)16992);
+            throw new NotImplementedException();
         }
     }
 }

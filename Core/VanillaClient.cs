@@ -137,6 +137,10 @@ namespace PolskaBot.Core
                     Ore ore = new Ore(fadeReader);
                     Console.WriteLine("Ore ({0}) at {1}/{2} of type {3}", ore.hash, ore.x, ore.y, ore.type);
                     break;
+                case Collected.ID:
+                    Collected collected = new Collected(fadeReader);
+                    Console.Write("Someone collected {0} name_44 {1}", collected.hash, collected.name_44);
+                    break;
                 case 29794:
                     Console.WriteLine("Received pong");
                     fadeReader.ReadBytes(fadeLength - 2);
@@ -151,7 +155,7 @@ namespace PolskaBot.Core
                     Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.message);
                     break;
                 default:
-                    //Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
+                    Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
