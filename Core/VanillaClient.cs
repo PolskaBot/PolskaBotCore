@@ -119,7 +119,8 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(165206592, "ff2f94e5cde6dc6cc63b428c2ced94dd", 1, 578)); // 0cf5e
+                        SendEncoded(new Login(166211055, "44b9b7359fa4555078d059a2a9bad814", 1, 578)); // awesomek
+                        //SendEncoded(new Login(165206592, "ff2f94e5cde6dc6cc63b428c2ced94dd", 1, 578)); // 0cf5e
                         //SendEncoded(new Login(73464017, "98ddb72404598b960e39cc6f61dbdec5", 1, 578)); // Quake
                     }
 
@@ -134,6 +135,10 @@ namespace PolskaBot.Core
                     ShipMove shipMove = new ShipMove(fadeReader);
                     Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.duration);
                     break;
+                case Box.ID:
+                    Box box = new Box(fadeReader);
+                    Console.WriteLine("Box ({0}) at {1}/{2}", box.hash, box.x, box.y);
+                    break;
                 case 29794:
                     Console.WriteLine("Received pong");
                     fadeReader.ReadBytes(fadeLength - 2);
@@ -144,7 +149,7 @@ namespace PolskaBot.Core
                     Console.WriteLine("Received box/cargo {0} {1} {2}", fadeReader.ReadString(), fadeReader.ReadUInt32(), fadeReader.ReadUInt32());
                     break;
                 default:
-                    Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
+                    //Console.WriteLine("Received packet of ID {0} which is not supported", fadeID);
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
