@@ -52,12 +52,6 @@ namespace PolskaBot.Core
                 case ServerVersionCheck.ID:
                     ServerVersionCheck serverVersionCheck = new ServerVersionCheck(fadeReader);
 
-                    if (mergedClient.api.mode == API.Mode.PROXY)
-                    {
-                        SendBack(lengthBuffer, contentBuffer);
-                        return;
-                    }
-
                     if (serverVersionCheck.compatible)
                     {
                         Console.WriteLine("Client is compatible");
@@ -71,14 +65,6 @@ namespace PolskaBot.Core
 
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
-
-                    if (mergedClient.api.mode == API.Mode.PROXY)
-                    {
-                        mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
-                        if(fadeReader.ReadBoolean())
-                            SendBack(lengthBuffer, contentBuffer);
-                        return;
-                    }
 
                     mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
 
@@ -101,15 +87,6 @@ namespace PolskaBot.Core
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(fadeReader);
                     mergedClient.fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
                     bool initializedStageTwo = fadeReader.ReadBoolean();
-
-                    if (mergedClient.api.mode == API.Mode.PROXY)
-                    {
-                        if(initializedStageTwo)
-                        {
-                            SendBack(lengthBuffer, contentBuffer);
-                        }
-                        return;
-                    }
 
                     if(initializedStageTwo)
                     {
@@ -179,14 +156,6 @@ namespace PolskaBot.Core
                 Thread.Sleep(10000);
                 SendEncoded(new Ping());
             }
-        }
-
-        public void SendBack(byte[] length, byte[] buffer)
-        {
-            List<byte> list = new List<byte>();
-            list.AddRange(length);
-            list.AddRange(buffer);
-            mergedClient.api.proxyServer.Send(list.ToArray());
         }
     }
 }

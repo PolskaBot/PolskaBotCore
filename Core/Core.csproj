@@ -71,15 +71,9 @@
     <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
-    <Compile Include="Darkorbit\MapCredentials.cs" />
-    <Compile Include="Darkorbit\Parsers\IndexParser.cs" />
-    <Compile Include="Darkorbit\Parsers\MapsParser.cs" />
     <Compile Include="FadeClient.cs" />
-    <Compile Include="HttpServer.cs" />
-    <Compile Include="MapsServer.cs" />
     <Compile Include="MergedClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProxyServer.cs" />
     <Compile Include="VanillaClient.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
