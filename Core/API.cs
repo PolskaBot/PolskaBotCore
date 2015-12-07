@@ -19,18 +19,23 @@ namespace PolskaBot.Core
 
         public string IP;
 
-        public MergedClient mergedClient;
+        public VanillaClient vanillaClient;
+        public FadeClient fadeClient;
 
-        public API(Mode mode = Mode.BOT)
+        public API(string IP, Mode mode = Mode.BOT)
         {
+            this.IP = IP;
             this.mode = mode;
-            mergedClient = new MergedClient(this);
-            mergedClient.vanillaClient.OnConnected += (o, e) => mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
-        }
 
-        public void Connect(string server = null)
-        {
-            mergedClient.Connect(server);
+            // Depedency injection
+            vanillaClient = new VanillaClient(this);
+            fadeClient = new FadeClient(this);
+
+            fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
+            fadeClient.OnConnected += (o, e) => vanillaClient.Connect(IP, 8080);
+            vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
+
+            fadeClient.Connect("25.139.200.52", 8081);
         }
     }
 }
