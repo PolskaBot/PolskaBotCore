@@ -10,7 +10,7 @@ namespace PolskaBot.Core
 {
     public class FadeClient : Client
     {
-        public FadeClient(MergedClient mergedClient) : base(mergedClient)
+        public FadeClient(API api) : base(api)
         {
 
         }

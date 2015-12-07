@@ -18,7 +18,7 @@ namespace PolskaBot.Core
 
         bool isMoving = false;
 
-        public VanillaClient(MergedClient mergedClient) : base(mergedClient)
+        public VanillaClient(API api) : base(api)
         {
             pingThread = new Thread(new ThreadStart(PingLoop));
         }
@@ -26,24 +26,24 @@ namespace PolskaBot.Core
         public void SendEncoded(Command command)
         {
             byte[] rawBuffer = command.ToArray();
-            mergedClient.fadeClient.Send(new FadeEncodePacket(rawBuffer));
+            api.fadeClient.Send(new FadeEncodePacket(rawBuffer));
             byte[] encodedBuffer = new byte[rawBuffer.Length];
-            mergedClient.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
+            api.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
             Send(encodedBuffer);
         }
 
         public override void Parse(EndianBinaryReader reader)
         {
-            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, mergedClient.fadeClient.stream);
+            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, api.fadeClient.stream);
 
             byte[] lengthBuffer = reader.ReadBytes(2);
 
-            mergedClient.fadeClient.Send(new FadeDecodePacket(lengthBuffer));
+            api.fadeClient.Send(new FadeDecodePacket(lengthBuffer));
             ushort fadeLength = fadeReader.ReadUInt16();
 
             byte[] contentBuffer = reader.ReadBytes(fadeLength);
 
-            mergedClient.fadeClient.Send(new FadeDecodePacket(contentBuffer));
+            api.fadeClient.Send(new FadeDecodePacket(contentBuffer));
 
             ushort fadeID = fadeReader.ReadUInt16();
 
@@ -66,14 +66,14 @@ namespace PolskaBot.Core
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(fadeReader);
 
-                    mergedClient.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
+                    api.fadeClient.Send(new FadeInitStageOne(serverRequetCode.code));
 
                     bool initialized = fadeReader.ReadBoolean();
 
                     if(initialized)
                     {
                         Console.WriteLine("StageOne initialized");
-                        mergedClient.fadeClient.Send(new FadeRequestCallback());
+                        api.fadeClient.Send(new FadeRequestCallback());
                         short callbackLength = fadeReader.ReadInt16();
                         byte[] buffer = fadeReader.ReadBytes(callbackLength);
                         SendEncoded(new ClientRequestCallback(buffer));
@@ -85,7 +85,7 @@ namespace PolskaBot.Core
                     break;
                 case ServerRequestCallback.ID:
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(fadeReader);
-                    mergedClient.fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
+                    api.fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
                     bool initializedStageTwo = fadeReader.ReadBoolean();
 
                     if(initializedStageTwo)

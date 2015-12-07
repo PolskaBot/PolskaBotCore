@@ -72,7 +72,6 @@
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
     <Compile Include="FadeClient.cs" />
-    <Compile Include="MergedClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VanillaClient.cs" />
   </ItemGroup>

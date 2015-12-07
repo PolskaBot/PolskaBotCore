@@ -13,21 +13,22 @@ namespace PolskaBot.Core
 {
     public abstract class Client
     {
+        public API api { get; private set; }
+
         public Thread thread { get; private set; }
         public TcpClient tcpClient { get; private set; }
         public NetworkStream stream { get; private set; }
-        public MergedClient mergedClient { get; private set; }
 
         public string IP { get; set; }
         public int port { get; set; }
 
         public event EventHandler<EventArgs> OnConnected;
 
-        public Client(MergedClient mergedClient)
+        public Client(API api)
         {
+            this.api = api;
             thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
-            this.mergedClient = mergedClient;
         }
 
         public void Connect(string IP, int port)

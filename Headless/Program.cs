@@ -11,8 +11,7 @@ namespace Headless
     {
         static void Main(string[] args)
         {
-            API api = new API(API.Mode.BOT);
-            api.Connect("178.132.244.66");
+            API api = new API("178.132.244.66", API.Mode.BOT);
         }
     }
 }
