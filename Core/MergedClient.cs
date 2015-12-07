@@ -22,8 +22,8 @@ namespace PolskaBot.Core
 
         public void Connect(string IP)
         {
-            vanillaClient.Connect(IP, 8080);
-            fadeClient.Connect("127.0.0.1", 8081);
+            fadeClient.OnConnected += (o, e) => vanillaClient.Connect(IP, 8080);
+            fadeClient.Connect("25.139.200.52", 8081);
         }
     }
 }

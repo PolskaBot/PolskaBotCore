@@ -31,8 +31,9 @@ namespace PolskaBot.Core
         {
             this.mode = mode;
             mergedClient = new MergedClient(this);
+            mergedClient.vanillaClient.OnConnected += (o, e) => mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
 
-            if(mode == Mode.PROXY)
+            if (mode == Mode.PROXY)
             {
                 mapsServer = new MapsServer(this);
                 mapsThread = new Thread(new ThreadStart(mapsServer.listen));
@@ -45,8 +46,6 @@ namespace PolskaBot.Core
         public void Connect(string server = null)
         {
             mergedClient.Connect(server);
-            if(mode == Mode.BOT)
-                mergedClient.vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
         }
     }
 }
