@@ -115,9 +115,9 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(166211055, "44b9b7359fa4555078d059a2a9bad814", 1, 578)); // awesomek
+                        //SendEncoded(new Login(166211055, "44b9b7359fa4555078d059a2a9bad814", 1, 578)); // awesomek
                         //SendEncoded(new Login(165206592, "ff2f94e5cde6dc6cc63b428c2ced94dd", 1, 578)); // 0cf5e
-                        //SendEncoded(new Login(73464017, "98ddb72404598b960e39cc6f61dbdec5", 1, 578)); // Quake
+                        SendEncoded(new Login(73464017, "98ddb72404598b960e39cc6f61dbdec5", 1, 578)); // Quake
                     }
 
                     break;
@@ -131,6 +131,10 @@ namespace PolskaBot.Core
                         SendEncoded(new Move(300, 300));
                         isMoving = true;
                     }
+                    break;
+                case ShipInit.ID:
+                    ShipInit shipInit = new ShipInit(fadeReader);
+                    Console.WriteLine("npc: {0} ship: {1} name: {2}, {3}/{4}", shipInit.npc, shipInit.shipName, shipInit.userName, shipInit.x, shipInit.y);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);

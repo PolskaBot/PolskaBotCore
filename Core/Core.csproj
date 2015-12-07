@@ -65,6 +65,7 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\OldStylePacket.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Ore.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Ping.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\ShipInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\ShipMove.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
