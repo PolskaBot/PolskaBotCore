@@ -8,7 +8,7 @@ namespace PolskaBot.Core
     {
         private CookieContainer cookies = new CookieContainer();
 
-        private WebHeaderCollection headers;
+        private WebHeaderCollection headers = new WebHeaderCollection();
 
         public string Post(string url, string data)
         {
