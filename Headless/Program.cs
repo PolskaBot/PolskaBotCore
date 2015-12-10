@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PolskaBot.Core;
+using System.Threading;
 
 namespace Headless
 {
@@ -11,6 +12,7 @@ namespace Headless
     {
         static void Main(string[] args)
         {
+            Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-us");
             API api = new API("178.132.244.66", API.Mode.BOT);
         }
     }
