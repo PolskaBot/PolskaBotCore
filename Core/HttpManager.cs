@@ -17,8 +17,6 @@ namespace PolskaBot.Core
 
         public string Post(string url, string data)
         {
-            Console.WriteLine(url);
-            Console.WriteLine(data);
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip | DecompressionMethods.None;
             request.CookieContainer = cookies;
