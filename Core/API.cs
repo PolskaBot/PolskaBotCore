@@ -17,26 +17,38 @@ namespace PolskaBot.Core
 
         public Mode mode;
 
-        public string IP;
-
         public VanillaClient vanillaClient;
         public FadeClient fadeClient;
+        public Account account;
 
-        public API(string IP, Mode mode = Mode.BOT)
+        public API(Mode mode = Mode.BOT)
         {
-            this.IP = IP;
             this.mode = mode;
 
-            Account account = new Account();
-            account.SetCredentials("awesomek", "chromosomek");
-            account.Login();
-
             // Depedency injection
+            account = new Account(this);
             vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
 
+            account.OnLoggedIn += (s, e) => Connect();
+        }
+
+        public void Login(string username = null, string password = null)
+        {
+            if(username == null || password == null)
+            {
+                username = Environment.GetEnvironmentVariable(Config.USERNAME_ENV);
+                password = Environment.GetEnvironmentVariable(Config.PASSWORD_ENV);
+            }
+            account.SetCredentials(username, password);
+            account.Login();
+        }
+
+        public void Connect()
+        {
+            Console.WriteLine("Connecting");
             fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
-            fadeClient.OnConnected += (o, e) => vanillaClient.Connect(IP, 8080);
+            fadeClient.OnConnected += (o, e) => vanillaClient.Connect("178.132.244.66", 8080);
             vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
 
             fadeClient.Connect("25.139.200.52", 8081);

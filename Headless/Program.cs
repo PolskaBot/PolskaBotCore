@@ -13,7 +13,8 @@ namespace Headless
         static void Main(string[] args)
         {
             Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-us");
-            API api = new API("178.132.244.66", API.Mode.BOT);
+            API api = new API(API.Mode.BOT);
+            api.Login();
         }
     }
 }
