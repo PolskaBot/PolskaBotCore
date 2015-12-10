@@ -27,6 +27,10 @@ namespace PolskaBot.Core
             this.IP = IP;
             this.mode = mode;
 
+            Account account = new Account();
+            account.SetCredentials("awesomek", "chromosomek");
+            account.Login();
+
             // Depedency injection
             vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
