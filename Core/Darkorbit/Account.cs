@@ -8,8 +8,10 @@ using System.Net;
 
 namespace PolskaBot.Core.Darkorbit
 {
-    class Account
+    public class Account
     {
+        public API api;
+
         // Website credentials
         public string username { get; private set; }
         public string password { get; private set; }
@@ -23,8 +25,11 @@ namespace PolskaBot.Core.Darkorbit
 
         HttpManager httpManager;
 
-        public Account()
+        public event EventHandler<EventArgs> OnLoggedIn;
+
+        public Account(API api)
         {
+            this.api = api;
             httpManager = new HttpManager();
             httpManager.AddHeader("Upgrade-Insecure-Requests", "1");
             httpManager.AddHeader("Accept-Encoding", "gzip, deflate");
@@ -54,6 +59,8 @@ namespace PolskaBot.Core.Darkorbit
             sid = match.Groups[3].ToString();
             match = Regex.Match(mapResponse, "mapID\": \"([0-9]*)\"");
             mapID = int.Parse(match.Groups[1].ToString());
+
+            OnLoggedIn?.Invoke(this, EventArgs.Empty);
         }
     }
 }

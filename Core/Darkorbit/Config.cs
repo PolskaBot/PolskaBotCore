@@ -13,5 +13,8 @@ namespace PolskaBot.Core.Darkorbit
         public static int BUILD { get; set; } = 3;
 
         public const string VERSION = "8.3.2";
+
+        public const string USERNAME_ENV = "PB_USERNAME";
+        public const string PASSWORD_ENV = "PB_PASSWORD";
     }
 }
