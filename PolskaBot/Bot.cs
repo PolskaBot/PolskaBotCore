@@ -88,10 +88,7 @@ namespace PolskaBot
             if (!Properties.Settings.Default.DrawMap)
                 return;
 
-            for (var i = 1; i <= 200; i = i + 4)
-            {
-                g.DrawLine(new Pen(mapBG), new Point(0, i), new Point(minimap.Width, i));
-            }
+            g.DrawImage(Properties.Resources._1, 0, 0, 315, 202);
         }
     }
 }
