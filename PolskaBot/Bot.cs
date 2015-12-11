@@ -19,6 +19,7 @@ namespace PolskaBot
         int FPS = 60;
 
         const byte alpha = 216;
+        static Color mapBG = Color.FromArgb(20, 102, 102, 102);
         static Color hero = Color.FromArgb(alpha, 102, 102, 102);
         static Color box = Color.FromArgb(alpha, 255, 255, 0);
         static Color boxPirate = Color.Green;
@@ -44,6 +45,7 @@ namespace PolskaBot
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
                 using (var g = Graphics.FromImage(bitmap))
                 {
+                    DrawBackground(g);
                     DrawPlayer(g, new Point(80, 40));
                     g.DrawRectangle(new Pen(box), new Rectangle(66, 36, 1, 1));
                     g.DrawRectangle(new Pen(boxMemorised), new Rectangle(42, 36, 1, 1));
@@ -62,6 +64,14 @@ namespace PolskaBot
         {
             g.DrawLine(new Pen(hero), new Point(0, point.X), new Point(minimap.Width, point.X));
             g.DrawLine(new Pen(hero), new Point(point.Y, 0), new Point(point.Y, minimap.Height));
+        }
+
+        private void DrawBackground(Graphics g)
+        {
+            for (var i = 1; i <= 200; i = i + 4)
+            {
+                g.DrawLine(new Pen(mapBG), new Point(0, i), new Point(minimap.Width, i));
+            }
         }
     }
 }
