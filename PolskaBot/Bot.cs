@@ -34,8 +34,25 @@ namespace PolskaBot
 
         private void Init()
         {
+            AddContextMenu();
             renderer = new Thread(new ThreadStart(Render));
             renderer.Start();
+        }
+
+        private void AddContextMenu()
+        {
+            var contextMenu = new ContextMenu();
+
+            var drawBackground = new MenuItem();
+            drawBackground.Text = "Draw background";
+            drawBackground.Select += (s, e) =>
+            {
+                Properties.Settings.Default.DrawMap = !Properties.Settings.Default.DrawMap;
+                ((MenuItem)s).Checked = Properties.Settings.Default.DrawMap;
+            };
+
+            contextMenu.MenuItems.Add(drawBackground);
+            minimap.ContextMenu = contextMenu;
         }
 
         private void Render()
@@ -62,15 +79,15 @@ namespace PolskaBot
 
         private void DrawPlayer(Graphics g, Point point)
         {
-            if(Properties.Settings.Default.DrawMap)
-            {
-                g.DrawLine(new Pen(hero), new Point(0, point.X), new Point(minimap.Width, point.X));
-                g.DrawLine(new Pen(hero), new Point(point.Y, 0), new Point(point.Y, minimap.Height));
-            }
+            g.DrawLine(new Pen(hero), new Point(0, point.X), new Point(minimap.Width, point.X));
+            g.DrawLine(new Pen(hero), new Point(point.Y, 0), new Point(point.Y, minimap.Height));
         }
 
         private void DrawBackground(Graphics g)
         {
+            if (!Properties.Settings.Default.DrawMap)
+                return;
+
             for (var i = 1; i <= 200; i = i + 4)
             {
                 g.DrawLine(new Pen(mapBG), new Point(0, i), new Point(minimap.Width, i));
