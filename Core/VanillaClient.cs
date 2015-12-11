@@ -92,9 +92,7 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        //SendEncoded(new Login(166211055, "44b9b7359fa4555078d059a2a9bad814", 1, 578)); // awesomek
-                        SendEncoded(new Login(165206592, "02eb590f393066d68876ffecd0625d28", 1, 578)); // 0cf5e
-                        //SendEncoded(new Login(73464017, "98ddb72404598b960e39cc6f61dbdec5", 1, 578)); // Quake
+                        SendEncoded(new Login(api.account.userID, api.account.sid, 0, api.account.instanceID));
                     }
 
                     break;
