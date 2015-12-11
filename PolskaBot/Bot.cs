@@ -62,8 +62,11 @@ namespace PolskaBot
 
         private void DrawPlayer(Graphics g, Point point)
         {
-            g.DrawLine(new Pen(hero), new Point(0, point.X), new Point(minimap.Width, point.X));
-            g.DrawLine(new Pen(hero), new Point(point.Y, 0), new Point(point.Y, minimap.Height));
+            if(Properties.Settings.Default.DrawMap)
+            {
+                g.DrawLine(new Pen(hero), new Point(0, point.X), new Point(minimap.Width, point.X));
+                g.DrawLine(new Pen(hero), new Point(point.Y, 0), new Point(point.Y, minimap.Height));
+            }
         }
 
         private void DrawBackground(Graphics g)
