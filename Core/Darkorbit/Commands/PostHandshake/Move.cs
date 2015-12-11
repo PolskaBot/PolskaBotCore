@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Move : Command
     {
-        public const ushort ID = 25229;
+        public const ushort ID = 11943;
 
         public uint targetX { get; private set; }
         public uint targetY { get; private set; }
@@ -26,13 +26,12 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public override void Write()
         {
-            packetWriter.Write(20);
+            packetWriter.Write(18);
             packetWriter.Write(ID);
-            packetWriter.Write(targetY >> 6 | targetY << 26);
-            packetWriter.Write((short)1668);
-            packetWriter.Write(currentY << 15 | currentY >> 17);
-            packetWriter.Write(currentX >> 7 | this.currentX << 25);
-            packetWriter.Write(targetX >> 9 | targetX << 23);
+            packetWriter.Write(targetY << 6 | targetY >> 26);
+            packetWriter.Write(currentY >> 9 | currentY << 23);
+            packetWriter.Write(targetX >> 1 | targetX << 31);
+            packetWriter.Write(currentX << 10 | currentX >> 22);
         }
     }
 }

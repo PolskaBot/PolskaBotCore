@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ServerRequestCode : Command
     {
-        public const ushort ID = 14047;
+        public const ushort ID = 27879;
 
         public int codeLength { get; private set; }
         public byte[] code { get; private set; }
@@ -17,6 +17,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 
         public ServerRequestCode(EndianBinaryReader reader)
         {
+            reader.ReadInt16();
             codeLength = reader.ReadInt32();
             code = reader.ReadBytes(codeLength);
             fakeSize = reader.ReadInt32();

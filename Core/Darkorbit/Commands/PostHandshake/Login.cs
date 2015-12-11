@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Login : Command
     {
-        public const ushort ID = 19667;
+        public const ushort ID = 21821;
 
         public int userID { get; private set; }
         public string sessionID { get; private set; }
@@ -28,16 +28,17 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public override void Write()
         {
-            short totalLength = (short)(sessionID.Length + version.Length + 16);
+            short totalLength = (short)(sessionID.Length + version.Length + 18);
             packetWriter.Write(totalLength);
             packetWriter.Write(ID);
-            packetWriter.Write((int)(instanceID >> 11 | instanceID << 21));
+            packetWriter.Write((short)-19684);
+            packetWriter.Write((int)(instanceID << 6 | instanceID >> 26));
             packetWriter.Write((short)factionID);
-            packetWriter.Write((byte)0);
-            packetWriter.Write(sessionID);
+            packetWriter.Write((int)(userID >> 3 | userID << 29));
             packetWriter.Write((byte)0);
             packetWriter.Write(version);
-            packetWriter.Write((int)(userID >> 9 | userID << 23));
+            packetWriter.Write((byte)0);
+            packetWriter.Write(sessionID);
         }
     }
 }
