@@ -8,10 +8,10 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ClientRequestCode : Command
     {
-        public const ushort ID = 25221;
+        public const ushort ID = 25327;
         public short length { get; private set; } = 4;
 
-        public Int16 reserved = 31;
+        public Int16 reserved = 21476;
 
         public ClientRequestCode()
         {
