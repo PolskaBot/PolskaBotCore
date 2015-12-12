@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class Move : Command
+    public class Move : Command
     {
         public const ushort ID = 11943;
 
