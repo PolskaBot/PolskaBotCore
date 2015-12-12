@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Box : Command
     {
-        public const ushort ID = 18357;
+        public const ushort ID = 20862;
 
         public string hash { get; private set; }
         public uint x { get; private set; }
@@ -25,8 +25,6 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             y = reader.ReadUInt32();
             y = y << 3 | y >> 29;
             type = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            reader.ReadInt16();
-            reader.ReadInt16();
         }
 
         public override void Write()
