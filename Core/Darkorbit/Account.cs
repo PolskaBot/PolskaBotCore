@@ -23,6 +23,11 @@ namespace PolskaBot.Core.Darkorbit
         public string serverID { get; private set; }
         public int mapID { get; private set; }
 
+        public int X { get; set; }
+        public int Y { get; set; }
+
+        public bool ready { get; set; } = false;
+
         HttpManager httpManager;
 
         public event EventHandler<EventArgs> OnLoggedIn;

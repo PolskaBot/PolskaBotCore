@@ -8,15 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using PolskaBot.Core;
 
 namespace PolskaBot
 {
     public partial class Bot : Form
     {
+        API api;
 
         Thread renderer;
 
         int FPS = 60;
+
+        const float k = 0.015f;
 
         const byte alpha = 216;
         static Color mapBG = Color.FromArgb(20, 102, 102, 102);
@@ -34,6 +38,8 @@ namespace PolskaBot
 
         private void Init()
         {
+            api = new API(API.Mode.BOT);
+            api.Login();
             AddContextMenu();
             renderer = new Thread(new ThreadStart(Render));
             renderer.Start();
@@ -64,10 +70,7 @@ namespace PolskaBot
                 using (var g = Graphics.FromImage(bitmap))
                 {
                     DrawBackground(g);
-                    DrawPlayer(g, new Point(80, 40));
-                    g.DrawRectangle(new Pen(box), new Rectangle(66, 36, 1, 1));
-                    g.DrawRectangle(new Pen(boxMemorised), new Rectangle(42, 36, 1, 1));
-                    g.DrawRectangle(new Pen(boxPirate), new Rectangle(50, 36, 1, 1));
+                    DrawPlayer(g);
                 }
 
                 Invoke((MethodInvoker)delegate
@@ -78,10 +81,13 @@ namespace PolskaBot
             }
         }
 
-        private void DrawPlayer(Graphics g, Point point)
+        private void DrawPlayer(Graphics g)
         {
-            g.DrawLine(new Pen(hero), new Point(0, point.X), new Point(minimap.Width, point.X));
-            g.DrawLine(new Pen(hero), new Point(point.Y, 0), new Point(point.Y, minimap.Height));
+            if(api.account.ready)
+            {
+                g.DrawLine(new Pen(hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
+                g.DrawLine(new Pen(hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
+            }
         }
 
         private void DrawBackground(Graphics g)
@@ -90,6 +96,11 @@ namespace PolskaBot
                 return;
 
             g.DrawImage(Properties.Resources._1, 0, 0, 315, 202);
+        }
+
+        private int Scale(int value)
+        {
+            return (int)(value * k);
         }
     }
 }

@@ -13,10 +13,7 @@ namespace PolskaBot.Core
 {
     public class VanillaClient : Client
     {
-
         Thread pingThread;
-
-        bool isMoving = false;
 
         public VanillaClient(API api) : base(api)
         {
@@ -98,14 +95,9 @@ namespace PolskaBot.Core
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
-                    Console.WriteLine("{0} {1} {2}/{3} {4}/{5} ({6}) pos ({7}, {8}) {9}/{10}", heroInit.rank, heroInit.userName, heroInit.hp, heroInit.maxHP,
-                        heroInit.shield, heroInit.maxShield, heroInit.speed, heroInit.x, heroInit.y, heroInit.freeCargoSpace, heroInit.cargoCapacity);
-                    Console.WriteLine("Testing: {0} {1}", heroInit.var_3378, heroInit.galaxyGatesDone);
-                    if (!isMoving)
-                    {
-                        SendEncoded(new Move(1000, 1000, 1222, 707));
-                        isMoving = true;
-                    }
+                    api.account.ready = true;
+                    api.account.X = (int)heroInit.x;
+                    api.account.Y = (int)heroInit.y;
                     break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
