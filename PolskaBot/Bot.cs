@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using PolskaBot.Core;
+using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 
 namespace PolskaBot
 {
@@ -43,6 +44,16 @@ namespace PolskaBot
 
         private void Init()
         {
+
+            minimap.Click += (s, e) =>
+            {
+                if(api.account.ready)
+                {
+                    var mouse = e as MouseEventArgs;
+                    api.vanillaClient.SendEncoded(new Move((uint)(mouse.X / k), (uint)(mouse.Y / k), (uint)api.account.X, (uint)api.account.Y));
+                }
+            };
+
             api = new API(API.Mode.BOT);
             api.Login();
             AddContextMenu();
