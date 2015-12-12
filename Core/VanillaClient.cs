@@ -102,6 +102,7 @@ namespace PolskaBot.Core
                     api.account.maxHitpoints = (int)heroInit.maxHP;
                     api.account.shield = (int)heroInit.shield;
                     api.account.maxShield = (int)heroInit.maxShield;
+                    api.account.speed = (int)heroInit.speed;
                     break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);

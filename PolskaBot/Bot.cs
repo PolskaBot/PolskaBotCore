@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
+using Glide;
 
 namespace PolskaBot
 {
@@ -22,6 +23,8 @@ namespace PolskaBot
         int FPS = 60;
 
         const float k = 0.015f;
+
+        Tweener anim = new Tweener();
 
         const byte alpha = 216;
         static Color mapBG = Color.FromArgb(20, 102, 102, 102);
@@ -50,7 +53,21 @@ namespace PolskaBot
                 if(api.account.ready)
                 {
                     var mouse = e as MouseEventArgs;
-                    api.vanillaClient.SendEncoded(new Move((uint)(mouse.X / k), (uint)(mouse.Y / k), (uint)api.account.X, (uint)api.account.Y));
+                    api.account.targetX = (int)(mouse.X / k);
+                    api.account.targetY = (int)(mouse.Y / k);
+                    api.vanillaClient.SendEncoded(new Move((uint)api.account.targetX, (uint)api.account.targetY, (uint)api.account.X, (uint)api.account.Y));
+
+                    api.account.isFlying = true;
+
+                    double distance = Math.Sqrt(Math.Pow((api.account.targetX - api.account.X), 2) + Math.Pow((api.account.targetY - api.account.Y), 2));
+
+                    double duration = distance/api.account.speed;
+
+                    int durationMS = (int)Math.Round(duration * 1000);
+                    anim.TargetCancel(api.account);
+                    anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
+                        new Action(() => api.account.isFlying = false
+                        ));
                 }
             };
 
@@ -94,7 +111,8 @@ namespace PolskaBot
                 {
                     minimap.Image = bitmap;
                 });
-                Task.Delay(1000 / FPS);
+                Thread.Sleep(1000 / FPS);
+                anim.Update(1000 / FPS);
             }
         }
 
@@ -104,6 +122,11 @@ namespace PolskaBot
             {
                 g.DrawLine(new Pen(hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
                 g.DrawLine(new Pen(hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
+
+                if(api.account.isFlying)
+                {
+                    g.DrawLine(new Pen(hero), new Point(Scale(api.account.X), Scale(api.account.Y)), new Point(Scale(api.account.targetX), Scale(api.account.targetY)));
+                }
             }
         }
 

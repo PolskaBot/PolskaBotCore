@@ -57,6 +57,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tween\Ease.cs" />
+    <Compile Include="Tween\GlideInfo.cs" />
+    <Compile Include="Tween\Lerper.cs" />
+    <Compile Include="Tween\Tween.cs" />
+    <Compile Include="Tween\Tweener.cs" />
     <EmbeddedResource Include="Bot.resx">
       <DependentUpon>Bot.cs</DependentUpon>
     </EmbeddedResource>

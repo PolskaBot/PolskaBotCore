@@ -25,11 +25,16 @@ namespace PolskaBot.Core.Darkorbit
 
         public int X { get; set; }
         public int Y { get; set; }
+        public int targetX { get; set; }
+        public int targetY { get; set; }
+        public bool isFlying { get; set; }
 
         public int hitpoints { get; set; }
         public int maxHitpoints { get; set; }
         public int shield { get; set; }
         public int maxShield { get; set; }
+
+        public int speed { get; set; }
 
         public bool ready { get; set; } = false;
 
