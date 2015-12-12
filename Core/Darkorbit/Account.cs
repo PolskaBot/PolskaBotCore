@@ -26,6 +26,11 @@ namespace PolskaBot.Core.Darkorbit
         public int X { get; set; }
         public int Y { get; set; }
 
+        public int hitpoints { get; set; }
+        public int maxHitpoints { get; set; }
+        public int shield { get; set; }
+        public int maxShield { get; set; }
+
         public bool ready { get; set; } = false;
 
         HttpManager httpManager;

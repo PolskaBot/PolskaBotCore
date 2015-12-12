@@ -29,6 +29,11 @@ namespace PolskaBot
         static Color boxPirate = Color.Green;
         static Color boxMemorised = Color.FromArgb(150, 255, 255, 0);
 
+        static Color hitpoints = Color.FromArgb(0, 204, 51);
+        static Color shield = Color.FromArgb(51, 143, 204);
+
+        static Font font = new Font("Arial", 8, FontStyle.Regular);
+
         public Bot()
         {
             InitializeComponent();
@@ -71,6 +76,7 @@ namespace PolskaBot
                 {
                     DrawBackground(g);
                     DrawPlayer(g);
+                    DrawDetails(g);
                 }
 
                 Invoke((MethodInvoker)delegate
@@ -87,6 +93,19 @@ namespace PolskaBot
             {
                 g.DrawLine(new Pen(hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
                 g.DrawLine(new Pen(hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
+            }
+        }
+
+        private void DrawDetails(Graphics g)
+        {
+            if (api.account.ready)
+            {
+                string hpDetails = $"{api.account.hitpoints}/{api.account.maxHitpoints}";
+                string shieldDetails = $"{api.account.shield}/{api.account.maxShield}";
+                SizeF sizeHP = g.MeasureString(hpDetails, font);
+                SizeF sizeShield = g.MeasureString(shieldDetails, font);
+                g.DrawString(hpDetails, font, new SolidBrush(hitpoints), minimap.Width - sizeHP.Width - 10, minimap.Height - 20);
+                g.DrawString(shieldDetails, font, new SolidBrush(shield), minimap.Width - sizeHP.Width - sizeShield.Width - 10, minimap.Height - 20);
             }
         }
 
