@@ -56,21 +56,8 @@ namespace PolskaBot
                 if(api.account.ready)
                 {
                     var mouse = e as MouseEventArgs;
-                    api.account.targetX = (int)(mouse.X / k);
-                    api.account.targetY = (int)(mouse.Y / k);
-                    api.vanillaClient.SendEncoded(new Move((uint)api.account.targetX, (uint)api.account.targetY, (uint)api.account.X, (uint)api.account.Y));
-
-                    api.account.isFlying = true;
-
-                    double distance = Math.Sqrt(Math.Pow((api.account.targetX - api.account.X), 2) + Math.Pow((api.account.targetY - api.account.Y), 2));
-
-                    double duration = (distance/api.account.speed) * 0.8;
-
-                    int durationMS = (int)Math.Round(duration * 1000);
-                    anim.TargetCancel(api.account);
-                    anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
-                        new Action(() => api.account.isFlying = false
-                        ));
+                    FlyWithAnimation((int)(mouse.X / k), (int)(mouse.Y / k));
+                    
                 }
             };
 
@@ -154,6 +141,25 @@ namespace PolskaBot
                 return;
 
             g.DrawImage(Properties.Resources._1, 0, 0, 315, 202);
+        }
+
+        private void FlyWithAnimation(int x, int y)
+        {
+            api.account.targetX = x;
+            api.account.targetY = y;
+            api.vanillaClient.SendEncoded(new Move((uint)api.account.targetX, (uint)api.account.targetY, (uint)api.account.X, (uint)api.account.Y));
+
+            api.account.isFlying = true;
+
+            double distance = Math.Sqrt(Math.Pow((api.account.targetX - api.account.X), 2) + Math.Pow((api.account.targetY - api.account.Y), 2));
+
+            double duration = (distance / api.account.speed) * 0.8;
+
+            int durationMS = (int)Math.Round(duration * 1000);
+            anim.TargetCancel(api.account);
+            anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
+                new Action(() => api.account.isFlying = false
+                ));
         }
 
         private int Scale(int value)
