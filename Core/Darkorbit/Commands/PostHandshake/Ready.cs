@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Ready : Command
     {
-        public const ushort ID = 9448;
+        public const ushort ID = 26385;
         public Ready()
         {
             Write();
@@ -18,7 +18,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         {
             packetWriter.Write((short)4);
             packetWriter.Write(ID);
-            packetWriter.Write((short)-17906);
+            packetWriter.Write((short)-30552);
         }
     }
 }
