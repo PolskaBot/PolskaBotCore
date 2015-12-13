@@ -91,6 +91,8 @@ namespace PolskaBot.Core
                         SendEncoded(new Ping());
                         SendEncoded(new Login(api.account.userID, api.account.sid, 0, api.account.instanceID));
                         SendEncoded(new Ready());
+                        SendEncoded(new InitPacket(1));
+                        SendEncoded(new InitPacket(2));
                     }
 
                     break;

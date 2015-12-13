@@ -61,6 +61,7 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\class_326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Collected.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\InitPacket.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Login.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Move.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\OldStylePacket.cs" />
