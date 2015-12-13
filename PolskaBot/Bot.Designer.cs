@@ -30,77 +30,84 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bot));
             this.minimap = new System.Windows.Forms.PictureBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.startButton = new System.Windows.Forms.Button();
+            this.stopButton = new System.Windows.Forms.Button();
+            this.changeConfigButton = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // minimap
             // 
-            this.minimap.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(39)))), ((int)(((byte)(39)))));
-            this.minimap.Location = new System.Drawing.Point(0, 0);
+            this.minimap.BackColor = System.Drawing.Color.Black;
+            this.minimap.Location = new System.Drawing.Point(12, 12);
             this.minimap.Name = "minimap";
             this.minimap.Size = new System.Drawing.Size(315, 202);
             this.minimap.TabIndex = 0;
             this.minimap.TabStop = false;
             // 
-            // tabControl1
+            // startButton
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(320, 473);
-            this.tabControl1.TabIndex = 1;
+            this.startButton.Location = new System.Drawing.Point(12, 220);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(101, 23);
+            this.startButton.TabIndex = 1;
+            this.startButton.Text = "Start";
+            this.startButton.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // stopButton
             // 
-            this.tabPage1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.tabPage1.Controls.Add(this.minimap);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(312, 447);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "awesomek";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.stopButton.Location = new System.Drawing.Point(119, 220);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(101, 23);
+            this.stopButton.TabIndex = 2;
+            this.stopButton.Text = "Stop";
+            this.stopButton.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // changeConfigButton
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(312, 430);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Add new";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.changeConfigButton.Location = new System.Drawing.Point(226, 220);
+            this.changeConfigButton.Name = "changeConfigButton";
+            this.changeConfigButton.Size = new System.Drawing.Size(101, 23);
+            this.changeConfigButton.TabIndex = 3;
+            this.changeConfigButton.Text = "Config";
+            this.changeConfigButton.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(334, 13);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(264, 230);
+            this.textBox1.TabIndex = 4;
             // 
             // Bot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(319, 475);
-            this.Controls.Add(this.tabControl1);
+            this.ClientSize = new System.Drawing.Size(610, 252);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.changeConfigButton);
+            this.Controls.Add(this.stopButton);
+            this.Controls.Add(this.startButton);
+            this.Controls.Add(this.minimap);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Bot";
             this.Text = "PolskaBot";
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.PictureBox minimap;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.Button changeConfigButton;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

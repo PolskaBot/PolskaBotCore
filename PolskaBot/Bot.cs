@@ -71,7 +71,7 @@ namespace PolskaBot
 
             var drawBackground = new MenuItem();
             drawBackground.Text = "Draw background";
-            drawBackground.Checked = true;
+            drawBackground.Checked = Properties.Settings.Default.DrawMap;
             drawBackground.Click += (s, e) =>
             {
                 Properties.Settings.Default.DrawMap = !Properties.Settings.Default.DrawMap;
