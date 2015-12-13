@@ -58,9 +58,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             reader.ReadBytes(4);
             factionID = reader.ReadUInt32();
             factionID = factionID << 5 | factionID >> 27;
-            for (int i = 0; i < reader.ReadUInt32(); i++)
+            int length = reader.ReadInt32();
+            if(length > 0)
             {
-                class_326 class326 = new class_326(reader);
+                Console.WriteLine($"ID: {reader.ReadInt16()}");
+                for (int i = 0; i < length; i++)
+                {
+                    class_326 class326 = new class_326(reader);
+                }
             }
             rank = reader.ReadUInt32();
             rank = rank << 3 | rank >> 29;
