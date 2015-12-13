@@ -90,6 +90,7 @@ namespace PolskaBot.Core
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
                         SendEncoded(new Login(api.account.userID, api.account.sid, 0, api.account.instanceID));
+                        SendEncoded(new Ready());
                     }
 
                     break;
