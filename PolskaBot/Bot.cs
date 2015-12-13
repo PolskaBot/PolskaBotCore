@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
-using System.Diagnostics;
 using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
@@ -26,8 +25,6 @@ namespace PolskaBot
         const float k = 0.015f;
 
         Tweener anim = new Tweener();
-
-        Stopwatch stopwatch = new Stopwatch();
 
         const byte alpha = 216;
         static Color mapBG = Color.FromArgb(20, 102, 102, 102);
@@ -89,7 +86,6 @@ namespace PolskaBot
         {
             while(true)
             {
-                stopwatch.Start();
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
                 using (var g = Graphics.FromImage(bitmap))
                 {
@@ -103,8 +99,7 @@ namespace PolskaBot
                     minimap.Image = bitmap;
                 });
                 Thread.Sleep(1000 / FPS);
-                stopwatch.Stop();
-                anim.Update(stopwatch.ElapsedMilliseconds / 1000f);
+                anim.Update(1000 / FPS);
             }
         }
 
@@ -153,9 +148,9 @@ namespace PolskaBot
 
             double distance = Math.Sqrt(Math.Pow((api.account.targetX - api.account.X), 2) + Math.Pow((api.account.targetY - api.account.Y), 2));
 
-            double duration = (distance / api.account.speed) * 0.8;
+            double duration = (distance / api.account.speed);
 
-            int durationMS = (int)Math.Round(duration * 1000);
+            float durationMS = (float)duration * 1000;
             anim.TargetCancel(api.account);
             anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
                 new Action(() => api.account.isFlying = false
