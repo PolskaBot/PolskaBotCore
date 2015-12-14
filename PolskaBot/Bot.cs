@@ -32,12 +32,11 @@ namespace PolskaBot
 
         private void Init()
         {
-
             minimap.Click += (s, e) =>
             {
-                if(api.account.ready)
+                var mouse = e as MouseEventArgs;
+                if (api.account.ready && mouse.Button == MouseButtons.Left)
                 {
-                    var mouse = e as MouseEventArgs;
                     FlyWithAnimation((int)(mouse.X / Config.k), (int)(mouse.Y / Config.k));
                     
                 }
