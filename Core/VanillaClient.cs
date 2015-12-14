@@ -137,7 +137,26 @@ namespace PolskaBot.Core
                     break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
-                    Console.WriteLine("npc: {0} ship: {1} name: {2}, {3}/{4}", shipInit.npc, shipInit.shipName, shipInit.userName, shipInit.x, shipInit.y);
+                    Ship ship = new Ship();
+                    ship.userID = (int)shipInit.userID;
+                    ship.userName = shipInit.userName;
+                    ship.npc = shipInit.npc;
+
+                    // Movement
+                    ship.X = (int)shipInit.x;
+                    ship.Y = (int)shipInit.y;
+
+                    // Ship
+                    ship.shipName = shipInit.shipName;
+
+                    // Statistics
+                    ship.cloaked = shipInit.cloaked;
+
+                    // Social
+                    ship.clanID = (int)shipInit.clanID;
+                    ship.clanTag = shipInit.clanTag;
+                    ship.factionID = (int)shipInit.factionID;
+                    api.ships.Add(ship);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);
