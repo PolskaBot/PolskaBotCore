@@ -137,26 +137,26 @@ namespace PolskaBot.Core
                     break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
-                    Ship ship = new Ship();
-                    ship.userID = (int)shipInit.userID;
-                    ship.userName = shipInit.userName;
-                    ship.npc = shipInit.npc;
+                    Ship newShip = new Ship();
+                    newShip.userID = (int)shipInit.userID;
+                    newShip.userName = shipInit.userName;
+                    newShip.npc = shipInit.npc;
 
                     // Movement
-                    ship.X = (int)shipInit.x;
-                    ship.Y = (int)shipInit.y;
+                    newShip.X = (int)shipInit.x;
+                    newShip.Y = (int)shipInit.y;
 
                     // Ship
-                    ship.shipName = shipInit.shipName;
+                    newShip.shipName = shipInit.shipName;
 
                     // Statistics
-                    ship.cloaked = shipInit.cloaked;
+                    newShip.cloaked = shipInit.cloaked;
 
                     // Social
-                    ship.clanID = (int)shipInit.clanID;
-                    ship.clanTag = shipInit.clanTag;
-                    ship.factionID = (int)shipInit.factionID;
-                    api.ships.Add(ship);
+                    newShip.clanID = (int)shipInit.clanID;
+                    newShip.clanTag = shipInit.clanTag;
+                    newShip.factionID = (int)shipInit.factionID;
+                    api.ships.Add(newShip);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);
@@ -172,6 +172,11 @@ namespace PolskaBot.Core
                         api.boxes.RemoveAll(box => box.hash == item.hash);
                     lock(api.ores)
                         api.ores.RemoveAll(ore => ore.hash == item.hash);
+                    break;
+                case DestroyShip.ID:
+                    DestroyShip destroyedShip = new DestroyShip(fadeReader);
+                    lock(api.ships)
+                        api.ships.RemoveAll(ship => ship.userID == destroyedShip.userID);
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(fadeReader);
