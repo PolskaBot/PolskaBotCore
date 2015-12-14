@@ -25,6 +25,7 @@ namespace PolskaBot.Core
         // Logic
         public Account account;
         public List<Box> boxes { get; set; } = new List<Box>();
+        public List<Ore> ores { get; set; } = new List<Ore>();
 
         public API(Mode mode = Mode.BOT)
         {
