@@ -144,7 +144,7 @@ namespace PolskaBot.Core
                     break;
                 case Box.ID:
                     Box box = new Box(fadeReader);
-                    Console.WriteLine("Box ({0}) at {1}/{2} type {3}", box.hash, box.x, box.y, box.type);
+                    api.boxes.Add(new Darkorbit.Box(box.hash, (int)box.x, (int)box.y, box.type));
                     break;
                 case Ore.ID:
                     Ore ore = new Ore(fadeReader);
@@ -159,9 +159,6 @@ namespace PolskaBot.Core
                     fadeReader.ReadBytes(fadeLength - 2);
                     if(!pingThread.IsAlive)
                         pingThread.Start();
-                    break;
-                case 13944:
-                    Console.WriteLine("Received box/cargo {0} {1} {2}", fadeReader.ReadString(), fadeReader.ReadUInt32(), fadeReader.ReadUInt32());
                     break;
                 case OldStylePacket.ID:
                     OldStylePacket oldStylePacket = new OldStylePacket(fadeReader);
