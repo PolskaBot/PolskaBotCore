@@ -142,9 +142,14 @@ namespace PolskaBot.Core
                     ShipMove shipMove = new ShipMove(fadeReader);
                     Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.duration);
                     break;
-                case Box.ID:
-                    Box box = new Box(fadeReader);
-                    api.boxes.Add(new Darkorbit.Box(box.hash, (int)box.x, (int)box.y, box.type));
+                case BoxInit.ID:
+                    BoxInit boxInit = new BoxInit(fadeReader);
+                    api.boxes.Add(new Darkorbit.Box(boxInit.hash, (int)boxInit.x, (int)boxInit.y, boxInit.type));
+                    break;
+                case DestroyItem.ID:
+                    DestroyItem item = new DestroyItem(fadeReader);
+                    lock(api.boxes)
+                        api.boxes.RemoveAll(box => box.hash == item.hash);
                     break;
                 case Ore.ID:
                     Ore ore = new Ore(fadeReader);

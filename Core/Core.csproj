@@ -59,7 +59,7 @@
     <Compile Include="Darkorbit\Commands\FadeInitStageOne.cs" />
     <Compile Include="Darkorbit\Commands\FadeInitStageTwo.cs" />
     <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
-    <Compile Include="Darkorbit\Commands\PostHandshake\Box.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\BoxInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\class_326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\DestroyItem.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
