@@ -21,7 +21,10 @@ namespace PolskaBot.Core
 
         public VanillaClient vanillaClient;
         public FadeClient fadeClient;
+
+        // Logic
         public Account account;
+        public List<Box> boxes { get; set; } = new List<Box>();
 
         public API(Mode mode = Mode.BOT)
         {

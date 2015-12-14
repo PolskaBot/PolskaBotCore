@@ -142,26 +142,24 @@ namespace PolskaBot.Core
                     ShipMove shipMove = new ShipMove(fadeReader);
                     Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.duration);
                     break;
-                case Box.ID:
-                    Box box = new Box(fadeReader);
-                    Console.WriteLine("Box ({0}) at {1}/{2} type {3}", box.hash, box.x, box.y, box.type);
+                case BoxInit.ID:
+                    BoxInit boxInit = new BoxInit(fadeReader);
+                    api.boxes.Add(new Darkorbit.Box(boxInit.hash, (int)boxInit.x, (int)boxInit.y, boxInit.type));
+                    break;
+                case DestroyItem.ID:
+                    DestroyItem item = new DestroyItem(fadeReader);
+                    lock(api.boxes)
+                        api.boxes.RemoveAll(box => box.hash == item.hash);
                     break;
                 case Ore.ID:
                     Ore ore = new Ore(fadeReader);
                     Console.WriteLine("Ore ({0}) at {1}/{2} of type {3}", ore.hash, ore.x, ore.y, ore.type);
-                    break;
-                case Collected.ID:
-                    Collected collected = new Collected(fadeReader);
-                    Console.Write("Someone collected {0} name_44 {1}", collected.hash, collected.name_44);
                     break;
                 case 29794:
                     Console.WriteLine("Received pong");
                     fadeReader.ReadBytes(fadeLength - 2);
                     if(!pingThread.IsAlive)
                         pingThread.Start();
-                    break;
-                case 13944:
-                    Console.WriteLine("Received box/cargo {0} {1} {2}", fadeReader.ReadString(), fadeReader.ReadUInt32(), fadeReader.ReadUInt32());
                     break;
                 case OldStylePacket.ID:
                     OldStylePacket oldStylePacket = new OldStylePacket(fadeReader);

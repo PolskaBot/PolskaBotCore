@@ -7,7 +7,7 @@ using MiscUtil.IO;
 
 namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class Box : Command
+    class BoxInit : Command
     {
         public const ushort ID = 20862;
 
@@ -16,7 +16,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public uint y { get; private set; }
         public string type { get; private set; }
 
-        public Box(EndianBinaryReader reader)
+        public BoxInit(EndianBinaryReader reader)
         {
             x = reader.ReadUInt32();
             x = x << 5 | x >> 27;
