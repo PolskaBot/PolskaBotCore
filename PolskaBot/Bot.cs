@@ -169,7 +169,6 @@ namespace PolskaBot
 
             if(ship.factionID != api.account.factionID)
             {
-                Console.WriteLine("D");
                 g.DrawRectangle(new Pen(Config.enemy), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
                 return;
             }
