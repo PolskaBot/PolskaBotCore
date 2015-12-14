@@ -34,5 +34,17 @@ namespace PolskaBot.Properties {
                 this["DrawMap"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DrawOres {
+            get {
+                return ((bool)(this["DrawOres"]));
+            }
+            set {
+                this["DrawOres"] = value;
+            }
+        }
     }
 }

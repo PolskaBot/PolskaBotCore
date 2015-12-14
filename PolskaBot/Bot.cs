@@ -64,6 +64,17 @@ namespace PolskaBot
             };
 
             contextMenu.MenuItems.Add(drawBackground);
+
+            var drawOres = new MenuItem();
+            drawOres.Text = "Draw ores";
+            drawOres.Checked = Properties.Settings.Default.DrawOres;
+            drawOres.Click += (s, e) =>
+            {
+                Properties.Settings.Default.DrawOres = !Properties.Settings.Default.DrawOres;
+                ((MenuItem)s).Checked = Properties.Settings.Default.DrawOres;
+            };
+
+            contextMenu.MenuItems.Add(drawOres);
             minimap.ContextMenu = contextMenu;
         }
 
@@ -119,6 +130,8 @@ namespace PolskaBot
 
         private void DrawOre(Graphics g, Ore ore)
         {
+            if (!Properties.Settings.Default.DrawOres)
+                return;
             switch(ore.type)
             {
                 case Ore.Type.PROMETIUM:
