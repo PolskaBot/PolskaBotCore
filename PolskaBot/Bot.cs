@@ -121,7 +121,7 @@ namespace PolskaBot
         {
             if (api.account.ready)
             {
-                string hpDetails = $"{api.account.hitpoints}/{api.account.maxHitpoints}";
+                string hpDetails = $"{api.account.HP}/{api.account.maxHP}";
                 string shieldDetails = $"{api.account.shield}/{api.account.maxShield}";
                 SizeF sizeHP = g.MeasureString(hpDetails, font);
                 SizeF sizeShield = g.MeasureString(shieldDetails, font);

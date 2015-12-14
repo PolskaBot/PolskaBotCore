@@ -98,14 +98,41 @@ namespace PolskaBot.Core
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
-                    api.account.ready = true;
+                    // Movement
                     api.account.X = (int)heroInit.x;
                     api.account.Y = (int)heroInit.y;
-                    api.account.hitpoints = (int)heroInit.hp;
-                    api.account.maxHitpoints = (int)heroInit.maxHP;
+
+                    // Map statistics
+                    api.account.HP = (int)heroInit.hp;
+                    api.account.maxHP = (int)heroInit.maxHP;
                     api.account.shield = (int)heroInit.shield;
                     api.account.maxShield = (int)heroInit.maxShield;
+                    api.account.nanoHP = (int)heroInit.nanoHP;
+                    api.account.maxNanoHP = (int)heroInit.maxNanoHP;
+                    api.account.freeCargoSpace = (int)heroInit.freeCargoSpace;
+                    api.account.cargoCapacity = (int)heroInit.freeCargoSpace;
+
+                    // Ship
+                    api.account.shipName = heroInit.shipName;
                     api.account.speed = (int)heroInit.speed;
+
+                    // Statistics
+                    api.account.cloaked = heroInit.cloaked;
+                    api.account.jackpot = heroInit.jackpot;
+                    api.account.premium = heroInit.premium;
+                    api.account.credits = heroInit.credits;
+                    api.account.honor = heroInit.honor;
+                    api.account.uridium = heroInit.uridium;
+                    api.account.XP = heroInit.XP;
+                    api.account.level = (int)heroInit.level;
+                    api.account.rank = (int)heroInit.rank;
+
+                    // Social
+                    api.account.clanID = (int)heroInit.clanID;
+                    api.account.clanTag = heroInit.clanTag;
+                    api.account.factionID = heroInit.factionID;
+
+                    api.account.ready = true;
                     break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
