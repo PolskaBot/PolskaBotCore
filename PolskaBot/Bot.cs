@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using PolskaBot.Core;
+using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
 
@@ -70,10 +71,23 @@ namespace PolskaBot
         {
             while(true)
             {
+                Box[] boxes;
+
+                lock(api.boxes)
+                {
+                    boxes = api.boxes.ToArray();
+                }
+
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
                 using (var g = Graphics.FromImage(bitmap))
                 {
                     DrawBackground(g);
+
+                    foreach(Box box in boxes)
+                    {
+                        DrawBox(g, box);
+                    }
+
                     DrawPlayer(g);
                     DrawDetails(g);
                 }
@@ -85,6 +99,11 @@ namespace PolskaBot
                 Thread.Sleep(1000 / Config.FPS);
                 anim.Update(1000 / Config.FPS);
             }
+        }
+
+        private void DrawBox(Graphics g, Box box)
+        {
+            g.DrawRectangle(new Pen(Config.box), new Rectangle(Scale(box.pos.X), Scale(box.pos.Y), 1, 1));
         }
 
         private void DrawPlayer(Graphics g)

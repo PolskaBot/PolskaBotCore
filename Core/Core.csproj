@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,7 @@
     <Compile Include="API.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="Darkorbit\Account.cs" />
+    <Compile Include="Darkorbit\Box.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\FadeMimicDecodePacket.cs" />
     <Compile Include="Darkorbit\Commands\FadeEncodePacket.cs" />
