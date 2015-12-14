@@ -233,10 +233,16 @@ namespace PolskaBot
             double duration = (distance / api.account.speed);
 
             float durationMS = (float)duration * 1000;
-            anim.TargetCancel(api.account);
-            anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
-                new Action(() => api.account.isFlying = false
-                ));
+            try
+            {
+                anim.TargetCancel(api.account);
+                anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
+                    new Action(() => api.account.isFlying = false
+                    ));
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
         }
 
         private int Scale(int value)
