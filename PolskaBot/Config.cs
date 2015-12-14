@@ -18,6 +18,11 @@ namespace PolskaBot
         public static Color boxPirate = Color.Green;
         public static Color boxMemorised = Color.FromArgb(150, 255, 255, 0);
 
+        public static Color prometium = Color.FromArgb(179, 47, 47);
+        public static Color endurium = Color.FromArgb(89, 170, 227);
+        public static Color terbium = Color.FromArgb(224, 229, 63);
+        public static Color palladium = Color.FromArgb(158, 28, 195);
+
         public static Color hitpoints = Color.FromArgb(0, 204, 51);
         public static Color shield = Color.FromArgb(51, 143, 204);
 

@@ -72,10 +72,16 @@ namespace PolskaBot
             while(true)
             {
                 Box[] boxes;
+                Ore[] ores;
 
                 lock(api.boxes)
                 {
                     boxes = api.boxes.ToArray();
+                }
+
+                lock(api.ores)
+                {
+                    ores = api.ores.ToArray();
                 }
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
@@ -86,6 +92,11 @@ namespace PolskaBot
                     foreach(Box box in boxes)
                     {
                         DrawBox(g, box);
+                    }
+
+                    foreach(Ore ore in ores)
+                    {
+                        DrawOre(g, ore);
                     }
 
                     DrawPlayer(g);
@@ -104,6 +115,25 @@ namespace PolskaBot
         private void DrawBox(Graphics g, Box box)
         {
             g.DrawRectangle(new Pen(Config.box), new Rectangle(Scale(box.pos.X), Scale(box.pos.Y), 1, 1));
+        }
+
+        private void DrawOre(Graphics g, Ore ore)
+        {
+            switch(ore.type)
+            {
+                case Ore.Type.PROMETIUM:
+                    g.DrawRectangle(new Pen(Config.prometium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                    break;
+                case Ore.Type.ENDURIUM:
+                    g.DrawRectangle(new Pen(Config.endurium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                    break;
+                case Ore.Type.TERBIUM:
+                    g.DrawRectangle(new Pen(Config.terbium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                    break;
+                case Ore.Type.PALLADIUM:
+                    g.DrawRectangle(new Pen(Config.palladium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                    break;
+            }
         }
 
         private void DrawPlayer(Graphics g)
