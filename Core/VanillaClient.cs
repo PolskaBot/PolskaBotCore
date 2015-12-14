@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MiscUtil.IO;
 using MiscUtil.Conversion;
+using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using System.Threading;
@@ -144,16 +145,18 @@ namespace PolskaBot.Core
                     break;
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(fadeReader);
-                    api.boxes.Add(new Darkorbit.Box(boxInit.hash, (int)boxInit.x, (int)boxInit.y, boxInit.type));
+                    api.boxes.Add(new Box(boxInit.hash, (int)boxInit.x, (int)boxInit.y, boxInit.type));
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(fadeReader);
                     lock(api.boxes)
                         api.boxes.RemoveAll(box => box.hash == item.hash);
+                    lock(api.ores)
+                        api.ores.RemoveAll(ore => ore.hash == item.hash);
                     break;
-                case Ore.ID:
-                    Ore ore = new Ore(fadeReader);
-                    Console.WriteLine("Ore ({0}) at {1}/{2} of type {3}", ore.hash, ore.x, ore.y, ore.type);
+                case OreInit.ID:
+                    OreInit oreInit = new OreInit(fadeReader);
+                    api.ores.Add(new Ore(oreInit.hash, (int)oreInit.x, (int)oreInit.y, oreInit.type));
                     break;
                 case 29794:
                     Console.WriteLine("Received pong");
