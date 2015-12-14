@@ -16,6 +16,8 @@ namespace PolskaBot.Core
     {
         Thread pingThread;
 
+        public event EventHandler<ShipMove> ShipMoving;
+
         public VanillaClient(API api) : base(api)
         {
             pingThread = new Thread(new ThreadStart(PingLoop));
@@ -160,7 +162,7 @@ namespace PolskaBot.Core
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(fadeReader);
-                    Console.WriteLine("Ship {0} is moving to {1}/{2} at speed {3}", shipMove.player, shipMove.x, shipMove.y, shipMove.duration);
+                    ShipMoving?.Invoke(this, shipMove);
                     break;
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(fadeReader);
