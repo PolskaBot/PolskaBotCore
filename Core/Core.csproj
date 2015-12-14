@@ -62,6 +62,7 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\BoxInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\class_326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\DestroyItem.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\DestroyShip.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\InitPacket.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Login.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
     <Compile Include="Darkorbit\Ore.cs" />
+    <Compile Include="Darkorbit\Ship.cs" />
     <Compile Include="FadeClient.cs" />
     <Compile Include="HttpManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
