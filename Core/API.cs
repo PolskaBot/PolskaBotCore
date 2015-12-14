@@ -57,7 +57,7 @@ namespace PolskaBot.Core
             fadeClient.OnConnected += (o, e) => vanillaClient.Connect(GetIP(), 8080);
             vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
 
-            fadeClient.Connect("25.139.200.52", 8081);
+            fadeClient.Connect(Environment.GetEnvironmentVariable(Config.SERVER_IP_ENV), 8081);
         }
 
         public string GetIP()

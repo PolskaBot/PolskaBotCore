@@ -16,5 +16,6 @@ namespace PolskaBot.Core.Darkorbit
 
         public const string USERNAME_ENV = "PB_USERNAME";
         public const string PASSWORD_ENV = "PB_PASSWORD";
+        public const string SERVER_IP_ENV = "PB_SERVER_IP";
     }
 }
