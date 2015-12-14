@@ -57,7 +57,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             cloaked = reader.ReadBoolean();
             reader.ReadBytes(4);
             factionID = reader.ReadUInt32();
-            factionID = factionID << 5 | factionID >> 27;
+            factionID = factionID >> 13 | factionID << 19;
             int length = reader.ReadInt32();
             if(length > 0)
             {
