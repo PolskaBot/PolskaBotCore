@@ -23,18 +23,42 @@ namespace PolskaBot.Core.Darkorbit
         public string serverID { get; private set; }
         public int mapID { get; private set; }
 
+        // Movement
         public int X { get; set; }
         public int Y { get; set; }
         public int targetX { get; set; }
         public int targetY { get; set; }
         public bool isFlying { get; set; }
 
-        public int hitpoints { get; set; }
-        public int maxHitpoints { get; set; }
+        // Map statistics
+        public int HP { get; set; }
+        public int maxHP { get; set; }
         public int shield { get; set; }
         public int maxShield { get; set; }
+        public int nanoHP { get; set; }
+        public int maxNanoHP { get; set; }
+        public int freeCargoSpace { get; set; }
+        public int cargoCapacity { get; set; }
 
+        // Ship
+        public string shipName { get; set; }
         public int speed { get; set; }
+
+        // Statistics
+        public bool cloaked { get; set; }
+        public float jackpot { get; set; }
+        public bool premium { get; set; }
+        public double credits { get; set; }
+        public double honor { get; set; }
+        public double uridium { get; set; }
+        public double XP { get; set; }
+        public int level { get; set; }
+        public int rank { get; set; }
+
+        // Social
+        public int clanID { get; set; }
+        public string clanTag { get; set; }
+        public uint factionID { get; set; }
 
         public bool ready { get; set; } = false;
 

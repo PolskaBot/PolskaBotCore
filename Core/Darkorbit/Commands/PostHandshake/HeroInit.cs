@@ -36,7 +36,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public uint hp { get; private set; } //var_1063
         public uint level { get; private set; }
         public uint nanoHP { get; private set; } //var_2222
-        public double pd { get; private set; } //var_4549
+        public double XP { get; private set; } //var_4549
         public uint mapId { get; private set; }
         public uint factionID { get; private set; }
         public string clanTag { get; private set; } //name_138
@@ -74,7 +74,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             this.level = this.level << 7 | this.level >> 25;
             this.x = reader.ReadUInt32();
             this.x = this.x >> 5 | this.x << 27;
-            this.pd = reader.ReadDouble();
+            this.XP = reader.ReadDouble();
             this.factionID = reader.ReadUInt32();
             this.factionID = this.factionID << 5 | this.factionID >> 27;
             this.freeCargoSpace = reader.ReadUInt32();
