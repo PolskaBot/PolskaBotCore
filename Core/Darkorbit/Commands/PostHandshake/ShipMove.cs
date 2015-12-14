@@ -7,7 +7,7 @@ using MiscUtil.IO;
 
 namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class ShipMove : Command
+    public class ShipMove : Command
     {
         public const ushort ID = 1771;
 
