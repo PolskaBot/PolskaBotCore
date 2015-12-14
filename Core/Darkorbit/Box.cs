@@ -13,10 +13,10 @@ namespace PolskaBot.Core.Darkorbit
         public Point pos { get; private set; }
         public string type { get; private set; }
 
-        public Box(string hash, int X, int Y, string type)
+        public Box(string hash, int x, int y, string type)
         {
             this.hash = hash;
-            pos = new Point(X, Y);
+            pos = new Point(x, y);
             this.type = type;
         }
     }
