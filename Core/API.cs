@@ -26,6 +26,7 @@ namespace PolskaBot.Core
         public Account account;
         public List<Box> boxes { get; set; } = new List<Box>();
         public List<Ore> ores { get; set; } = new List<Ore>();
+        public List<Ship> ships { get; set; } = new List<Ship>();
 
         public API(Mode mode = Mode.BOT)
         {

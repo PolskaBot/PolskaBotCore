@@ -83,6 +83,7 @@ namespace PolskaBot
             {
                 Box[] boxes;
                 Ore[] ores;
+                Ship[] ships;
 
                 lock(api.boxes)
                 {
@@ -92,6 +93,11 @@ namespace PolskaBot
                 lock(api.ores)
                 {
                     ores = api.ores.ToArray();
+                }
+
+                lock(api.ships)
+                {
+                    ships = api.ships.ToArray();
                 }
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
@@ -107,6 +113,11 @@ namespace PolskaBot
                     foreach(Ore ore in ores)
                     {
                         DrawOre(g, ore);
+                    }
+
+                    foreach(Ship ship in ships)
+                    {
+                        DrawShip(g, ship);
                     }
 
                     DrawPlayer(g);
@@ -146,6 +157,23 @@ namespace PolskaBot
                     g.DrawRectangle(new Pen(Config.palladium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
                     break;
             }
+        }
+
+        private void DrawShip(Graphics g, Ship ship)
+        {
+            if(ship.npc)
+            {
+                g.DrawRectangle(new Pen(Config.npc), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
+                return;
+            }
+
+            if(ship.factionID != api.account.factionID)
+            {
+                g.DrawRectangle(new Pen(Config.enemy), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
+                return;
+            }
+
+            g.DrawRectangle(new Pen(Config.friend), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
         }
 
         private void DrawPlayer(Graphics g)

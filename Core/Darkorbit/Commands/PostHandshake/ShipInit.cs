@@ -61,7 +61,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             int length = reader.ReadInt32();
             if(length > 0)
             {
-                Console.WriteLine($"ID: {reader.ReadInt16()}");
+                reader.ReadInt16();
                 for (int i = 0; i < length; i++)
                 {
                     class_326 class326 = new class_326(reader);

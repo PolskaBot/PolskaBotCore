@@ -26,6 +26,12 @@ namespace PolskaBot
         public static Color hitpoints = Color.FromArgb(0, 204, 51);
         public static Color shield = Color.FromArgb(51, 143, 204);
 
+        // Ships
+        public static Color friend = Color.FromArgb(0, 153, 255);
+        public static Color npc = Color.Red;
+        public static Color enemy = Color.FromArgb(alpha, 255, 152, 0);
+
         public static Font font = new Font("Arial", 8, FontStyle.Regular);
+
     }
 }
