@@ -20,23 +20,7 @@ namespace PolskaBot
 
         Thread renderer;
 
-        int FPS = 60;
-
-        const float k = 0.015f;
-
         Tweener anim = new Tweener();
-
-        const byte alpha = 216;
-        static Color mapBG = Color.FromArgb(20, 102, 102, 102);
-        static Color hero = Color.FromArgb(alpha, 102, 102, 102);
-        static Color box = Color.FromArgb(alpha, 255, 255, 0);
-        static Color boxPirate = Color.Green;
-        static Color boxMemorised = Color.FromArgb(150, 255, 255, 0);
-
-        static Color hitpoints = Color.FromArgb(0, 204, 51);
-        static Color shield = Color.FromArgb(51, 143, 204);
-
-        static Font font = new Font("Arial", 8, FontStyle.Regular);
 
         public Bot()
         {
@@ -53,7 +37,7 @@ namespace PolskaBot
                 if(api.account.ready)
                 {
                     var mouse = e as MouseEventArgs;
-                    FlyWithAnimation((int)(mouse.X / k), (int)(mouse.Y / k));
+                    FlyWithAnimation((int)(mouse.X / Config.k), (int)(mouse.Y / Config.k));
                     
                 }
             };
@@ -98,8 +82,8 @@ namespace PolskaBot
                 {
                     minimap.Image = bitmap;
                 });
-                Thread.Sleep(1000 / FPS);
-                anim.Update(1000 / FPS);
+                Thread.Sleep(1000 / Config.FPS);
+                anim.Update(1000 / Config.FPS);
             }
         }
 
@@ -107,12 +91,12 @@ namespace PolskaBot
         {
             if(api.account.ready)
             {
-                g.DrawLine(new Pen(hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
-                g.DrawLine(new Pen(hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
+                g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
+                g.DrawLine(new Pen(Config.hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
 
                 if(api.account.isFlying)
                 {
-                    g.DrawLine(new Pen(hero), new Point(Scale(api.account.X), Scale(api.account.Y)), new Point(Scale(api.account.targetX), Scale(api.account.targetY)));
+                    g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), Scale(api.account.Y)), new Point(Scale(api.account.targetX), Scale(api.account.targetY)));
                 }
             }
         }
@@ -123,10 +107,10 @@ namespace PolskaBot
             {
                 string hpDetails = $"{api.account.HP}/{api.account.maxHP}";
                 string shieldDetails = $"{api.account.shield}/{api.account.maxShield}";
-                SizeF sizeHP = g.MeasureString(hpDetails, font);
-                SizeF sizeShield = g.MeasureString(shieldDetails, font);
-                g.DrawString(hpDetails, font, new SolidBrush(hitpoints), minimap.Width - sizeHP.Width - 10, minimap.Height - 20);
-                g.DrawString(shieldDetails, font, new SolidBrush(shield), minimap.Width - sizeHP.Width - sizeShield.Width - 10, minimap.Height - 20);
+                SizeF sizeHP = g.MeasureString(hpDetails, Config.font);
+                SizeF sizeShield = g.MeasureString(shieldDetails, Config.font);
+                g.DrawString(hpDetails, Config.font, new SolidBrush(Config.hitpoints), minimap.Width - sizeHP.Width - 10, minimap.Height - 20);
+                g.DrawString(shieldDetails, Config.font, new SolidBrush(Config.shield), minimap.Width - sizeHP.Width - sizeShield.Width - 10, minimap.Height - 20);
             }
         }
 
@@ -159,7 +143,7 @@ namespace PolskaBot
 
         private int Scale(int value)
         {
-            return (int)(value * k);
+            return (int)(value * Config.k);
         }
     }
 }
