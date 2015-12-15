@@ -26,9 +26,9 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             factionID = (int)((uint)factionID >> 1 | factionID << 31);
             for (int i = 0; i < reader.ReadInt32(); i++)
             {
-                int _vallue = reader.ReadInt32();
-                _vallue = (int)(reader.ReadInt32() << 8 | (uint)_vallue >> 24);
-                var_2358.Add(_vallue);
+                int value = reader.ReadInt32();
+                value = (int)(value << 8 | (uint)value >> 24);
+                var_2358.Add(value);
             }
             x = reader.ReadInt32();
             x = (int)(x << 1 | (uint)x >> 31);
