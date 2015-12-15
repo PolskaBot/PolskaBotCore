@@ -31,6 +31,9 @@ namespace PolskaBot
         public static Color npc = Color.Red;
         public static Color enemy = Color.FromArgb(alpha, 255, 152, 0);
 
+        // Buildings
+        public static Color gate = Color.FromArgb(alpha, 255, 255, 255);
+
         public static Font font = new Font("Arial", 8, FontStyle.Regular);
 
     }

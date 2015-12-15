@@ -93,6 +93,7 @@ namespace PolskaBot
                 Box[] boxes;
                 Ore[] ores;
                 Ship[] ships;
+                Gate[] gates;
 
                 lock(api.boxes)
                 {
@@ -107,6 +108,11 @@ namespace PolskaBot
                 lock(api.ships)
                 {
                     ships = api.ships.ToArray();
+                }
+
+                lock(api.gates)
+                {
+                    gates = api.gates.ToArray();
                 }
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
@@ -127,6 +133,11 @@ namespace PolskaBot
                     foreach(Ship ship in ships)
                     {
                         DrawShip(g, ship);
+                    }
+
+                    foreach(Gate gate in gates)
+                    {
+                        DrawGate(g, gate);
                     }
 
                     DrawPlayer(g);
@@ -183,6 +194,11 @@ namespace PolskaBot
             }
 
             g.DrawRectangle(new Pen(Config.friend), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
+        }
+
+        private void DrawGate(Graphics g, Gate gate)
+        {
+            g.DrawEllipse(new Pen(Config.gate), Scale(gate.pos.X) - 5, Scale(gate.pos.Y) - 5, 10, 10);
         }
 
         private void DrawPlayer(Graphics g)
