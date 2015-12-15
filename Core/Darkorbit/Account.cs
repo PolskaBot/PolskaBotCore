@@ -64,7 +64,8 @@ namespace PolskaBot.Core.Darkorbit
 
         HttpManager httpManager;
 
-        public event EventHandler<EventArgs> OnLoggedIn;
+        public event EventHandler<EventArgs> LoginFailed;
+        public event EventHandler<EventArgs> LoginSucceed;
 
         public Account(API api)
         {
@@ -87,19 +88,39 @@ namespace PolskaBot.Core.Darkorbit
             string homepageResponse = httpManager.Get("http://www.darkorbit.com/");
             Match match = Regex.Match(homepageResponse, "class=\"bgcdw_login_form\" action=\"(.*)\">");
 
+            if(!match.Success)
+            {
+                LoginFailed?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             string loginResponse = httpManager.Post(WebUtility.HtmlDecode(match.Groups[1].ToString()), $"username={username}&password={password}");
             match = Regex.Match(loginResponse, "http://(.*).darkorbit.bigpoint.com");
+
+            if (!match.Success)
+            {
+                LoginFailed?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             serverID = match.Groups[1].ToString();
 
             string mapResponse = httpManager.Get($"http://{serverID}.darkorbit.bigpoint.com/indexInternal.es?action=internalMapRevolution");
             match = Regex.Match(mapResponse, "{\"pid\":([0-9]+),\"uid\":([0-9]+)[\\w,\":]+sid\":\"([0-9a-z]+)\"");
+
+            if (!match.Success)
+            {
+                LoginFailed?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             instanceID = int.Parse(match.Groups[1].ToString());
             userID = int.Parse(match.Groups[2].ToString());
             sid = match.Groups[3].ToString();
             match = Regex.Match(mapResponse, "mapID\": \"([0-9]*)\"");
             mapID = int.Parse(match.Groups[1].ToString());
 
-            OnLoggedIn?.Invoke(this, EventArgs.Empty);
+            LoginSucceed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

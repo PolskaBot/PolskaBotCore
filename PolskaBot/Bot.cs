@@ -46,6 +46,9 @@ namespace PolskaBot
 
             api = new API(API.Mode.BOT);
 
+            api.account.LoginFailed += (s, e) => Log("Login failed");
+            api.account.LoginSucceed += (s, e) => Log("Login succeed");
+
             api.vanillaClient.ShipMoving += (s, e) =>
             {
                 lock(api.ships)
@@ -309,5 +312,13 @@ namespace PolskaBot
         {
             return (int)(value / Config.k);
         }
+
+
+        #region Controls
+        private void Log(string text)
+        {
+            log.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}\n");
+        }
+        #endregion
     }
 }

@@ -39,7 +39,7 @@ namespace PolskaBot.Core
             vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
 
-            account.OnLoggedIn += (s, e) => Connect();
+            account.LoginSucceed += (s, e) => Connect();
         }
 
         public void Login(string username = null, string password = null)
