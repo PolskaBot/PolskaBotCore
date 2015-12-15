@@ -20,6 +20,7 @@ namespace PolskaBot
         public static Color hero = Color.FromArgb(alpha, 102, 102, 102);
         public static Color box = Color.FromArgb(alpha, 255, 255, 0);
         public static Color boxPirate = Color.Green;
+        public static Color cargo = Color.FromArgb(alpha, 255, 200, 0);
         public static Color boxMemorised = Color.FromArgb(150, 255, 255, 0);
 
         public static Color prometium = Color.FromArgb(179, 47, 47);

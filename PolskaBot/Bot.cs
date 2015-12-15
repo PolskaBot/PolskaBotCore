@@ -255,13 +255,17 @@ namespace PolskaBot
         {
             if (api.account.ready)
             {
+                string cargoDetails = $"{api.account.cargoCapacity - api.account.freeCargoSpace}/{api.account.cargoCapacity}";
                 string hpDetails = $"{api.account.HP}/{api.account.maxHP}";
                 string shieldDetails = $"{api.account.shield}/{api.account.maxShield}";
+                SizeF sizeCargo = g.MeasureString(cargoDetails, Config.font);
                 SizeF sizeHP = g.MeasureString(hpDetails, Config.font);
                 SizeF sizeShield = g.MeasureString(shieldDetails, Config.font);
                 g.DrawString(hpDetails, Config.font, new SolidBrush(Config.hitpoints), minimap.Width - sizeHP.Width - 4 - Config.poizoneSize,
                     4 + Config.poizoneSize);
                 g.DrawString(shieldDetails, Config.font, new SolidBrush(Config.shield), minimap.Width - sizeHP.Width - sizeShield.Width - 4 - Config.poizoneSize,
+                    4 + Config.poizoneSize);
+                g.DrawString(cargoDetails, Config.font, new SolidBrush(Config.cargo), minimap.Width - sizeHP.Width - sizeShield.Width - sizeCargo.Width - 4 - Config.poizoneSize,
                     4 + Config.poizoneSize);
             }
         }
