@@ -49,6 +49,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Darkorbit\Account.cs" />
     <Compile Include="Darkorbit\Box.cs" />
+    <Compile Include="Darkorbit\Building.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\FadeMimicDecodePacket.cs" />
     <Compile Include="Darkorbit\Commands\FadeEncodePacket.cs" />
