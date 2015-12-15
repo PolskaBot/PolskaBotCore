@@ -13,11 +13,11 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public int factionID { get; private set; }
         public List<int> var_2358 { get; private set; }
-        public int x { get; private set; }
+        public int X { get; private set; }
         public int gateType { get; private set; } //name_158
         public bool var_138 { get; private set; }
         public bool var_4991 { get; private set; }
-        public int y { get; private set; }
+        public int Y { get; private set; }
         public int assetID { get; private set; } //var_5014 (?)
 
         public GateInit(EndianBinaryReader reader)
@@ -30,14 +30,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
                 value = (int)(value << 8 | (uint)value >> 24);
                 var_2358.Add(value);
             }
-            x = reader.ReadInt32();
-            x = (int)(x << 1 | (uint)x >> 31);
+            X = reader.ReadInt32();
+            X = (int)(X << 1 | (uint)X >> 31);
             gateType = reader.ReadInt32();
             gateType = (int)((uint)gateType >> 1 | gateType << 31);
             var_138 = reader.ReadBoolean();
             var_4991 = reader.ReadBoolean();
-            y = reader.ReadInt32();
-            y = (int)(y << 3 | (uint)y >> 29);
+            Y = reader.ReadInt32();
+            Y = (int)(Y << 3 | (uint)Y >> 29);
             assetID = reader.ReadInt32();
             assetID = (int)((uint)assetID >> 3 | assetID << 29);
         }
