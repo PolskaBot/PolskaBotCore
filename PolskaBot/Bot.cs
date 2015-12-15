@@ -38,7 +38,6 @@ namespace PolskaBot
                 if (api.account.ready && mouse.Button == MouseButtons.Left)
                 {
                     FlyWithAnimation((int)(mouse.X / Config.k), (int)(mouse.Y / Config.k));
-
                 }
             };
 
@@ -48,7 +47,14 @@ namespace PolskaBot
             {
                 lock(api.ships)
                 {
-                    anim.Tween(api.ships.Find(ship => ship.userID == e.player), new { X = e.x, Y = e.y }, e.duration);
+                    try
+                    {
+                        anim.Tween(api.ships.Find(ship => ship.userID == e.player), new { X = e.x, Y = e.y }, e.duration);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                    }
                 }
             };
 
