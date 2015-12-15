@@ -11,7 +11,11 @@ namespace PolskaBot
     {
         public const int FPS = 60;
         public const float k = 0.015f;
+        public const int poizoneSize = 10;
         const byte alpha = 216;
+
+        public static Color neutral = Color.FromArgb(alpha, 102, 102, 102);
+
         public static Color mapBG = Color.FromArgb(20, 102, 102, 102);
         public static Color hero = Color.FromArgb(alpha, 102, 102, 102);
         public static Color box = Color.FromArgb(alpha, 255, 255, 0);

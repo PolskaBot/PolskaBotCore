@@ -37,7 +37,7 @@ namespace PolskaBot
                 var mouse = e as MouseEventArgs;
                 if (api.account.ready && mouse.Button == MouseButtons.Left)
                 {
-                    FlyWithAnimation((int)(mouse.X / Config.k), (int)(mouse.Y / Config.k));
+                    FlyWithAnimation(ReverseScale(mouse.X - 10), ReverseScale(mouse.Y - 10));
                 }
             };
 
@@ -131,6 +131,7 @@ namespace PolskaBot
                 using (var g = Graphics.FromImage(bitmap))
                 {
                     DrawBackground(g);
+                    DrawBorders(g);
 
                     foreach(Box box in boxes)
                     {
@@ -248,9 +249,17 @@ namespace PolskaBot
                 string shieldDetails = $"{api.account.shield}/{api.account.maxShield}";
                 SizeF sizeHP = g.MeasureString(hpDetails, Config.font);
                 SizeF sizeShield = g.MeasureString(shieldDetails, Config.font);
-                g.DrawString(hpDetails, Config.font, new SolidBrush(Config.hitpoints), minimap.Width - sizeHP.Width - 10, minimap.Height - 20);
-                g.DrawString(shieldDetails, Config.font, new SolidBrush(Config.shield), minimap.Width - sizeHP.Width - sizeShield.Width - 10, minimap.Height - 20);
+                g.DrawString(hpDetails, Config.font, new SolidBrush(Config.hitpoints), minimap.Width - sizeHP.Width - 4 - Config.poizoneSize,
+                    4 + Config.poizoneSize);
+                g.DrawString(shieldDetails, Config.font, new SolidBrush(Config.shield), minimap.Width - sizeHP.Width - sizeShield.Width - 4 - Config.poizoneSize,
+                    4 + Config.poizoneSize);
             }
+        }
+
+        private void DrawBorders(Graphics g)
+        {
+            g.DrawRectangle(new Pen(Config.neutral), new Rectangle(Config.poizoneSize, Config.poizoneSize, minimap.Width - 2 * Config.poizoneSize,
+                minimap.Height - 2 * Config.poizoneSize));
         }
 
         private void DrawBackground(Graphics g)
@@ -288,7 +297,12 @@ namespace PolskaBot
 
         private int Scale(int value)
         {
-            return (int)(value * Config.k);
+            return (int)(value * Config.k) + Config.poizoneSize;
+        }
+
+        private int ReverseScale(int value)
+        {
+            return (int)(value / Config.k);
         }
     }
 }

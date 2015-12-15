@@ -42,51 +42,51 @@
             this.minimap.BackColor = System.Drawing.Color.Black;
             this.minimap.Location = new System.Drawing.Point(12, 12);
             this.minimap.Name = "minimap";
-            this.minimap.Size = new System.Drawing.Size(315, 202);
+            this.minimap.Size = new System.Drawing.Size(335, 222);
             this.minimap.TabIndex = 0;
             this.minimap.TabStop = false;
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(12, 220);
+            this.startButton.Location = new System.Drawing.Point(12, 243);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(101, 23);
+            this.startButton.Size = new System.Drawing.Size(108, 23);
             this.startButton.TabIndex = 1;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(119, 220);
+            this.stopButton.Location = new System.Drawing.Point(126, 243);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(101, 23);
+            this.stopButton.Size = new System.Drawing.Size(108, 23);
             this.stopButton.TabIndex = 2;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
             // 
             // changeConfigButton
             // 
-            this.changeConfigButton.Location = new System.Drawing.Point(226, 220);
+            this.changeConfigButton.Location = new System.Drawing.Point(240, 243);
             this.changeConfigButton.Name = "changeConfigButton";
-            this.changeConfigButton.Size = new System.Drawing.Size(101, 23);
+            this.changeConfigButton.Size = new System.Drawing.Size(108, 23);
             this.changeConfigButton.TabIndex = 3;
             this.changeConfigButton.Text = "Config";
             this.changeConfigButton.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(334, 13);
+            this.textBox1.Location = new System.Drawing.Point(353, 12);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(264, 230);
+            this.textBox1.Size = new System.Drawing.Size(264, 254);
             this.textBox1.TabIndex = 4;
             // 
             // Bot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(610, 252);
+            this.ClientSize = new System.Drawing.Size(626, 275);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.changeConfigButton);
             this.Controls.Add(this.stopButton);
