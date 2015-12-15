@@ -99,6 +99,12 @@ namespace PolskaBot.Core
                     }
 
                     break;
+                case Building.ID:
+                    Building building = new Building(fadeReader);
+                    break;
+                case Gate.ID:
+                    Gate gate = new Gate(fadeReader);
+                    break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
                     // Movement
