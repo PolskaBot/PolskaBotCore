@@ -104,6 +104,7 @@ namespace PolskaBot.Core
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(fadeReader);
+                    api.gates.Add(new Gate(gateInit.gateType, gateInit.X, gateInit.Y));
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
