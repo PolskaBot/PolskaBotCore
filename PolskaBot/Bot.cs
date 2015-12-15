@@ -49,6 +49,8 @@ namespace PolskaBot
             api.account.LoginFailed += (s, e) => Log("Login failed");
             api.account.LoginSucceed += (s, e) => Log("Login succeed");
 
+            api.vanillaClient.Compatible += (s, e) => Log("Bot is compatible");
+            api.vanillaClient.NotCompatible += (s, e) => Log("Bot is not compatible. Check forums for new version");
             api.vanillaClient.ShipMoving += (s, e) =>
             {
                 lock(api.ships)
@@ -317,7 +319,10 @@ namespace PolskaBot
         #region Controls
         private void Log(string text)
         {
-            log.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}\n");
+            Invoke((MethodInvoker)delegate
+            {
+                log.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}\n");
+            });
         }
         #endregion
     }
