@@ -101,6 +101,7 @@ namespace PolskaBot.Core
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(fadeReader);
+                    api.buildings.Add(new Building(buildingInit.name, buildingInit.X, buildingInit.Y));
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(fadeReader);

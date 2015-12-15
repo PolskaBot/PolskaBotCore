@@ -100,6 +100,7 @@ namespace PolskaBot
                 Ore[] ores;
                 Ship[] ships;
                 Gate[] gates;
+                Building[] buildings;
 
                 lock(api.boxes)
                 {
@@ -119,6 +120,11 @@ namespace PolskaBot
                 lock(api.gates)
                 {
                     gates = api.gates.ToArray();
+                }
+
+                lock(api.buildings)
+                {
+                    buildings = api.buildings.ToArray();
                 }
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
@@ -144,6 +150,11 @@ namespace PolskaBot
                     foreach(Gate gate in gates)
                     {
                         DrawGate(g, gate);
+                    }
+
+                    foreach(Building building in buildings)
+                    {
+                        DrawBuilding(g, building);
                     }
 
                     DrawPlayer(g);
@@ -205,6 +216,14 @@ namespace PolskaBot
         private void DrawGate(Graphics g, Gate gate)
         {
             g.DrawEllipse(new Pen(Config.gate), Scale(gate.pos.X) - 5, Scale(gate.pos.Y) - 5, 10, 10);
+        }
+
+        private void DrawBuilding(Graphics g, Building building)
+        {
+            if (building.Name.StartsWith("StationTurret") || building.Name.Equals("HQ") || building.Name.Equals("Healing Pod"))
+                return;
+
+            g.DrawEllipse(new Pen(Config.building), Scale(building.Position.X) - 7, Scale(building.Position.Y) - 7, 14, 14);
         }
 
         private void DrawPlayer(Graphics g)

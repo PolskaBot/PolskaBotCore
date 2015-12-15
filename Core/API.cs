@@ -28,6 +28,7 @@ namespace PolskaBot.Core
         public List<Ore> ores { get; set; } = new List<Ore>();
         public List<Ship> ships { get; set; } = new List<Ship>();
         public List<Gate> gates { get; set; } = new List<Gate>();
+        public List<Building> buildings { get; set; } = new List<Building>();
 
         public API(Mode mode = Mode.BOT)
         {

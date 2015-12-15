@@ -33,6 +33,7 @@ namespace PolskaBot
 
         // Buildings
         public static Color gate = Color.FromArgb(alpha, 255, 255, 255);
+        public static Color building = Color.FromArgb(alpha, 203, 46, 255);
 
         public static Font font = new Font("Arial", 8, FontStyle.Regular);
 
