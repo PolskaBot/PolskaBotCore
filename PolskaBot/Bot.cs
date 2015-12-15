@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 using System.Threading;
 using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit;
@@ -22,6 +23,8 @@ namespace PolskaBot
         Thread renderer;
 
         Tweener anim = new Tweener();
+
+        private Stopwatch stopwatch = new Stopwatch();
 
         public Bot()
         {
@@ -96,6 +99,7 @@ namespace PolskaBot
         {
             while(true)
             {
+                stopwatch.Restart();
                 Box[] boxes;
                 Ore[] ores;
                 Ship[] ships;
@@ -167,7 +171,8 @@ namespace PolskaBot
                     minimap.Image = bitmap;
                 });
                 Thread.Sleep(1000 / Config.FPS);
-                anim.Update(1000 / Config.FPS);
+                stopwatch.Stop();
+                anim.Update(stopwatch.ElapsedMilliseconds);
             }
         }
 
