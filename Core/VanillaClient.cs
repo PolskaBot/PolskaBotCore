@@ -143,6 +143,15 @@ namespace PolskaBot.Core
 
                     api.account.ready = true;
                     break;
+                case ShipUpdated.ID:
+                    ShipUpdated shipUpdated = new ShipUpdated(fadeReader);
+                    break;
+                case ShipRepaired.ID:
+                    ShipRepaired shipRepaired = new ShipRepaired(fadeReader);
+                    break;
+                case ShipAttacked.ID:
+                    ShipAttacked shipAttacked = new ShipAttacked(fadeReader);
+                    break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
                     Ship newShip = new Ship();

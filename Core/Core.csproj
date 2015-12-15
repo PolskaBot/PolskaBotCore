@@ -73,8 +73,11 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\OreInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Ping.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Ready.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\ShipAttacked.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\ShipRepaired.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\ShipInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\ShipMove.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\ShipUpdated.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\ServerRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
