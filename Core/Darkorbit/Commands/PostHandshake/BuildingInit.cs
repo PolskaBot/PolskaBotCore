@@ -7,7 +7,7 @@ using MiscUtil.IO;
 
 namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class Building : Command
+    class BuildingInit : Command
     {
         public const ushort ID = 12699;
 
@@ -28,7 +28,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public bool var_1531 { get; private set; }
         public string name { get; private set; } //var_3497
 
-        public Building(EndianBinaryReader reader)
+        public BuildingInit(EndianBinaryReader reader)
         {
             name_138 = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt16()));
             var_3378 = reader.ReadInt32();

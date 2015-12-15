@@ -7,7 +7,7 @@ using MiscUtil.IO;
 
 namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class Gate : Command
+    class GateInit : Command
     {
         public const ushort ID = 30093;
 
@@ -20,7 +20,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public int y { get; private set; }
         public int assetID { get; private set; } //var_5014 (?)
 
-        public Gate(EndianBinaryReader reader)
+        public GateInit(EndianBinaryReader reader)
         {
             factionID = reader.ReadInt32();
             factionID = (int)((uint)factionID >> 1 | factionID << 31);
