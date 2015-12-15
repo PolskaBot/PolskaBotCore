@@ -16,6 +16,8 @@ namespace PolskaBot.Core
     {
         Thread pingThread;
 
+        public event EventHandler<EventArgs> Compatible;
+        public event EventHandler<EventArgs> NotCompatible;
         public event EventHandler<ShipMove> ShipMoving;
 
         public VanillaClient(API api) : base(api)
@@ -54,11 +56,11 @@ namespace PolskaBot.Core
 
                     if (serverVersionCheck.compatible)
                     {
-                        Console.WriteLine("Client is compatible");
+                        Compatible?.Invoke(this, EventArgs.Empty);
                         Send(new ClientRequestCode());
                     } else
                     {
-                        Console.WriteLine("Client is not compatible");
+                        NotCompatible?.Invoke(this, EventArgs.Empty);
                         thread.Abort();
                     }
                     break;

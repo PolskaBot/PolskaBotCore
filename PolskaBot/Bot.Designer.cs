@@ -33,7 +33,7 @@
             this.startButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.changeConfigButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.log = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,21 +73,21 @@
             this.changeConfigButton.Text = "Config";
             this.changeConfigButton.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // log
             // 
-            this.textBox1.Location = new System.Drawing.Point(353, 12);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(264, 254);
-            this.textBox1.TabIndex = 4;
+            this.log.Location = new System.Drawing.Point(353, 12);
+            this.log.Multiline = true;
+            this.log.Name = "log";
+            this.log.ReadOnly = true;
+            this.log.Size = new System.Drawing.Size(264, 254);
+            this.log.TabIndex = 4;
             // 
             // Bot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(626, 275);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.log);
             this.Controls.Add(this.changeConfigButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
@@ -107,7 +107,7 @@
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.Button changeConfigButton;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox log;
     }
 }
 
