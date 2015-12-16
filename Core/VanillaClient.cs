@@ -226,7 +226,7 @@ namespace PolskaBot.Core
         {
             while(true)
             {
-                Thread.Sleep(10000);
+                Thread.Sleep(1000);
                 SendEncoded(new Ping());
             }
         }
