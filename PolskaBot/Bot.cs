@@ -322,6 +322,12 @@ namespace PolskaBot
                     4 + Config.poizoneSize);
                 g.DrawString(cargoDetails, Config.font, new SolidBrush(Config.cargo), minimap.Width - sizeHP.Width - sizeShield.Width - sizeCargo.Width - 4 - Config.poizoneSize,
                     4 + Config.poizoneSize);
+
+                if(api.account.Cloaked)
+                {
+                    string cloaked = "Invisible";
+                    g.DrawString(cloaked, Config.font, new SolidBrush(Color.DarkGray), Config.poizoneSize + 4, minimap.Height - 16 - Config.poizoneSize);
+                }
             }
         }
 
