@@ -23,19 +23,19 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public ShipUpdated(EndianBinaryReader reader)
         {
             Damage = reader.ReadInt32();
-            Damage = (int)((uint)Damage >> 8 | Damage << 24);
+            Damage = (int)((uint)Damage >> 8 | (uint)Damage << 24);
             NanoHP = reader.ReadInt32();
-            NanoHP = (int)((uint)NanoHP >> 1 | NanoHP << 31);
+            NanoHP = (int)((uint)NanoHP >> 1 | (uint)NanoHP << 31);
             Shield = reader.ReadInt32();
-            Shield = (int)(Shield << 6 | (uint)Shield >> 26);
+            Shield = (int)((uint)Shield << 6 | (uint)Shield >> 26);
             HP = reader.ReadInt32();
-            HP = (int)((uint)HP >> 7 | HP << 25);
+            HP = (int)((uint)HP >> 7 | (uint)HP << 25);
             reader.ReadUInt16(); //get into class_640
             DamageType = reader.ReadUInt16(); //
             UserID = reader.ReadInt32();
-            UserID = (int)(UserID << 6 | (uint)UserID >> 26);
+            UserID = (int)((uint)UserID << 6 | (uint)UserID >> 26);
             Name_128 = reader.ReadInt32();
-            Name_128 = (int)(Name_128 << 2 | (uint)Name_128 >> 30);
+            Name_128 = (int)((uint)Name_128 << 2 | (uint)Name_128 >> 30);
             Var_4939 = reader.ReadBoolean();
             reader.ReadUInt16();
         }
