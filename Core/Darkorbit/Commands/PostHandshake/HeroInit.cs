@@ -89,9 +89,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             UserID = UserID >> 11 | UserID << 21;
             MaxHP = reader.ReadUInt32();
             MaxHP = MaxHP >> 14 | MaxHP << 18;
-            for (int i = 0; i < reader.ReadInt32(); i++)
+            int length = reader.ReadInt32();
+            if (length > 0)
             {
-                Class326 class326 = new Class326(reader);
+                reader.ReadInt16();
+                for (int i = 0; i < length; i++)
+                {
+                    Class326 class326 = new Class326(reader);
+                }
             }
             Cloaked = reader.ReadBoolean();
             var_3378 = reader.ReadUInt32();
