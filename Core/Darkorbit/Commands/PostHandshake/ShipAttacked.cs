@@ -20,13 +20,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public ShipAttacked(EndianBinaryReader reader)
         {
             UserID = reader.ReadInt32();
-            UserID = (int)((uint)UserID >> 3 | UserID << 29);
+            UserID = (int)((uint)UserID >> 3 | (uint)UserID << 29);
             reader.ReadUInt16();
             Var_250 = reader.ReadInt32();
-            Var_250 = (int)(Var_250 << 8 | (uint)Var_250 >> 24);
+            Var_250 = (int)((uint)Var_250 << 8 | (uint)Var_250 >> 24);
             Var_2969 = reader.ReadBoolean();
             Name_128 = reader.ReadInt32();
-            Name_128 = (int)((uint)Name_128 >> 7 | Name_128 << 25);
+            Name_128 = (int)((uint)Name_128 >> 7 | (uint)Name_128 << 25);
             Var_2560 = reader.ReadBoolean();
         }
 

@@ -32,9 +32,9 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         {
             name_138 = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt16()));
             var_3378 = reader.ReadInt32();
-            var_3378 = (int)((uint)var_3378 >> 1 | var_3378 << 31);
+            var_3378 = (int)((uint)var_3378 >> 1 | (uint)var_3378 << 31);
             assetID = reader.ReadInt32();
-            assetID = (int)((uint)assetID >> 10 | assetID << 22);
+            assetID = (int)((int)(uint)assetID >> 10 | assetID << 22);
             //class_940 begin read
             reader.ReadUInt16();
             int type = reader.ReadUInt16();
@@ -46,13 +46,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             reader.ReadUInt16();
             //class_455 end read
             X = reader.ReadInt32();
-            X = (int)((uint)X >> 2 | X << 30);
+            X = (int)((uint)X >> 2 | (uint)X << 30);
             name_158 = reader.ReadInt32();
-            name_158 = (int)((uint)name_158 >> 11 | name_158 << 21);
+            name_158 = (int)((uint)name_158 >> 11 | (uint)name_158 << 21);
             name_46 = reader.ReadInt32();
-            name_46 = (int)((uint)name_46 << 9 | name_46 >> 23);
+            name_46 = (int)((uint)name_46 << 9 | (uint)name_46 >> 23);
             Y = reader.ReadInt32();
-            Y = (int)((uint)Y >> 10 | Y << 22);
+            Y = (int)((uint)Y >> 10 | (uint)Y << 22);
             var_4991 = reader.ReadBoolean();
             var_984 = reader.ReadBoolean();
             for (int i = 0; i < reader.ReadInt32(); i++)
@@ -60,7 +60,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
                 class_326 class326 = new class_326(reader);
             }
             factionID = reader.ReadInt32();
-            factionID = (int)((uint)factionID >> 3 | factionID << 29);
+            factionID = (int)((uint)factionID >> 3 | (uint)factionID << 29);
             var_1531 = reader.ReadBoolean();
             name = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt16()));
         }

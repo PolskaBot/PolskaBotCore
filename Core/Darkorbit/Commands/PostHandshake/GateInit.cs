@@ -23,23 +23,23 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public GateInit(EndianBinaryReader reader)
         {
             factionID = reader.ReadInt32();
-            factionID = (int)((uint)factionID >> 1 | factionID << 31);
+            factionID = (int)((uint)factionID >> 1 | (uint)factionID << 31);
             for (int i = 0; i < reader.ReadInt32(); i++)
             {
                 int value = reader.ReadInt32();
-                value = (int)(value << 8 | (uint)value >> 24);
+                value = (int)((uint)value << 8 | (uint)value >> 24);
                 var_2358.Add(value);
             }
             X = reader.ReadInt32();
-            X = (int)(X << 1 | (uint)X >> 31);
+            X = (int)((uint)X << 1 | (uint)X >> 31);
             gateType = reader.ReadInt32();
-            gateType = (int)((uint)gateType >> 1 | gateType << 31);
+            gateType = (int)((uint)gateType >> 1 | (uint)gateType << 31);
             var_138 = reader.ReadBoolean();
             var_4991 = reader.ReadBoolean();
             Y = reader.ReadInt32();
-            Y = (int)(Y << 3 | (uint)Y >> 29);
+            Y = (int)((uint)Y << 3 | (uint)Y >> 29);
             assetID = reader.ReadInt32();
-            assetID = (int)((uint)assetID >> 3 | assetID << 29);
+            assetID = (int)((uint)assetID >> 3 | (uint)assetID << 29);
         }
 
         public override void Write()
