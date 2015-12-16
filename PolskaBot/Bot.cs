@@ -21,6 +21,10 @@ namespace PolskaBot
         API api;
 
         Thread renderer;
+        Thread logic;
+
+        private bool running = false;
+        Random random = new Random();
 
         Tweener anim = new Tweener();
 
@@ -35,6 +39,20 @@ namespace PolskaBot
 
         private void Init()
         {
+            startButton.Click += (s, e) =>
+            {
+                startButton.Enabled = false;
+                stopButton.Enabled = true;
+                running = true;
+            };
+
+            stopButton.Click += (s, e) =>
+            {
+                startButton.Enabled = true;
+                stopButton.Enabled = false;
+                running = false;
+            };
+
             minimap.Click += (s, e) =>
             {
                 var mouse = e as MouseEventArgs;
@@ -84,6 +102,9 @@ namespace PolskaBot
             AddContextMenu();
             renderer = new Thread(new ThreadStart(Render));
             renderer.Start();
+
+            logic = new Thread(new ThreadStart(Runner));
+            logic.Start();
         }
 
         private void AddContextMenu()
@@ -112,6 +133,18 @@ namespace PolskaBot
 
             contextMenu.MenuItems.Add(drawOres);
             minimap.ContextMenu = contextMenu;
+        }
+
+        private void Runner()
+        {
+            while(true)
+            {
+                if (!running)
+                    continue;
+
+                FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
+                Thread.Sleep(1000);
+            }
         }
 
         private void Render()
