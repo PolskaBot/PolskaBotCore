@@ -76,18 +76,18 @@
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(353, 12);
+            this.log.Location = new System.Drawing.Point(12, 272);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ReadOnly = true;
-            this.log.Size = new System.Drawing.Size(264, 254);
+            this.log.Size = new System.Drawing.Size(335, 254);
             this.log.TabIndex = 4;
             // 
             // Bot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 275);
+            this.ClientSize = new System.Drawing.Size(359, 536);
             this.Controls.Add(this.log);
             this.Controls.Add(this.changeConfigButton);
             this.Controls.Add(this.stopButton);
