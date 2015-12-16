@@ -13,54 +13,54 @@ namespace PolskaBot.Core.Darkorbit
         public API api;
 
         // Website credentials
-        public string username { get; private set; }
-        public string password { get; private set; }
+        public string Username { get; private set; }
+        public string Password { get; private set; }
 
         // Server credentials
-        public int userID { get; private set; }
-        public int instanceID { get; private set; }
-        public string sid { get; private set; }
-        public string serverID { get; private set; }
-        public int mapID { get; private set; }
+        public int UserID { get; private set; }
+        public int InstanceID { get; private set; }
+        public string SID { get; private set; }
+        public string Server { get; private set; }
+        public int Map { get; private set; }
 
         // Movement
         public int X { get; set; }
         public int Y { get; set; }
-        public int targetX { get; set; }
-        public int targetY { get; set; }
-        public bool isFlying { get; set; }
+        public int TargetX { get; set; }
+        public int TargetY { get; set; }
+        public bool Flying { get; set; }
 
         // Map statistics
         public int HP { get; set; }
-        public int maxHP { get; set; }
-        public int shield { get; set; }
-        public int maxShield { get; set; }
-        public int nanoHP { get; set; }
-        public int maxNanoHP { get; set; }
-        public int freeCargoSpace { get; set; }
-        public int cargoCapacity { get; set; }
+        public int MaxHP { get; set; }
+        public int Shield { get; set; }
+        public int MaxShield { get; set; }
+        public int NanoHP { get; set; }
+        public int MaxNanoHP { get; set; }
+        public int FreeCargoSpace { get; set; }
+        public int CargoCapacity { get; set; }
 
         // Ship
-        public string shipName { get; set; }
-        public int speed { get; set; }
+        public string Shipname { get; set; }
+        public int Speed { get; set; }
 
         // Statistics
-        public bool cloaked { get; set; }
-        public float jackpot { get; set; }
-        public bool premium { get; set; }
-        public double credits { get; set; }
-        public double honor { get; set; }
-        public double uridium { get; set; }
+        public bool Cloaked { get; set; }
+        public float Jackpot { get; set; }
+        public bool Premium { get; set; }
+        public double Credits { get; set; }
+        public double Honor { get; set; }
+        public double Uridium { get; set; }
         public double XP { get; set; }
-        public int level { get; set; }
-        public int rank { get; set; }
+        public int Level { get; set; }
+        public int Rank { get; set; }
 
         // Social
-        public int clanID { get; set; }
-        public string clanTag { get; set; }
-        public uint factionID { get; set; }
+        public int ClanID { get; set; }
+        public string ClanTag { get; set; }
+        public uint FactionID { get; set; }
 
-        public bool ready { get; set; } = false;
+        public bool Ready { get; set; } = false;
 
         HttpManager httpManager;
 
@@ -79,8 +79,8 @@ namespace PolskaBot.Core.Darkorbit
 
         public void SetCredentials(string username, string password)
         {
-            this.username = username;
-            this.password = password;
+            this.Username = username;
+            this.Password = password;
         }
 
         public void Login()
@@ -94,7 +94,7 @@ namespace PolskaBot.Core.Darkorbit
                 return;
             }
 
-            string loginResponse = httpManager.Post(WebUtility.HtmlDecode(match.Groups[1].ToString()), $"username={username}&password={password}");
+            string loginResponse = httpManager.Post(WebUtility.HtmlDecode(match.Groups[1].ToString()), $"username={Username}&password={Password}");
             match = Regex.Match(loginResponse, "http://(.*).darkorbit.bigpoint.com");
 
             if (!match.Success)
@@ -103,9 +103,9 @@ namespace PolskaBot.Core.Darkorbit
                 return;
             }
 
-            serverID = match.Groups[1].ToString();
+            Server = match.Groups[1].ToString();
 
-            string mapResponse = httpManager.Get($"http://{serverID}.darkorbit.bigpoint.com/indexInternal.es?action=internalMapRevolution");
+            string mapResponse = httpManager.Get($"http://{Server}.darkorbit.bigpoint.com/indexInternal.es?action=internalMapRevolution");
             match = Regex.Match(mapResponse, "{\"pid\":([0-9]+),\"uid\":([0-9]+)[\\w,\":]+sid\":\"([0-9a-z]+)\"");
 
             if (!match.Success)
@@ -114,11 +114,11 @@ namespace PolskaBot.Core.Darkorbit
                 return;
             }
 
-            instanceID = int.Parse(match.Groups[1].ToString());
-            userID = int.Parse(match.Groups[2].ToString());
-            sid = match.Groups[3].ToString();
+            InstanceID = int.Parse(match.Groups[1].ToString());
+            UserID = int.Parse(match.Groups[2].ToString());
+            SID = match.Groups[3].ToString();
             match = Regex.Match(mapResponse, "mapID\": \"([0-9]*)\"");
-            mapID = int.Parse(match.Groups[1].ToString());
+            Map = int.Parse(match.Groups[1].ToString());
 
             LoginSucceed?.Invoke(this, EventArgs.Empty);
         }

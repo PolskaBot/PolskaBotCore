@@ -66,8 +66,8 @@ namespace PolskaBot.Core
         public string GetIP()
         {
             var webClient = new WebClient();
-            var response = webClient.DownloadString($"http://{account.serverID}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
-            var match = Regex.Match(response, $"<map id=\"{account.mapID}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
+            var response = webClient.DownloadString($"http://{account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
+            var match = Regex.Match(response, $"<map id=\"{account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
             return match.Groups[1].ToString();
         }
     }

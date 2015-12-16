@@ -94,7 +94,7 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(api.account.userID, api.account.sid, 0, api.account.instanceID));
+                        SendEncoded(new Login(api.account.UserID, api.account.SID, 0, api.account.InstanceID));
                         SendEncoded(new Ready());
                         SendEncoded(new InitPacket(1));
                         SendEncoded(new InitPacket(2));
@@ -117,35 +117,35 @@ namespace PolskaBot.Core
 
                     // Map statistics
                     api.account.HP = (int)heroInit.hp;
-                    api.account.maxHP = (int)heroInit.maxHP;
-                    api.account.shield = (int)heroInit.shield;
-                    api.account.maxShield = (int)heroInit.maxShield;
-                    api.account.nanoHP = (int)heroInit.nanoHP;
-                    api.account.maxNanoHP = (int)heroInit.maxNanoHP;
-                    api.account.freeCargoSpace = (int)heroInit.freeCargoSpace;
-                    api.account.cargoCapacity = (int)heroInit.freeCargoSpace;
+                    api.account.MaxHP = (int)heroInit.maxHP;
+                    api.account.Shield = (int)heroInit.shield;
+                    api.account.MaxShield = (int)heroInit.maxShield;
+                    api.account.NanoHP = (int)heroInit.nanoHP;
+                    api.account.MaxNanoHP = (int)heroInit.maxNanoHP;
+                    api.account.FreeCargoSpace = (int)heroInit.freeCargoSpace;
+                    api.account.CargoCapacity = (int)heroInit.freeCargoSpace;
 
                     // Ship
-                    api.account.shipName = heroInit.shipName;
-                    api.account.speed = (int)heroInit.speed;
+                    api.account.Shipname = heroInit.shipName;
+                    api.account.Speed = (int)heroInit.speed;
 
                     // Statistics
-                    api.account.cloaked = heroInit.cloaked;
-                    api.account.jackpot = heroInit.jackpot;
-                    api.account.premium = heroInit.premium;
-                    api.account.credits = heroInit.credits;
-                    api.account.honor = heroInit.honor;
-                    api.account.uridium = heroInit.uridium;
+                    api.account.Cloaked = heroInit.cloaked;
+                    api.account.Jackpot = heroInit.jackpot;
+                    api.account.Premium = heroInit.premium;
+                    api.account.Credits = heroInit.credits;
+                    api.account.Honor = heroInit.honor;
+                    api.account.Uridium = heroInit.uridium;
                     api.account.XP = heroInit.XP;
-                    api.account.level = (int)heroInit.level;
-                    api.account.rank = (int)heroInit.rank;
+                    api.account.Level = (int)heroInit.level;
+                    api.account.Rank = (int)heroInit.rank;
 
                     // Social
-                    api.account.clanID = (int)heroInit.clanID;
-                    api.account.clanTag = heroInit.clanTag;
-                    api.account.factionID = heroInit.factionID;
+                    api.account.ClanID = (int)heroInit.clanID;
+                    api.account.ClanTag = heroInit.clanTag;
+                    api.account.FactionID = heroInit.factionID;
 
-                    api.account.ready = true;
+                    api.account.Ready = true;
                     break;
                 case ShipUpdated.ID:
                     ShipUpdated shipUpdated = new ShipUpdated(fadeReader);
@@ -159,24 +159,24 @@ namespace PolskaBot.Core
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
                     Ship newShip = new Ship();
-                    newShip.userID = (int)shipInit.userID;
-                    newShip.userName = shipInit.userName;
-                    newShip.npc = shipInit.npc;
+                    newShip.UserID = (int)shipInit.userID;
+                    newShip.Username = shipInit.userName;
+                    newShip.NPC = shipInit.npc;
 
                     // Movement
                     newShip.X = shipInit.x;
                     newShip.Y = shipInit.y;
 
                     // Ship
-                    newShip.shipName = shipInit.shipName;
+                    newShip.Shipname = shipInit.shipName;
 
                     // Statistics
-                    newShip.cloaked = shipInit.cloaked;
+                    newShip.Cloaked = shipInit.cloaked;
 
                     // Social
-                    newShip.clanID = (int)shipInit.clanID;
-                    newShip.clanTag = shipInit.clanTag;
-                    newShip.factionID = (int)shipInit.factionID;
+                    newShip.ClanID = (int)shipInit.clanID;
+                    newShip.ClanTag = shipInit.clanTag;
+                    newShip.FactionID = (int)shipInit.factionID;
                     api.ships.Add(newShip);
                     break;
                 case ShipMove.ID:
@@ -190,14 +190,14 @@ namespace PolskaBot.Core
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(fadeReader);
                     lock(api.boxes)
-                        api.boxes.RemoveAll(box => box.hash == item.hash);
+                        api.boxes.RemoveAll(box => box.Hash == item.hash);
                     lock(api.ores)
-                        api.ores.RemoveAll(ore => ore.hash == item.hash);
+                        api.ores.RemoveAll(ore => ore.Hash == item.hash);
                     break;
                 case DestroyShip.ID:
                     DestroyShip destroyedShip = new DestroyShip(fadeReader);
                     lock(api.ships)
-                        api.ships.RemoveAll(ship => ship.userID == destroyedShip.userID);
+                        api.ships.RemoveAll(ship => ship.UserID == destroyedShip.userID);
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(fadeReader);

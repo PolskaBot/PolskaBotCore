@@ -10,12 +10,12 @@ namespace PolskaBot.Core.Darkorbit
     public class Gate
     {
         public int ID { get; set; }
-        public Point pos { get; set; }
+        public Point Position { get; set; }
 
         public Gate(int ID, int x, int y)
         {
             this.ID = ID;
-            pos = new Point(x, y);
+            Position = new Point(x, y);
         }
     }
 }
