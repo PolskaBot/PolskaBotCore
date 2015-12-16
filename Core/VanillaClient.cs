@@ -18,6 +18,7 @@ namespace PolskaBot.Core
 
         public event EventHandler<EventArgs> Compatible;
         public event EventHandler<EventArgs> NotCompatible;
+        public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
 
         public VanillaClient(API api) : base(api)
@@ -155,6 +156,7 @@ namespace PolskaBot.Core
                     break;
                 case ShipAttacked.ID:
                     ShipAttacked shipAttacked = new ShipAttacked(fadeReader);
+                    Attacked?.Invoke(this, shipAttacked);
                     break;
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);

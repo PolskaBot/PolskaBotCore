@@ -51,6 +51,13 @@ namespace PolskaBot
 
             api.vanillaClient.Compatible += (s, e) => Log("Bot is compatible");
             api.vanillaClient.NotCompatible += (s, e) => Log("Bot is not compatible. Check forums for new version");
+
+            api.vanillaClient.Attacked += (s, e) =>
+            {
+                var targetGate = api.gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.account.X, 2) + Math.Pow(gate.Position.Y - api.account.Y, 2))).First();
+                FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
+            };
+
             api.vanillaClient.ShipMoving += (s, e) =>
             {
                 lock(api.ships)
