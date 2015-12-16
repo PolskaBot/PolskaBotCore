@@ -226,7 +226,13 @@ namespace PolskaBot
                 });
                 Thread.Sleep(1000 / Config.FPS);
                 stopwatch.Stop();
-                anim.Update(stopwatch.ElapsedMilliseconds);
+                try
+                {
+                    anim.Update(stopwatch.ElapsedMilliseconds);
+                } catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 
