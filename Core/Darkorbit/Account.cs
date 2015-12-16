@@ -91,6 +91,12 @@ namespace PolskaBot.Core.Darkorbit
             MaxNanoHP = maxNanoHP;
         }
 
+        public void UpdateShield(int shield, int maxShield)
+        {
+            Shield = shield;
+            MaxShield = maxShield;
+        }
+
         public void UpdateHitpointsAndShield(int hp, int shield, int nanoHP)
         {
             HP = hp;
