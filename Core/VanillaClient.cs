@@ -152,9 +152,12 @@ namespace PolskaBot.Core
                     ShipUpdated shipUpdated = new ShipUpdated(fadeReader);
                     api.account.UpdateHitpointsAndShield(shipUpdated.HP, shipUpdated.Shield, shipUpdated.NanoHP);
                     break;
-                case ShipRepaired.ID:
-                    ShipRepaired shipRepaired = new ShipRepaired(fadeReader);
-                    api.account.UpdateHitpoints(shipRepaired.HP, shipRepaired.MaxHP, shipRepaired.NanoHP, shipRepaired.MaxNanoHP);
+                case ShieldUpdated.ID:
+                    ShieldUpdated shieldUpdated = new ShieldUpdated(fadeReader);
+                    break;
+                case HitpointsUpdated.ID:
+                    HitpointsUpdated hitpointsUpdated = new HitpointsUpdated(fadeReader);
+                    api.account.UpdateHitpoints(hitpointsUpdated.HP, hitpointsUpdated.MaxHP, hitpointsUpdated.NanoHP, hitpointsUpdated.MaxNanoHP);
                     break;
                 case ShipAttacked.ID:
                     ShipAttacked shipAttacked = new ShipAttacked(fadeReader);

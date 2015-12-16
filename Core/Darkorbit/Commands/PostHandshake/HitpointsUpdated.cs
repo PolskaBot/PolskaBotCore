@@ -7,7 +7,7 @@ using MiscUtil.IO;
 
 namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class ShipRepaired : Command
+    class HitpointsUpdated : Command
     {
         public const ushort ID = 19181;
 
@@ -16,7 +16,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public int NanoHP { get; private set; }
         public int MaxNanoHP { get; private set; }
 
-        public ShipRepaired(EndianBinaryReader reader)
+        public HitpointsUpdated(EndianBinaryReader reader)
         {
             HP = reader.ReadInt32();
             HP = (int)((uint)HP << 5 | (uint)HP >> 27);
