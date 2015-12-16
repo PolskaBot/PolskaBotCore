@@ -89,7 +89,9 @@ namespace PolskaBot
                 {
                     try
                     {
-                        anim.Tween(api.ships.Find(ship => ship.UserID == e.UserID), new { X = e.X, Y = e.Y }, e.Duration);
+                        var target = api.ships.Find(ship => ship.UserID == e.UserID);
+                        if(target != null)
+                            anim.Tween(api.ships.Find(ship => ship.UserID == e.UserID), new { X = e.X, Y = e.Y }, e.Duration);
                     }
                     catch (Exception ex)
                     {
