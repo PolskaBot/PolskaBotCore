@@ -154,6 +154,7 @@ namespace PolskaBot.Core
                     break;
                 case ShieldUpdated.ID:
                     ShieldUpdated shieldUpdated = new ShieldUpdated(fadeReader);
+                    api.account.UpdateShield(shieldUpdated.Shield, shieldUpdated.MaxShield);
                     break;
                 case HitpointsUpdated.ID:
                     HitpointsUpdated hitpointsUpdated = new HitpointsUpdated(fadeReader);
