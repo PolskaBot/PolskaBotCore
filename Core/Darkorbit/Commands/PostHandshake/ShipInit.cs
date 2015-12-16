@@ -14,8 +14,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public bool var_4559 { get; private set; }
         public uint var_3834 { get; private set; }
         public uint var_3378 { get; private set; }
-        public uint x { get; private set; }
-        public uint y { get; private set; }
+        public int x { get; private set; }
+        public int y { get; private set; }
         public uint clanID { get; private set; } //name_46
         public bool cloaked { get; private set; }
         //public var name_148:package_38.class_940;
@@ -34,8 +34,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public ShipInit(EndianBinaryReader reader)
         {
-            x = reader.ReadUInt32();
-            x = x << 2 | x >> 30;
+            x = reader.ReadInt32();
+            x = (int)((uint)x << 2 | (uint)x >> 30);
             var_2597 = reader.ReadUInt32();
             var_2597 = var_2597 << 9 | var_2597 >> 23;
             userName = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
@@ -69,8 +69,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             }
             rank = reader.ReadUInt32();
             rank = rank << 3 | rank >> 29;
-            y = reader.ReadUInt32();
-            y = y <<  15 | y >> 17;
+            y = reader.ReadInt32();
+            y = (int)((uint)y <<  15 | (uint)y >> 17);
             shipName = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
 

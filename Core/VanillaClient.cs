@@ -112,8 +112,8 @@ namespace PolskaBot.Core
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
                     // Movement
-                    api.account.X = (int)heroInit.x;
-                    api.account.Y = (int)heroInit.y;
+                    api.account.X = heroInit.x;
+                    api.account.Y = heroInit.y;
 
                     // Map statistics
                     api.account.HP = (int)heroInit.hp;
@@ -164,8 +164,8 @@ namespace PolskaBot.Core
                     newShip.npc = shipInit.npc;
 
                     // Movement
-                    newShip.X = (int)shipInit.x;
-                    newShip.Y = (int)shipInit.y;
+                    newShip.X = shipInit.x;
+                    newShip.Y = shipInit.y;
 
                     // Ship
                     newShip.shipName = shipInit.shipName;
@@ -185,7 +185,7 @@ namespace PolskaBot.Core
                     break;
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(fadeReader);
-                    api.boxes.Add(new Box(boxInit.hash, (int)boxInit.x, (int)boxInit.y, boxInit.type));
+                    api.boxes.Add(new Box(boxInit.hash, boxInit.x, boxInit.y, boxInit.type));
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(fadeReader);
@@ -201,7 +201,7 @@ namespace PolskaBot.Core
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(fadeReader);
-                    api.ores.Add(new Ore(oreInit.hash, (int)oreInit.x, (int)oreInit.y, oreInit.type));
+                    api.ores.Add(new Ore(oreInit.hash, oreInit.x, oreInit.y, oreInit.type));
                     break;
                 case 29794:
                     Console.WriteLine("Received pong");
