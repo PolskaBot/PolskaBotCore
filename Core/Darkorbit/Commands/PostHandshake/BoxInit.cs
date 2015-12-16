@@ -12,18 +12,18 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public const ushort ID = 20862;
 
         public string hash { get; private set; }
-        public uint x { get; private set; }
-        public uint y { get; private set; }
+        public int x { get; private set; }
+        public int y { get; private set; }
         public string type { get; private set; }
 
         public BoxInit(EndianBinaryReader reader)
         {
-            x = reader.ReadUInt32();
-            x = x << 5 | x >> 27;
+            x = reader.ReadInt32();
+            x = (int)((uint)x << 5 | (uint)x >> 27);
             reader.ReadInt16();
             hash = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            y = reader.ReadUInt32();
-            y = y << 3 | y >> 29;
+            y = reader.ReadInt32();
+            y = (int)((uint)y << 3 | (uint)y >> 29);
             type = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
 

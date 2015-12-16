@@ -26,8 +26,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public uint speed { get; private set; }
         public uint cargoCapacity { get; private set; } //var_3017
         public uint shield { get; private set; }
-        public uint x { get; private set; }
-        public uint y { get; private set; }
+        public int x { get; private set; }
+        public int y { get; private set; }
         public uint userID { get; private set; } //name_125
         public uint var_3378 { get; private set; }
         public uint galaxyGatesDone { get; private set; } //var_3911
@@ -45,61 +45,61 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public HeroInit(EndianBinaryReader reader)
         {
-            this.cargoCapacity = reader.ReadUInt32();
-            this.cargoCapacity = this.cargoCapacity << 12 | this.cargoCapacity >> 20;
-            this.speed = reader.ReadUInt32();
-            this.speed = this.speed << 11 | this.speed >> 21;
-            this.userName = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            this.var_4831 = reader.ReadBoolean();
-            this.hp = reader.ReadUInt32();
-            this.hp = this.hp >> 1 | this.hp << 31;
-            this.jackpot = reader.ReadSingle();
-            this.premium = reader.ReadBoolean();
-            this.clanID = reader.ReadUInt32();
-            this.clanID = this.clanID << 11 | this.clanID >> 21;
-            this.y = reader.ReadUInt32();
-            this.y = this.y >> 6 | this.y << 26;
-            this.shipName = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            this.shield = reader.ReadUInt32();
-            this.shield = this.shield << 9 | this.shield >> 23;
-            this.galaxyGatesDone = reader.ReadUInt32();
-            this.galaxyGatesDone = this.galaxyGatesDone >> 5 | this.galaxyGatesDone << 27;
+            cargoCapacity = reader.ReadUInt32();
+            cargoCapacity = cargoCapacity << 12 | cargoCapacity >> 20;
+            speed = reader.ReadUInt32();
+            speed = speed << 11 | speed >> 21;
+            userName = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            var_4831 = reader.ReadBoolean();
+            hp = reader.ReadUInt32();
+            hp = hp >> 1 | hp << 31;
+            jackpot = reader.ReadSingle();
+            premium = reader.ReadBoolean();
+            clanID = reader.ReadUInt32();
+            clanID = clanID << 11 | clanID >> 21;
+            y = reader.ReadInt32();
+            y = (int)((uint)y >> 6 | (uint)y << 26);
+            shipName = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            shield = reader.ReadUInt32();
+            shield = shield << 9 | shield >> 23;
+            galaxyGatesDone = reader.ReadUInt32();
+            galaxyGatesDone = galaxyGatesDone >> 5 | galaxyGatesDone << 27;
             reader.ReadInt16();
-            this.clanTag = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            this.mapId = reader.ReadUInt32();
-            this.mapId = this.mapId << 14 | this.mapId >> 18;
-            this.maxShield = reader.ReadUInt32();
-            this.maxShield = this.maxShield >> 9 | this.maxShield << 23;
-            this.level = reader.ReadUInt32();
-            this.level = this.level << 7 | this.level >> 25;
-            this.x = reader.ReadUInt32();
-            this.x = this.x >> 5 | this.x << 27;
-            this.XP = reader.ReadDouble();
-            this.factionID = reader.ReadUInt32();
-            this.factionID = this.factionID << 5 | this.factionID >> 27;
-            this.freeCargoSpace = reader.ReadUInt32();
-            this.freeCargoSpace = this.freeCargoSpace << 3 | this.freeCargoSpace >> 29;
-            this.honor = reader.ReadDouble();
-            this.uridium = reader.ReadDouble();
-            this.maxNanoHP = reader.ReadUInt32();
-            this.maxNanoHP = this.maxNanoHP << 5 | this.maxNanoHP >> 27;
-            this.rank = reader.ReadUInt32();
-            this.rank = this.rank >> 13 | this.rank << 19;
-            this.userID = reader.ReadUInt32();
-            this.userID = this.userID >> 11 | this.userID << 21;
-            this.maxHP = reader.ReadUInt32();
-            this.maxHP = this.maxHP >> 14 | this.maxHP << 18;
+            clanTag = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            mapId = reader.ReadUInt32();
+            mapId = mapId << 14 | mapId >> 18;
+            maxShield = reader.ReadUInt32();
+            maxShield = maxShield >> 9 | maxShield << 23;
+            level = reader.ReadUInt32();
+            level = level << 7 | level >> 25;
+            x = reader.ReadInt32();
+            x = (int)((uint)x >> 5 | (uint)x << 27);
+            XP = reader.ReadDouble();
+            factionID = reader.ReadUInt32();
+            factionID = factionID << 5 | factionID >> 27;
+            freeCargoSpace = reader.ReadUInt32();
+            freeCargoSpace = freeCargoSpace << 3 | freeCargoSpace >> 29;
+            honor = reader.ReadDouble();
+            uridium = reader.ReadDouble();
+            maxNanoHP = reader.ReadUInt32();
+            maxNanoHP = maxNanoHP << 5 | maxNanoHP >> 27;
+            rank = reader.ReadUInt32();
+            rank = rank >> 13 | rank << 19;
+            userID = reader.ReadUInt32();
+            userID = userID >> 11 | userID << 21;
+            maxHP = reader.ReadUInt32();
+            maxHP = maxHP >> 14 | maxHP << 18;
             for (int i = 0; i < reader.ReadInt32(); i++)
             {
                 class_326 class326 = new class_326(reader);
             }
-            this.cloaked = reader.ReadBoolean();
-            this.var_3378 = reader.ReadUInt32();
-            this.var_3378 = this.var_3378 << 9 | this.var_3378 >> 23;
-            this.nanoHP = reader.ReadUInt32();
-            this.nanoHP = this.nanoHP << 3 | this.nanoHP >> 29;
-            this.credits = reader.ReadDouble();
-            this.var_3674 = reader.ReadBoolean();
+            cloaked = reader.ReadBoolean();
+            var_3378 = reader.ReadUInt32();
+            var_3378 = var_3378 << 9 | var_3378 >> 23;
+            nanoHP = reader.ReadUInt32();
+            nanoHP = nanoHP << 3 | nanoHP >> 29;
+            credits = reader.ReadDouble();
+            var_3674 = reader.ReadBoolean();
         }
 
         public override void Write()
