@@ -50,8 +50,6 @@ namespace PolskaBot.Core
 
             ushort fadeID = fadeReader.ReadUInt16();
 
-            Console.WriteLine($"Started reading: {fadeID}");
-
             switch (fadeID)
             {
                 case ServerVersionCheck.ID:
@@ -222,7 +220,6 @@ namespace PolskaBot.Core
                     fadeReader.ReadBytes(fadeLength - 2);
                     break;
             }
-            Console.WriteLine("Finished reading");
         }
 
         private void PingLoop()
