@@ -79,8 +79,23 @@ namespace PolskaBot.Core.Darkorbit
 
         public void SetCredentials(string username, string password)
         {
-            this.Username = username;
-            this.Password = password;
+            Username = username;
+            Password = password;
+        }
+
+        public void UpdateHitpoints(int hp, int maxHP, int nanoHP, int maxNanoHP)
+        {
+            HP = hp;
+            MaxHP = maxHP;
+            NanoHP = nanoHP;
+            MaxNanoHP = maxNanoHP;
+        }
+
+        public void UpdateHitpointsAndShield(int hp, int shield, int nanoHP)
+        {
+            HP = hp;
+            Shield = shield;
+            NanoHP = nanoHP;
         }
 
         public void Login()
