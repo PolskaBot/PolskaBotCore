@@ -9,15 +9,15 @@ namespace PolskaBot.Core.Darkorbit
 {
     public class Box
     {
-        public string hash { get; private set; }
-        public Point pos { get; private set; }
-        public string type { get; private set; }
+        public string Hash { get; private set; }
+        public Point Position { get; private set; }
+        public string Type { get; private set; }
 
         public Box(string hash, int x, int y, string type)
         {
-            this.hash = hash;
-            pos = new Point(x, y);
-            this.type = type;
+            Hash = hash;
+            Position = new Point(x, y);
+            Type = type;
         }
     }
 }

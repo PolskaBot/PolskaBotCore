@@ -11,13 +11,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 14332;
 
-        public uint userID { get; private set; }
+        public uint UserID { get; private set; }
 
         public DestroyShip(EndianBinaryReader reader)
         {
             reader.ReadInt16();
-            userID = reader.ReadUInt32();
-            userID = userID << 9 | userID >> 23;
+            UserID = reader.ReadUInt32();
+            UserID = UserID << 9 | UserID >> 23;
         }
 
         public override void Write()

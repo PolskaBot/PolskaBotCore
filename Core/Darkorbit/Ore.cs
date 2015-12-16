@@ -9,21 +9,20 @@ namespace PolskaBot.Core.Darkorbit
 {
     public class Ore
     {
+        public string Hash { get; private set; }
+        public Point Position { get; private set; }
+        public OreType Type { get; private set; }
 
-        public string hash { get; private set; }
-        public Point pos { get; private set; }
-        public Type type { get; private set; }
-
-        public enum Type
+        public enum OreType
         {
             PROMETIUM, ENDURIUM, TERBIUM, XENOMIT, PROMETID, DURANIUM, PROMERIUM, SEPROM, PALLADIUM
         }
 
         public Ore(string hash, int x, int y, int type)
         {
-            this.hash = hash;
-            pos = new Point(x, y);
-            this.type = (Type)type;
+            Hash = hash;
+            Position = new Point(x, y);
+            Type = (OreType)type;
         }
     }
 }

@@ -9,24 +9,24 @@ namespace PolskaBot.Core.Darkorbit
     public class Ship
     {
 
-        public int userID { get; set; }
-        public string userName { get; set; }
-        public bool npc { get; set; }
+        public int UserID { get; set; }
+        public string Username { get; set; }
+        public bool NPC { get; set; }
 
         // Movement
         public int X { get; set; }
         public int Y { get; set; }
 
         // Ship
-        public string shipName { get; set; }
+        public string Shipname { get; set; }
 
         //Statistics
-        public bool cloaked { get; set; }
+        public bool Cloaked { get; set; }
 
         // Social
-        public int clanID { get; set; }
-        public string clanTag { get; set; }
-        public int factionID { get; set; }
+        public int ClanID { get; set; }
+        public string ClanTag { get; set; }
+        public int FactionID { get; set; }
 
     }
 }

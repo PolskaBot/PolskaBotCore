@@ -94,7 +94,7 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(api.account.userID, api.account.sid, 0, api.account.instanceID));
+                        SendEncoded(new Login(api.account.UserID, api.account.SID, 0, api.account.InstanceID));
                         SendEncoded(new Ready());
                         SendEncoded(new InitPacket(1));
                         SendEncoded(new InitPacket(2));
@@ -103,49 +103,49 @@ namespace PolskaBot.Core
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(fadeReader);
-                    api.buildings.Add(new Building(buildingInit.name, buildingInit.X, buildingInit.Y));
+                    api.buildings.Add(new Building(buildingInit.Name, buildingInit.X, buildingInit.Y));
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(fadeReader);
-                    api.gates.Add(new Gate(gateInit.gateType, gateInit.X, gateInit.Y));
+                    api.gates.Add(new Gate(gateInit.GateType, gateInit.X, gateInit.Y));
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
                     // Movement
-                    api.account.X = heroInit.x;
-                    api.account.Y = heroInit.y;
+                    api.account.X = heroInit.X;
+                    api.account.Y = heroInit.Y;
 
                     // Map statistics
-                    api.account.HP = (int)heroInit.hp;
-                    api.account.maxHP = (int)heroInit.maxHP;
-                    api.account.shield = (int)heroInit.shield;
-                    api.account.maxShield = (int)heroInit.maxShield;
-                    api.account.nanoHP = (int)heroInit.nanoHP;
-                    api.account.maxNanoHP = (int)heroInit.maxNanoHP;
-                    api.account.freeCargoSpace = (int)heroInit.freeCargoSpace;
-                    api.account.cargoCapacity = (int)heroInit.freeCargoSpace;
+                    api.account.HP = (int)heroInit.HP;
+                    api.account.MaxHP = (int)heroInit.MaxHP;
+                    api.account.Shield = (int)heroInit.Shield;
+                    api.account.MaxShield = (int)heroInit.MaxShield;
+                    api.account.NanoHP = (int)heroInit.NanoHP;
+                    api.account.MaxNanoHP = (int)heroInit.MaxNanoHP;
+                    api.account.FreeCargoSpace = (int)heroInit.FreeCargoSpace;
+                    api.account.CargoCapacity = (int)heroInit.FreeCargoSpace;
 
                     // Ship
-                    api.account.shipName = heroInit.shipName;
-                    api.account.speed = (int)heroInit.speed;
+                    api.account.Shipname = heroInit.Shipname;
+                    api.account.Speed = (int)heroInit.Speed;
 
                     // Statistics
-                    api.account.cloaked = heroInit.cloaked;
-                    api.account.jackpot = heroInit.jackpot;
-                    api.account.premium = heroInit.premium;
-                    api.account.credits = heroInit.credits;
-                    api.account.honor = heroInit.honor;
-                    api.account.uridium = heroInit.uridium;
+                    api.account.Cloaked = heroInit.Cloaked;
+                    api.account.Jackpot = heroInit.Jackpot;
+                    api.account.Premium = heroInit.Premium;
+                    api.account.Credits = heroInit.Credits;
+                    api.account.Honor = heroInit.Honor;
+                    api.account.Uridium = heroInit.Uridium;
                     api.account.XP = heroInit.XP;
-                    api.account.level = (int)heroInit.level;
-                    api.account.rank = (int)heroInit.rank;
+                    api.account.Level = (int)heroInit.Level;
+                    api.account.Rank = (int)heroInit.Rank;
 
                     // Social
-                    api.account.clanID = (int)heroInit.clanID;
-                    api.account.clanTag = heroInit.clanTag;
-                    api.account.factionID = heroInit.factionID;
+                    api.account.ClanID = (int)heroInit.ClanID;
+                    api.account.ClanTag = heroInit.ClanTag;
+                    api.account.FactionID = heroInit.FactionID;
 
-                    api.account.ready = true;
+                    api.account.Ready = true;
                     break;
                 case ShipUpdated.ID:
                     ShipUpdated shipUpdated = new ShipUpdated(fadeReader);
@@ -159,24 +159,24 @@ namespace PolskaBot.Core
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
                     Ship newShip = new Ship();
-                    newShip.userID = (int)shipInit.userID;
-                    newShip.userName = shipInit.userName;
-                    newShip.npc = shipInit.npc;
+                    newShip.UserID = (int)shipInit.UserID;
+                    newShip.Username = shipInit.Username;
+                    newShip.NPC = shipInit.NPC;
 
                     // Movement
-                    newShip.X = shipInit.x;
-                    newShip.Y = shipInit.y;
+                    newShip.X = shipInit.X;
+                    newShip.Y = shipInit.Y;
 
                     // Ship
-                    newShip.shipName = shipInit.shipName;
+                    newShip.Shipname = shipInit.Shipname;
 
                     // Statistics
-                    newShip.cloaked = shipInit.cloaked;
+                    newShip.Cloaked = shipInit.Cloaked;
 
                     // Social
-                    newShip.clanID = (int)shipInit.clanID;
-                    newShip.clanTag = shipInit.clanTag;
-                    newShip.factionID = (int)shipInit.factionID;
+                    newShip.ClanID = (int)shipInit.ClanID;
+                    newShip.ClanTag = shipInit.ClanTag;
+                    newShip.FactionID = (int)shipInit.FactionID;
                     api.ships.Add(newShip);
                     break;
                 case ShipMove.ID:
@@ -185,23 +185,23 @@ namespace PolskaBot.Core
                     break;
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(fadeReader);
-                    api.boxes.Add(new Box(boxInit.hash, boxInit.x, boxInit.y, boxInit.type));
+                    api.boxes.Add(new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type));
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(fadeReader);
                     lock(api.boxes)
-                        api.boxes.RemoveAll(box => box.hash == item.hash);
+                        api.boxes.RemoveAll(box => box.Hash == item.Hash);
                     lock(api.ores)
-                        api.ores.RemoveAll(ore => ore.hash == item.hash);
+                        api.ores.RemoveAll(ore => ore.Hash == item.Hash);
                     break;
                 case DestroyShip.ID:
                     DestroyShip destroyedShip = new DestroyShip(fadeReader);
                     lock(api.ships)
-                        api.ships.RemoveAll(ship => ship.userID == destroyedShip.userID);
+                        api.ships.RemoveAll(ship => ship.UserID == destroyedShip.UserID);
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(fadeReader);
-                    api.ores.Add(new Ore(oreInit.hash, oreInit.x, oreInit.y, oreInit.type));
+                    api.ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
                     break;
                 case 29794:
                     Console.WriteLine("Received pong");
@@ -211,7 +211,7 @@ namespace PolskaBot.Core
                     break;
                 case OldStylePacket.ID:
                     OldStylePacket oldStylePacket = new OldStylePacket(fadeReader);
-                    Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.message);
+                    Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.Message);
                     break;
                 default:
                     Console.WriteLine("Received packet of ID {0} with total size of {1} which is not supported", fadeID, fadeLength + 4);

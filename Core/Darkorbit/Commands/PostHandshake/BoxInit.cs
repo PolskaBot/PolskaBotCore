@@ -11,20 +11,20 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 20862;
 
-        public string hash { get; private set; }
-        public int x { get; private set; }
-        public int y { get; private set; }
-        public string type { get; private set; }
+        public string Hash { get; private set; }
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public string Type { get; private set; }
 
         public BoxInit(EndianBinaryReader reader)
         {
-            x = reader.ReadInt32();
-            x = (int)((uint)x << 5 | (uint)x >> 27);
+            X = reader.ReadInt32();
+            X = (int)((uint)X << 5 | (uint)X >> 27);
             reader.ReadInt16();
-            hash = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
-            y = reader.ReadInt32();
-            y = (int)((uint)y << 3 | (uint)y >> 29);
-            type = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            Hash = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            Y = reader.ReadInt32();
+            Y = (int)((uint)Y << 3 | (uint)Y >> 29);
+            Type = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
 
         public override void Write()

@@ -38,7 +38,7 @@ namespace PolskaBot
             minimap.Click += (s, e) =>
             {
                 var mouse = e as MouseEventArgs;
-                if (api.account.ready && mouse.Button == MouseButtons.Left)
+                if (api.account.Ready && mouse.Button == MouseButtons.Left)
                 {
                     FlyWithAnimation(ReverseScale(mouse.X - 10), ReverseScale(mouse.Y - 10));
                 }
@@ -57,7 +57,7 @@ namespace PolskaBot
                 {
                     try
                     {
-                        anim.Tween(api.ships.Find(ship => ship.userID == e.player), new { X = e.x, Y = e.y }, e.duration);
+                        anim.Tween(api.ships.Find(ship => ship.UserID == e.UserID), new { X = e.X, Y = e.Y }, e.Duration);
                     }
                     catch (Exception ex)
                     {
@@ -183,39 +183,39 @@ namespace PolskaBot
 
         private void DrawBox(Graphics g, Box box)
         {
-            g.DrawRectangle(new Pen(Config.box), new Rectangle(Scale(box.pos.X), Scale(box.pos.Y), 1, 1));
+            g.DrawRectangle(new Pen(Config.box), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
         }
 
         private void DrawOre(Graphics g, Ore ore)
         {
             if (!Properties.Settings.Default.DrawOres)
                 return;
-            switch(ore.type)
+            switch(ore.Type)
             {
-                case Ore.Type.PROMETIUM:
-                    g.DrawRectangle(new Pen(Config.prometium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                case Ore.OreType.PROMETIUM:
+                    g.DrawRectangle(new Pen(Config.prometium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
-                case Ore.Type.ENDURIUM:
-                    g.DrawRectangle(new Pen(Config.endurium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                case Ore.OreType.ENDURIUM:
+                    g.DrawRectangle(new Pen(Config.endurium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
-                case Ore.Type.TERBIUM:
-                    g.DrawRectangle(new Pen(Config.terbium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                case Ore.OreType.TERBIUM:
+                    g.DrawRectangle(new Pen(Config.terbium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
-                case Ore.Type.PALLADIUM:
-                    g.DrawRectangle(new Pen(Config.palladium), new Rectangle(Scale(ore.pos.X), Scale(ore.pos.Y), 1, 1));
+                case Ore.OreType.PALLADIUM:
+                    g.DrawRectangle(new Pen(Config.palladium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
             }
         }
 
         private void DrawShip(Graphics g, Ship ship)
         {
-            if(ship.npc)
+            if(ship.NPC)
             {
                 g.DrawRectangle(new Pen(Config.npc), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
                 return;
             }
 
-            if(ship.factionID != api.account.factionID)
+            if(ship.FactionID != api.account.FactionID)
             {
                 g.DrawRectangle(new Pen(Config.enemy), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
                 return;
@@ -226,7 +226,7 @@ namespace PolskaBot
 
         private void DrawGate(Graphics g, Gate gate)
         {
-            g.DrawEllipse(new Pen(Config.gate), Scale(gate.pos.X) - 5, Scale(gate.pos.Y) - 5, 10, 10);
+            g.DrawEllipse(new Pen(Config.gate), Scale(gate.Position.X) - 5, Scale(gate.Position.Y) - 5, 10, 10);
         }
 
         private void DrawBuilding(Graphics g, Building building)
@@ -239,25 +239,25 @@ namespace PolskaBot
 
         private void DrawPlayer(Graphics g)
         {
-            if(api.account.ready)
+            if(api.account.Ready)
             {
                 g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
                 g.DrawLine(new Pen(Config.hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
 
-                if(api.account.isFlying)
+                if(api.account.Flying)
                 {
-                    g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), Scale(api.account.Y)), new Point(Scale(api.account.targetX), Scale(api.account.targetY)));
+                    g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), Scale(api.account.Y)), new Point(Scale(api.account.TargetX), Scale(api.account.TargetY)));
                 }
             }
         }
 
         private void DrawDetails(Graphics g)
         {
-            if (api.account.ready)
+            if (api.account.Ready)
             {
-                string cargoDetails = $"{api.account.cargoCapacity - api.account.freeCargoSpace}/{api.account.cargoCapacity}";
-                string hpDetails = $"{api.account.HP}/{api.account.maxHP}";
-                string shieldDetails = $"{api.account.shield}/{api.account.maxShield}";
+                string cargoDetails = $"{api.account.CargoCapacity - api.account.FreeCargoSpace}/{api.account.CargoCapacity}";
+                string hpDetails = $"{api.account.HP}/{api.account.MaxHP}";
+                string shieldDetails = $"{api.account.Shield}/{api.account.MaxShield}";
                 SizeF sizeCargo = g.MeasureString(cargoDetails, Config.font);
                 SizeF sizeHP = g.MeasureString(hpDetails, Config.font);
                 SizeF sizeShield = g.MeasureString(shieldDetails, Config.font);
@@ -286,22 +286,22 @@ namespace PolskaBot
 
         private void FlyWithAnimation(int x, int y)
         {
-            api.account.targetX = x;
-            api.account.targetY = y;
-            api.vanillaClient.SendEncoded(new Move((uint)api.account.targetX, (uint)api.account.targetY, (uint)api.account.X, (uint)api.account.Y));
+            api.account.TargetX = x;
+            api.account.TargetY = y;
+            api.vanillaClient.SendEncoded(new Move((uint)api.account.TargetX, (uint)api.account.TargetY, (uint)api.account.X, (uint)api.account.Y));
 
-            api.account.isFlying = true;
+            api.account.Flying = true;
 
-            double distance = Math.Sqrt(Math.Pow((api.account.targetX - api.account.X), 2) + Math.Pow((api.account.targetY - api.account.Y), 2));
+            double distance = Math.Sqrt(Math.Pow((api.account.TargetX - api.account.X), 2) + Math.Pow((api.account.TargetY - api.account.Y), 2));
 
-            double duration = (distance / api.account.speed);
+            double duration = (distance / api.account.Speed);
 
             float durationMS = (float)duration * 1000;
             try
             {
                 anim.TargetCancel(api.account);
-                anim.Tween(api.account, new { X = api.account.targetX, Y = api.account.targetY }, durationMS).OnComplete(
-                    new Action(() => api.account.isFlying = false
+                anim.Tween(api.account, new { X = api.account.TargetX, Y = api.account.TargetY }, durationMS).OnComplete(
+                    new Action(() => api.account.Flying = false
                     ));
             } catch(Exception ex)
             {
