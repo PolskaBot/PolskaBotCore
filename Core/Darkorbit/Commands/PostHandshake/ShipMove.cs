@@ -11,24 +11,23 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 1771;
 
-        public uint player { get; private set; } //name_125
-        public int x { get; private set; }
-        public int y { get; private set; }
-        public uint duration { get; private set; } //var_3506
+        public uint UserID { get; private set; } //name_125
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public uint Duration { get; private set; } //var_3506
 
         public ShipMove(EndianBinaryReader reader)
         {
             reader.ReadInt16();
             reader.ReadInt16();
-            y = reader.ReadInt32();
-            y = (int)((uint)y << 1 | (uint)y >> 31);
-            player = reader.ReadUInt32();
-            player = player << 10 | player >> 22;
-            x = reader.ReadInt32();
-            x = (int)((uint)x >> 6 | (uint)x << 26);
-            duration = reader.ReadUInt32();
-            duration = duration >> 11 | duration << 21;
-            Console.WriteLine("Moving to {0}, {1}", x, y);
+            Y = reader.ReadInt32();
+            Y = (int)((uint)Y << 1 | (uint)Y >> 31);
+            UserID = reader.ReadUInt32();
+            UserID = UserID << 10 | UserID >> 22;
+            X = reader.ReadInt32();
+            X = (int)((uint)X >> 6 | (uint)X << 26);
+            Duration = reader.ReadUInt32();
+            Duration = Duration >> 11 | Duration << 21;
         }
 
         public override void Write()

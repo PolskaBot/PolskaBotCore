@@ -57,7 +57,7 @@ namespace PolskaBot
                 {
                     try
                     {
-                        anim.Tween(api.ships.Find(ship => ship.UserID == e.player), new { X = e.x, Y = e.y }, e.duration);
+                        anim.Tween(api.ships.Find(ship => ship.UserID == e.UserID), new { X = e.X, Y = e.Y }, e.Duration);
                     }
                     catch (Exception ex)
                     {
@@ -192,16 +192,16 @@ namespace PolskaBot
                 return;
             switch(ore.Type)
             {
-                case Ore.Type.PROMETIUM:
+                case Ore.OreType.PROMETIUM:
                     g.DrawRectangle(new Pen(Config.prometium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
-                case Ore.Type.ENDURIUM:
+                case Ore.OreType.ENDURIUM:
                     g.DrawRectangle(new Pen(Config.endurium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
-                case Ore.Type.TERBIUM:
+                case Ore.OreType.TERBIUM:
                     g.DrawRectangle(new Pen(Config.terbium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
-                case Ore.Type.PALLADIUM:
+                case Ore.OreType.PALLADIUM:
                     g.DrawRectangle(new Pen(Config.palladium), new Rectangle(Scale(ore.Position.X), Scale(ore.Position.Y), 1, 1));
                     break;
             }

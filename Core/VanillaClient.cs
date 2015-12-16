@@ -103,47 +103,47 @@ namespace PolskaBot.Core
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(fadeReader);
-                    api.buildings.Add(new Building(buildingInit.name, buildingInit.X, buildingInit.Y));
+                    api.buildings.Add(new Building(buildingInit.Name, buildingInit.X, buildingInit.Y));
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(fadeReader);
-                    api.gates.Add(new Gate(gateInit.gateType, gateInit.X, gateInit.Y));
+                    api.gates.Add(new Gate(gateInit.GateType, gateInit.X, gateInit.Y));
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(fadeReader);
                     // Movement
-                    api.account.X = heroInit.x;
-                    api.account.Y = heroInit.y;
+                    api.account.X = heroInit.X;
+                    api.account.Y = heroInit.Y;
 
                     // Map statistics
-                    api.account.HP = (int)heroInit.hp;
-                    api.account.MaxHP = (int)heroInit.maxHP;
-                    api.account.Shield = (int)heroInit.shield;
-                    api.account.MaxShield = (int)heroInit.maxShield;
-                    api.account.NanoHP = (int)heroInit.nanoHP;
-                    api.account.MaxNanoHP = (int)heroInit.maxNanoHP;
-                    api.account.FreeCargoSpace = (int)heroInit.freeCargoSpace;
-                    api.account.CargoCapacity = (int)heroInit.freeCargoSpace;
+                    api.account.HP = (int)heroInit.HP;
+                    api.account.MaxHP = (int)heroInit.MaxHP;
+                    api.account.Shield = (int)heroInit.Shield;
+                    api.account.MaxShield = (int)heroInit.MaxShield;
+                    api.account.NanoHP = (int)heroInit.NanoHP;
+                    api.account.MaxNanoHP = (int)heroInit.MaxNanoHP;
+                    api.account.FreeCargoSpace = (int)heroInit.FreeCargoSpace;
+                    api.account.CargoCapacity = (int)heroInit.FreeCargoSpace;
 
                     // Ship
-                    api.account.Shipname = heroInit.shipName;
-                    api.account.Speed = (int)heroInit.speed;
+                    api.account.Shipname = heroInit.Shipname;
+                    api.account.Speed = (int)heroInit.Speed;
 
                     // Statistics
-                    api.account.Cloaked = heroInit.cloaked;
-                    api.account.Jackpot = heroInit.jackpot;
-                    api.account.Premium = heroInit.premium;
-                    api.account.Credits = heroInit.credits;
-                    api.account.Honor = heroInit.honor;
-                    api.account.Uridium = heroInit.uridium;
+                    api.account.Cloaked = heroInit.Cloaked;
+                    api.account.Jackpot = heroInit.Jackpot;
+                    api.account.Premium = heroInit.Premium;
+                    api.account.Credits = heroInit.Credits;
+                    api.account.Honor = heroInit.Honor;
+                    api.account.Uridium = heroInit.Uridium;
                     api.account.XP = heroInit.XP;
-                    api.account.Level = (int)heroInit.level;
-                    api.account.Rank = (int)heroInit.rank;
+                    api.account.Level = (int)heroInit.Level;
+                    api.account.Rank = (int)heroInit.Rank;
 
                     // Social
-                    api.account.ClanID = (int)heroInit.clanID;
-                    api.account.ClanTag = heroInit.clanTag;
-                    api.account.FactionID = heroInit.factionID;
+                    api.account.ClanID = (int)heroInit.ClanID;
+                    api.account.ClanTag = heroInit.ClanTag;
+                    api.account.FactionID = heroInit.FactionID;
 
                     api.account.Ready = true;
                     break;
@@ -159,24 +159,24 @@ namespace PolskaBot.Core
                 case ShipInit.ID:
                     ShipInit shipInit = new ShipInit(fadeReader);
                     Ship newShip = new Ship();
-                    newShip.UserID = (int)shipInit.userID;
-                    newShip.Username = shipInit.userName;
-                    newShip.NPC = shipInit.npc;
+                    newShip.UserID = (int)shipInit.UserID;
+                    newShip.Username = shipInit.Username;
+                    newShip.NPC = shipInit.NPC;
 
                     // Movement
-                    newShip.X = shipInit.x;
-                    newShip.Y = shipInit.y;
+                    newShip.X = shipInit.X;
+                    newShip.Y = shipInit.Y;
 
                     // Ship
-                    newShip.Shipname = shipInit.shipName;
+                    newShip.Shipname = shipInit.Shipname;
 
                     // Statistics
-                    newShip.Cloaked = shipInit.cloaked;
+                    newShip.Cloaked = shipInit.Cloaked;
 
                     // Social
-                    newShip.ClanID = (int)shipInit.clanID;
-                    newShip.ClanTag = shipInit.clanTag;
-                    newShip.FactionID = (int)shipInit.factionID;
+                    newShip.ClanID = (int)shipInit.ClanID;
+                    newShip.ClanTag = shipInit.ClanTag;
+                    newShip.FactionID = (int)shipInit.FactionID;
                     api.ships.Add(newShip);
                     break;
                 case ShipMove.ID:
@@ -185,23 +185,23 @@ namespace PolskaBot.Core
                     break;
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(fadeReader);
-                    api.boxes.Add(new Box(boxInit.hash, boxInit.x, boxInit.y, boxInit.type));
+                    api.boxes.Add(new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type));
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(fadeReader);
                     lock(api.boxes)
-                        api.boxes.RemoveAll(box => box.Hash == item.hash);
+                        api.boxes.RemoveAll(box => box.Hash == item.Hash);
                     lock(api.ores)
-                        api.ores.RemoveAll(ore => ore.Hash == item.hash);
+                        api.ores.RemoveAll(ore => ore.Hash == item.Hash);
                     break;
                 case DestroyShip.ID:
                     DestroyShip destroyedShip = new DestroyShip(fadeReader);
                     lock(api.ships)
-                        api.ships.RemoveAll(ship => ship.UserID == destroyedShip.userID);
+                        api.ships.RemoveAll(ship => ship.UserID == destroyedShip.UserID);
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(fadeReader);
-                    api.ores.Add(new Ore(oreInit.hash, oreInit.x, oreInit.y, oreInit.type));
+                    api.ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
                     break;
                 case 29794:
                     Console.WriteLine("Received pong");
@@ -211,7 +211,7 @@ namespace PolskaBot.Core
                     break;
                 case OldStylePacket.ID:
                     OldStylePacket oldStylePacket = new OldStylePacket(fadeReader);
-                    Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.message);
+                    Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.Message);
                     break;
                 default:
                     Console.WriteLine("Received packet of ID {0} with total size of {1} which is not supported", fadeID, fadeLength + 4);

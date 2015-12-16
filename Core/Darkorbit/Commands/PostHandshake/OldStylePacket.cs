@@ -11,11 +11,11 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 32601;
 
-        public string message { get; private set; }
+        public string Message { get; private set; }
 
         public OldStylePacket(EndianBinaryReader reader)
         {
-            message = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            Message = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
 
         public override void Write()
