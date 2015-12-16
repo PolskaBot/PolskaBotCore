@@ -124,7 +124,7 @@ namespace PolskaBot.Core
                     api.account.NanoHP = (int)heroInit.NanoHP;
                     api.account.MaxNanoHP = (int)heroInit.MaxNanoHP;
                     api.account.FreeCargoSpace = (int)heroInit.FreeCargoSpace;
-                    api.account.CargoCapacity = (int)heroInit.FreeCargoSpace;
+                    api.account.CargoCapacity = (int)heroInit.CargoCapacity;
 
                     // Ship
                     api.account.Shipname = heroInit.Shipname;
