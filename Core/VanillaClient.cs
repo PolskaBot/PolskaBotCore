@@ -21,6 +21,8 @@ namespace PolskaBot.Core
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
 
+        private bool locked = false;
+
         public VanillaClient(API api) : base(api)
         {
             pingThread = new Thread(new ThreadStart(PingLoop));
@@ -28,15 +30,20 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
+            locked = true; // Lock reading from fade until encoded packet has been read
             byte[] rawBuffer = command.ToArray();
             api.fadeClient.Send(new FadeEncodePacket(rawBuffer));
             byte[] encodedBuffer = new byte[rawBuffer.Length];
             api.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
+            locked = false;
             Send(encodedBuffer);
         }
 
         public override void Parse(EndianBinaryReader reader)
         {
+            if (locked)
+                return;
+
             EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, api.fadeClient.stream);
 
             byte[] lengthBuffer = reader.ReadBytes(2);
