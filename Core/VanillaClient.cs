@@ -135,7 +135,7 @@ namespace PolskaBot.Core
 
                     // Ship
                     api.account.Shipname = heroInit.Shipname;
-                    api.account.Speed = (int)heroInit.Speed;
+                    api.account.Speed = (int)(heroInit.Speed * 0.97);
 
                     // Statistics
                     api.account.Cloaked = heroInit.Cloaked;
