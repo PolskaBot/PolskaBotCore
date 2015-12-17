@@ -65,6 +65,7 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\Class326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\DestroyItem.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\DestroyShip.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\DroneFormationUpdated.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\GateInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\InitPacket.cs" />
