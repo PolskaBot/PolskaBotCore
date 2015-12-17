@@ -226,7 +226,6 @@ namespace PolskaBot.Core
                             switch(splittedMessage[2])
                             {
                                 case OldPackets.CONFIG:
-                                    Console.WriteLine("Changed config: {0}", splittedMessage[3]);
                                     api.account.Config = Convert.ToInt32(splittedMessage[3]);
                                     break;
                             }
