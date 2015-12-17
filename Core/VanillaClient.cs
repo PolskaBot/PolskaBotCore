@@ -148,6 +148,9 @@ namespace PolskaBot.Core
 
                     api.account.Ready = true;
                     break;
+                case DroneFormationUpdated.ID:
+                    DroneFormationUpdated droneFormationUpdated = new DroneFormationUpdated(fadeReader);
+                    break;
                 case ShipUpdated.ID:
                     ShipUpdated shipUpdated = new ShipUpdated(fadeReader);
                     api.account.UpdateHitpointsAndShield(shipUpdated.HP, shipUpdated.Shield, shipUpdated.NanoHP);
