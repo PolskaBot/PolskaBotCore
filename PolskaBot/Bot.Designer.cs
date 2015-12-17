@@ -40,7 +40,7 @@
             // minimap
             // 
             this.minimap.BackColor = System.Drawing.Color.Black;
-            this.minimap.Location = new System.Drawing.Point(12, 12);
+            this.minimap.Location = new System.Drawing.Point(13, 41);
             this.minimap.Name = "minimap";
             this.minimap.Size = new System.Drawing.Size(335, 222);
             this.minimap.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             // startButton
             // 
-            this.startButton.Location = new System.Drawing.Point(12, 243);
+            this.startButton.Location = new System.Drawing.Point(13, 12);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(108, 23);
             this.startButton.TabIndex = 1;
@@ -58,7 +58,7 @@
             // stopButton
             // 
             this.stopButton.Enabled = false;
-            this.stopButton.Location = new System.Drawing.Point(126, 243);
+            this.stopButton.Location = new System.Drawing.Point(127, 12);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(108, 23);
             this.stopButton.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             // changeConfigButton
             // 
-            this.changeConfigButton.Location = new System.Drawing.Point(240, 243);
+            this.changeConfigButton.Location = new System.Drawing.Point(241, 12);
             this.changeConfigButton.Name = "changeConfigButton";
             this.changeConfigButton.Size = new System.Drawing.Size(108, 23);
             this.changeConfigButton.TabIndex = 3;
@@ -76,7 +76,7 @@
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(12, 272);
+            this.log.Location = new System.Drawing.Point(12, 269);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ReadOnly = true;
@@ -87,7 +87,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(359, 536);
+            this.ClientSize = new System.Drawing.Size(358, 532);
             this.Controls.Add(this.log);
             this.Controls.Add(this.changeConfigButton);
             this.Controls.Add(this.stopButton);
