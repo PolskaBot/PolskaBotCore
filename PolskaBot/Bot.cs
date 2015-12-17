@@ -217,7 +217,8 @@ namespace PolskaBot
                     }
 
                     DrawPlayer(g);
-                    DrawDetails(g);
+                    UpdateProgressBars();
+                    //DrawDetails(g);
                 }
 
                 Invoke((MethodInvoker)delegate
@@ -235,6 +236,8 @@ namespace PolskaBot
                 }
             }
         }
+
+        #region MapDrawing
 
         private void DrawBox(Graphics g, Box box)
         {
@@ -380,8 +383,20 @@ namespace PolskaBot
             return (int)(value / Config.k);
         }
 
+        #endregion
 
         #region Controls
+
+        private void UpdateProgressBars()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                hpProgressBar.UpdateStats(api.account.HP, api.account.MaxHP);
+                shieldProgressBar.UpdateStats(api.account.Shield, api.account.MaxShield);
+                cargoProgressBar.UpdateStats(api.account.CargoCapacity - api.account.FreeCargoSpace, api.account.CargoCapacity);
+            });
+        }
+
         private void Log(string text)
         {
             Invoke((MethodInvoker)delegate
