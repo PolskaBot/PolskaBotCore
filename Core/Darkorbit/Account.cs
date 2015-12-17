@@ -43,6 +43,7 @@ namespace PolskaBot.Core.Darkorbit
         // Ship
         public string Shipname { get; set; }
         public int Speed { get; set; }
+        public int Config { get; set; }
 
         // Statistics
         public bool Cloaked { get; set; }
