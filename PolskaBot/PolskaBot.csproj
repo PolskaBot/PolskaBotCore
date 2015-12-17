@@ -55,6 +55,9 @@
     <Compile Include="Bot.Designer.cs">
       <DependentUpon>Bot.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColorProgressBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
