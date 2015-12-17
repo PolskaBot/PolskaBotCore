@@ -222,7 +222,21 @@ namespace PolskaBot.Core
                     break;
                 case OldStylePacket.ID:
                     OldStylePacket oldStylePacket = new OldStylePacket(fadeReader);
-                    Console.WriteLine("Received old style packet with message: {0}", oldStylePacket.Message);
+                    string[] splittedMessage = oldStylePacket.Message.Split('|');
+                    switch(splittedMessage[1])
+                    {
+                        case OldPackets.SELECT:
+                            switch(splittedMessage[2])
+                            {
+                                case OldPackets.CONFIG:
+                                    Console.WriteLine("Changed config: {0}", splittedMessage[3]);
+                                    break;
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Received unsupported old style packet with message: {0}", oldStylePacket.Message);
+                            break;
+                    }
                     break;
                 default:
                     Console.WriteLine("Received packet of ID {0} with total size of {1} which is not supported", fadeID, fadeLength + 4);

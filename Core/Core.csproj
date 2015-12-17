@@ -86,6 +86,7 @@
     <Compile Include="Darkorbit\Commands\ServerVersionCheck.cs" />
     <Compile Include="Darkorbit\Config.cs" />
     <Compile Include="Darkorbit\Gate.cs" />
+    <Compile Include="Darkorbit\OldPackets.cs" />
     <Compile Include="Darkorbit\Ore.cs" />
     <Compile Include="Darkorbit\Ship.cs" />
     <Compile Include="FadeClient.cs" />
