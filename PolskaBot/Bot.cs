@@ -271,7 +271,7 @@ namespace PolskaBot
 
                     DrawPlayer(g);
                     UpdateProgressBars();
-                    //DrawDetails(g);
+                    DrawDetails(g);
                 }
 
                 Invoke((MethodInvoker)delegate
@@ -381,19 +381,6 @@ namespace PolskaBot
         {
             if (api.account.Ready)
             {
-                string cargoDetails = $"{api.account.CargoCapacity - api.account.FreeCargoSpace}/{api.account.CargoCapacity}";
-                string hpDetails = $"{api.account.HP}/{api.account.MaxHP}";
-                string shieldDetails = $"{api.account.Shield}/{api.account.MaxShield}";
-                SizeF sizeCargo = g.MeasureString(cargoDetails, Config.font);
-                SizeF sizeHP = g.MeasureString(hpDetails, Config.font);
-                SizeF sizeShield = g.MeasureString(shieldDetails, Config.font);
-                g.DrawString(hpDetails, Config.font, new SolidBrush(Config.hitpoints), minimap.Width - sizeHP.Width - 4 - Config.poizoneSize,
-                    4 + Config.poizoneSize);
-                g.DrawString(shieldDetails, Config.font, new SolidBrush(Config.shield), minimap.Width - sizeHP.Width - sizeShield.Width - 4 - Config.poizoneSize,
-                    4 + Config.poizoneSize);
-                g.DrawString(cargoDetails, Config.font, new SolidBrush(Config.cargo), minimap.Width - sizeHP.Width - sizeShield.Width - sizeCargo.Width - 4 - Config.poizoneSize,
-                    4 + Config.poizoneSize);
-
                 if(api.account.Cloaked)
                 {
                     string cloaked = "Invisible";
@@ -456,6 +443,18 @@ namespace PolskaBot
 
         #region Controls
 
+        private void UpdateStats()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                statsView.Nodes.Find("UridiumNode", true).First().Text = $"Uridium: {api.account.CollectedUridium}";
+                statsView.Nodes.Find("CreditsNode", true).First().Text = $"Credits: {api.account.CollectedCredits}";
+                statsView.Nodes.Find("XPNode", true).First().Text = $"XP: {api.account.CollectedXP}";
+                statsView.Nodes.Find("HonorNode", true).First().Text = $"Honor: {api.account.CollectedHonor}";
+                statsView.Nodes.Find("EENode", true).First().Text = $"Extra energy: {api.account.CollectedEE}";
+            });
+        }
+
         private void UpdateProgressBars()
         {
             Invoke((MethodInvoker)delegate
@@ -471,6 +470,7 @@ namespace PolskaBot
             Invoke((MethodInvoker)delegate
             {
                 log?.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}\n");
+                UpdateStats();
             });
         }
         #endregion

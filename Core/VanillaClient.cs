@@ -244,7 +244,26 @@ namespace PolskaBot.Core
                                 }
                                 break;
                             case OldPackets.LOG_MESSAGE:
-                                LogMessage?.Invoke(this, $"{splittedMessage[3]} - {splittedMessage[4]}");
+                                LogMessage?.Invoke(this, "Collected box");
+                                switch(splittedMessage[3])
+                                {
+                                    case OldPackets.BOX_CONTENT_CREDITS:
+                                        api.account.CollectedCredits += double.Parse(splittedMessage[4]);
+                                        break;
+                                    case OldPackets.BOX_CONTENT_URIDIUM:
+                                        api.account.CollectedUridium += double.Parse(splittedMessage[4]);
+                                        break;
+                                    case OldPackets.BOX_CONTENT_XP:
+                                        api.account.CollectedXP += double.Parse(splittedMessage[4]);
+                                        break;
+                                    case OldPackets.BOX_CONTENT_HON:
+                                        api.account.CollectedHonor += double.Parse(splittedMessage[4]);
+                                        break;
+                                    case OldPackets.BOX_CONTENT_EE:
+                                        Console.WriteLine(splittedMessage);
+                                        api.account.CollectedEE++;
+                                        break;
+                                }
                                 break;
                             default:
                                 Console.WriteLine("Received unsupported old style packet with message: {0}", oldStylePacket.Message);

@@ -15,7 +15,7 @@ namespace PolskaBot.Core.Darkorbit
         public const string LOG_MESSAGE = "LM";
         public const string BOX_CONTENT_CREDITS = "CRE";
         public const string BOX_CONTENT_URIDIUM = "URI";
-        public const string BOX_CONTENT_EP = "EP";
+        public const string BOX_CONTENT_XP = "EP";
         public const string BOX_CONTENT_HON = "HON";
         public const string BOX_CONTENT_BAT = "BAT";
         public const string BOX_CONTENT_LEVEL_UP = "NL";
