@@ -29,7 +29,7 @@ namespace PolskaBot
 
             pe.Graphics.FillRectangle(new SolidBrush(PaintColor), 0, 0, fill, Size.Height);
 
-            if(fill < Size.Width/2 + size.Width/2)
+            if(float.IsNaN(fill) || fill < Size.Width/2 + size.Width/2)
             {
                 pe.Graphics.DrawString(text, font, new SolidBrush(FontSecondary), Size.Width / 2 - size.Width / 2,
                 Size.Height / 2 - size.Height / 2);
