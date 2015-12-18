@@ -16,12 +16,19 @@ using Glide;
 
 namespace PolskaBot
 {
+    public enum State
+    {
+        SearchingBox, CollectingBox
+    }
+
     public partial class Bot : Form
     {
         API api;
 
         Thread renderer;
         Thread logic;
+
+        private State state = State.SearchingBox;
 
         private bool running = false;
         Random random = new Random();
@@ -141,11 +148,50 @@ namespace PolskaBot
         {
             while(true)
             {
-                if (!running)
-                    continue;
+                if(state == State.SearchingBox && running)
+                {
+                    var nearestBox = api.boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    if (nearestBox == null)
+                    {
+                        if (api.account.Flying)
+                            Thread.Sleep(50);
+                        else
+                            FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
+                    }
+                    else
+                    {
+                        FlyWithAnimation(nearestBox.Position.X, nearestBox.Position.Y);
+                        state = State.CollectingBox;
+                        Thread.Sleep(50);
+                        continue;
+                    }
+                }
 
-                FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
-                Thread.Sleep(1000);
+                if(state == State.CollectingBox && running)
+                {
+                    if (api.account.Flying)
+                    {
+                        Thread.Sleep(50);
+                        continue;
+                    }
+
+                    var nearestBox = api.boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    if (nearestBox == null)
+                    {
+                        state = State.SearchingBox;
+                    }
+                    else
+                    {
+                        if (CalculateDistance(nearestBox.Position) < 50)
+                        {
+                            Log("Collecting box");
+                            api.boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
+                            state = State.SearchingBox;
+                        }
+                    }
+
+                    Thread.Sleep(50);
+                }
             }
         }
 
@@ -235,6 +281,21 @@ namespace PolskaBot
                     Console.WriteLine(ex);
                 }
             }
+        }
+
+        private double CalculateDistance(int x1, int y1, int x2, int y2)
+        {
+            return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
+        }
+
+        private double CalculateDistance(int x, int y)
+        {
+            return CalculateDistance(api.account.X, api.account.Y, x, y);
+        }
+
+        private double CalculateDistance(Point point)
+        {
+            return CalculateDistance(point.X, point.Y);
         }
 
         #region MapDrawing
@@ -363,12 +424,13 @@ namespace PolskaBot
             float durationMS = (float)duration * 1000;
             try
             {
-                anim.TargetCancel(api.account);
+                anim.TargetCancelAndComplete(api.account);
                 anim.Tween(api.account, new { X = api.account.TargetX, Y = api.account.TargetY }, durationMS).OnComplete(
                     new Action(() => api.account.Flying = false
                     ));
             } catch(Exception ex)
             {
+                api.account.Flying = false;
                 Console.WriteLine(ex);
             }
         }
@@ -401,7 +463,7 @@ namespace PolskaBot
         {
             Invoke((MethodInvoker)delegate
             {
-                log.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}\n");
+                log?.AppendText($"[{DateTime.Now.ToString("HH:mm:ss")}] {text}\n");
             });
         }
         #endregion
