@@ -30,14 +30,14 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
-            lock(api.fadeClient.stream)
+            byte[] rawBuffer = command.ToArray();
+            byte[] encodedBuffer = new byte[rawBuffer.Length];
+            lock (api.fadeClient.stream)
             {
-                byte[] rawBuffer = command.ToArray();
                 api.fadeClient.Send(new FadeEncodePacket(rawBuffer));
-                byte[] encodedBuffer = new byte[rawBuffer.Length];
                 api.fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
-                Send(encodedBuffer);
             }
+            Send(encodedBuffer);
         }
 
         public override void Parse(EndianBinaryReader reader)
