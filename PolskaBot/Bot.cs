@@ -184,7 +184,12 @@ namespace PolskaBot
                     {
                         if (CalculateDistance(nearestBox.Position) < 50)
                         {
-                            Log("Collecting box");
+                            var tempShipY = api.account.Y;
+                            if((api.account.X + api.account.Y + nearestBox.Position.Y) % 3 == 0)
+                            {
+                                tempShipY++;
+                            }
+                            api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.account.X, tempShipY));
                             api.boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                             state = State.SearchingBox;
                         }
