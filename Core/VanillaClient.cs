@@ -204,6 +204,7 @@ namespace PolskaBot.Core
                     case BoxInit.ID:
                         BoxInit boxInit = new BoxInit(fadeReader);
                         api.boxes.Add(new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type));
+                        //SendEncoded(new CollectBox(boxInit.Hash, boxInit.X, boxInit.Y, api.account.X, api.account.Y));
                         break;
                     case DestroyItem.ID:
                         DestroyItem item = new DestroyItem(fadeReader);
