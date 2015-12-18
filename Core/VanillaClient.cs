@@ -21,6 +21,8 @@ namespace PolskaBot.Core
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
 
+        public event EventHandler<string> LogMessage;
+
         public VanillaClient(API api) : base(api)
         {
             pingThread = new Thread(new ThreadStart(PingLoop));
@@ -240,6 +242,9 @@ namespace PolskaBot.Core
                                         api.account.Config = Convert.ToInt32(splittedMessage[3]);
                                         break;
                                 }
+                                break;
+                            case OldPackets.LOG_MESSAGE:
+                                LogMessage?.Invoke(this, $"{splittedMessage[3]} - {splittedMessage[4]}");
                                 break;
                             default:
                                 Console.WriteLine("Received unsupported old style packet with message: {0}", oldStylePacket.Message);
