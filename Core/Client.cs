@@ -23,6 +23,7 @@ namespace PolskaBot.Core
         public int port { get; set; }
 
         public event EventHandler<EventArgs> OnConnected;
+        public event EventHandler<EventArgs> Disconnected;
 
         public Client(API api)
         {
@@ -47,12 +48,24 @@ namespace PolskaBot.Core
 
         public void Send(Command command)
         {
+            if (!IsConnected())
+            {
+                Console.WriteLine("Detected disconnect (onSendCommand)");
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
             byte[] buffer = command.ToArray();
             stream.Write(buffer, 0, buffer.Length);
         }
 
         public void Send(byte[] buffer)
         {
+            if (!IsConnected())
+            {
+                Console.WriteLine("Detected disconnect (onSendBuffer)");
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
             stream.Write(buffer, 0, buffer.Length);
         }
 
@@ -60,14 +73,25 @@ namespace PolskaBot.Core
         {
             while(true)
             {
-                if (!tcpClient.Connected)
+                if (!IsConnected())
                 {
-                    return;
+                    Console.WriteLine("Detected disconnect");
+                    Disconnected?.Invoke(this, EventArgs.Empty);
+                    continue;
                 }
 
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
             }
 
+        }
+
+        private bool IsConnected()
+        {
+            try
+            {
+                return !(api.vanillaClient.tcpClient.Client.Poll(1, SelectMode.SelectRead) && api.vanillaClient.tcpClient.Client.Available == 0);
+            }
+            catch (SocketException) { return false; }
         }
 
         public abstract void Parse(EndianBinaryReader reader);
