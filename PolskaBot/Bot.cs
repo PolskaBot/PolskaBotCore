@@ -193,6 +193,9 @@ namespace PolskaBot
                 {
                     if (api.Account.Flying)
                     {
+                        var flybyBox = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                        if (CalculateDistance(flybyBox.Position) < CalculateDistance(api.Account.TargetX, api.Account.TargetY))
+                            FlyWithAnimation(flybyBox.Position.X, flybyBox.Position.Y);
                         Thread.Sleep(50);
                         continue;
                     }
