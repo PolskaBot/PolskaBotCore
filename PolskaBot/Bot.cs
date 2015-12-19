@@ -168,6 +168,7 @@ namespace PolskaBot
                     }
                     else
                     {
+                        Log($"Collecting box of type: {nearestBox.Type}");
                         FlyWithAnimation(nearestBox.Position.X, nearestBox.Position.Y);
                         state = State.CollectingBox;
                         Thread.Sleep(50);
@@ -199,8 +200,8 @@ namespace PolskaBot
                             }
                             api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.account.X, tempShipY));
                             api.boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
-                            state = State.SearchingBox;
                         }
+                        state = State.SearchingBox;
                     }
 
                     Thread.Sleep(50);
