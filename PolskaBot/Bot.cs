@@ -92,7 +92,7 @@ namespace PolskaBot
                 lock (api.ships)
                 {
                     var attacker = api.ships.Find(ship => ship.UserID == e.AttackerID);
-                    if (attacker != null && !attacker.NPC)
+                    if (attacker != null && !attacker.NPC && e.UserID == api.account.UserID)
                     {
                         var targetGate = api.gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.account.X, 2) + Math.Pow(gate.Position.Y - api.account.Y, 2))).Where(gate => gate.ID == 1).First();
                         FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
