@@ -126,7 +126,7 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageTwo initialized");
                         SendEncoded(new Ping());
-                        SendEncoded(new Login(api.account.UserID, api.account.SID, 0, api.account.InstanceID));
+                        SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
                         SendEncoded(new Ready());
                         SendEncoded(new InitPacket(1));
                         SendEncoded(new InitPacket(2));
@@ -135,64 +135,64 @@ namespace PolskaBot.Core
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(cachedReader);
-                    api.buildings.Add(new Building(buildingInit.Name, buildingInit.X, buildingInit.Y));
+                    api.Buildings.Add(new Building(buildingInit.Name, buildingInit.X, buildingInit.Y));
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(cachedReader);
-                    api.gates.Add(new Gate(gateInit.GateType, gateInit.X, gateInit.Y));
+                    api.Gates.Add(new Gate(gateInit.GateType, gateInit.X, gateInit.Y));
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(cachedReader);
                     // Movement
-                    api.account.X = heroInit.X;
-                    api.account.Y = heroInit.Y;
+                    api.Account.X = heroInit.X;
+                    api.Account.Y = heroInit.Y;
 
                     // Map statistics
-                    api.account.HP = (int)heroInit.HP;
-                    api.account.MaxHP = (int)heroInit.MaxHP;
-                    api.account.Shield = (int)heroInit.Shield;
-                    api.account.MaxShield = (int)heroInit.MaxShield;
-                    api.account.NanoHP = (int)heroInit.NanoHP;
-                    api.account.MaxNanoHP = (int)heroInit.MaxNanoHP;
-                    api.account.FreeCargoSpace = (int)heroInit.FreeCargoSpace;
-                    api.account.CargoCapacity = (int)heroInit.CargoCapacity;
+                    api.Account.HP = (int)heroInit.HP;
+                    api.Account.MaxHP = (int)heroInit.MaxHP;
+                    api.Account.Shield = (int)heroInit.Shield;
+                    api.Account.MaxShield = (int)heroInit.MaxShield;
+                    api.Account.NanoHP = (int)heroInit.NanoHP;
+                    api.Account.MaxNanoHP = (int)heroInit.MaxNanoHP;
+                    api.Account.FreeCargoSpace = (int)heroInit.FreeCargoSpace;
+                    api.Account.CargoCapacity = (int)heroInit.CargoCapacity;
 
                     // Ship
-                    api.account.Shipname = heroInit.Shipname;
-                    api.account.Speed = (int)(heroInit.Speed * 0.97);
+                    api.Account.Shipname = heroInit.Shipname;
+                    api.Account.Speed = (int)(heroInit.Speed * 0.97);
 
                     // Statistics
-                    api.account.Cloaked = heroInit.Cloaked;
-                    api.account.Jackpot = heroInit.Jackpot;
-                    api.account.Premium = heroInit.Premium;
-                    api.account.Credits = heroInit.Credits;
-                    api.account.Honor = heroInit.Honor;
-                    api.account.Uridium = heroInit.Uridium;
-                    api.account.XP = heroInit.XP;
-                    api.account.Level = (int)heroInit.Level;
-                    api.account.Rank = (int)heroInit.Rank;
+                    api.Account.Cloaked = heroInit.Cloaked;
+                    api.Account.Jackpot = heroInit.Jackpot;
+                    api.Account.Premium = heroInit.Premium;
+                    api.Account.Credits = heroInit.Credits;
+                    api.Account.Honor = heroInit.Honor;
+                    api.Account.Uridium = heroInit.Uridium;
+                    api.Account.XP = heroInit.XP;
+                    api.Account.Level = (int)heroInit.Level;
+                    api.Account.Rank = (int)heroInit.Rank;
 
                     // Social
-                    api.account.ClanID = (int)heroInit.ClanID;
-                    api.account.ClanTag = heroInit.ClanTag;
-                    api.account.FactionID = heroInit.FactionID;
+                    api.Account.ClanID = (int)heroInit.ClanID;
+                    api.Account.ClanTag = heroInit.ClanTag;
+                    api.Account.FactionID = heroInit.FactionID;
 
-                    api.account.Ready = true;
+                    api.Account.Ready = true;
                     break;
                 case DroneFormationUpdated.ID:
                     DroneFormationUpdated droneFormationUpdated = new DroneFormationUpdated(cachedReader);
                     break;
                 case ShipUpdated.ID:
                     ShipUpdated shipUpdated = new ShipUpdated(cachedReader);
-                    api.account.UpdateHitpointsAndShield(shipUpdated.HP, shipUpdated.Shield, shipUpdated.NanoHP);
+                    api.Account.UpdateHitpointsAndShield(shipUpdated.HP, shipUpdated.Shield, shipUpdated.NanoHP);
                     break;
                 case ShieldUpdated.ID:
                     ShieldUpdated shieldUpdated = new ShieldUpdated(cachedReader);
-                    api.account.UpdateShield(shieldUpdated.Shield, shieldUpdated.MaxShield);
+                    api.Account.UpdateShield(shieldUpdated.Shield, shieldUpdated.MaxShield);
                     break;
                 case HitpointsUpdated.ID:
                     HitpointsUpdated hitpointsUpdated = new HitpointsUpdated(cachedReader);
-                    api.account.UpdateHitpoints(hitpointsUpdated.HP, hitpointsUpdated.MaxHP, hitpointsUpdated.NanoHP, hitpointsUpdated.MaxNanoHP);
+                    api.Account.UpdateHitpoints(hitpointsUpdated.HP, hitpointsUpdated.MaxHP, hitpointsUpdated.NanoHP, hitpointsUpdated.MaxNanoHP);
                     break;
                 case ShipAttacked.ID:
                     ShipAttacked shipAttacked = new ShipAttacked(cachedReader);
@@ -219,7 +219,7 @@ namespace PolskaBot.Core
                     newShip.ClanID = (int)shipInit.ClanID;
                     newShip.ClanTag = shipInit.ClanTag;
                     newShip.FactionID = (int)shipInit.FactionID;
-                    api.ships.Add(newShip);
+                    api.Ships.Add(newShip);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(cachedReader);
@@ -228,23 +228,23 @@ namespace PolskaBot.Core
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(cachedReader);
                     if (boxInit.Hash.Length != 5)
-                        api.boxes.Add(new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type));
+                        api.Boxes.Add(new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type));
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(cachedReader);
-                    lock (api.boxes)
-                        api.boxes.RemoveAll(box => box.Hash == item.Hash);
-                    lock (api.ores)
-                        api.ores.RemoveAll(ore => ore.Hash == item.Hash);
+                    lock (api.Boxes)
+                        api.Boxes.RemoveAll(box => box.Hash == item.Hash);
+                    lock (api.Ores)
+                        api.Ores.RemoveAll(ore => ore.Hash == item.Hash);
                     break;
                 case DestroyShip.ID:
                     DestroyShip destroyedShip = new DestroyShip(cachedReader);
-                    lock (api.ships)
-                        api.ships.RemoveAll(ship => ship.UserID == destroyedShip.UserID);
+                    lock (api.Ships)
+                        api.Ships.RemoveAll(ship => ship.UserID == destroyedShip.UserID);
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(cachedReader);
-                    api.ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
+                    api.Ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
                     break;
                 case 23240:
                     if (!pingThread.IsAlive)
@@ -259,7 +259,7 @@ namespace PolskaBot.Core
                             switch (splittedMessage[2])
                             {
                                 case OldPackets.CONFIG:
-                                    api.account.Config = Convert.ToInt32(splittedMessage[3]);
+                                    api.Account.Config = Convert.ToInt32(splittedMessage[3]);
                                     break;
                             }
                             break;
@@ -267,19 +267,19 @@ namespace PolskaBot.Core
                             switch(splittedMessage[3])
                             {
                                 case OldPackets.BOX_CONTENT_CREDITS:
-                                    api.account.CollectedCredits += double.Parse(splittedMessage[4]);
+                                    api.Account.CollectedCredits += double.Parse(splittedMessage[4]);
                                     break;
                                 case OldPackets.BOX_CONTENT_URIDIUM:
-                                    api.account.CollectedUridium += double.Parse(splittedMessage[4]);
+                                    api.Account.CollectedUridium += double.Parse(splittedMessage[4]);
                                     break;
                                 case OldPackets.BOX_CONTENT_EE:
-                                    api.account.CollectedEE += int.Parse(splittedMessage[4]);
+                                    api.Account.CollectedEE += int.Parse(splittedMessage[4]);
                                     break;
                                 case OldPackets.BOX_CONTENT_XP:
-                                    api.account.CollectedXP += double.Parse(splittedMessage[4]);
+                                    api.Account.CollectedXP += double.Parse(splittedMessage[4]);
                                     break;
                                 case OldPackets.BOX_CONTENT_HON:
-                                    api.account.CollectedHonor += double.Parse(splittedMessage[4]);
+                                    api.Account.CollectedHonor += double.Parse(splittedMessage[4]);
                                     break;
                             }
                             LogMessage?.Invoke(this, string.Join("|", splittedMessage));
