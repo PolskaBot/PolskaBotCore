@@ -273,7 +273,7 @@ namespace PolskaBot.Core
                                     api.account.CollectedUridium += double.Parse(splittedMessage[4]);
                                     break;
                                 case OldPackets.BOX_CONTENT_EE:
-                                    api.account.CollectedEE++;
+                                    api.account.CollectedEE += int.Parse(splittedMessage[4]);
                                     break;
                                 case OldPackets.BOX_CONTENT_XP:
                                     api.account.CollectedXP += double.Parse(splittedMessage[4]);
