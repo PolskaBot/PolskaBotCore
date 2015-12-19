@@ -11,13 +11,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 24098;
 
-        public bool name_44 { get; private set; }
+        public bool CollectedByPlayer { get; private set; }
         public string Hash { get; private set; }
 
         public DestroyItem(EndianBinaryReader reader)
         {
             reader.ReadInt16();
-            name_44 = reader.ReadBoolean();
+            CollectedByPlayer = reader.ReadBoolean();
             Hash = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
 

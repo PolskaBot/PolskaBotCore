@@ -23,23 +23,24 @@ namespace PolskaBot.Core
         public FadeClient fadeClient;
 
         // Logic
-        public Account account;
-        public List<Box> boxes { get; set; } = new List<Box>();
-        public List<Ore> ores { get; set; } = new List<Ore>();
-        public List<Ship> ships { get; set; } = new List<Ship>();
-        public List<Gate> gates { get; set; } = new List<Gate>();
-        public List<Building> buildings { get; set; } = new List<Building>();
+        public Account Account { get; set; }
+        public List<Box> Boxes { get; set; } = new List<Box>();
+        public List<Box> MemorizedBoxes { get; set; } = new List<Box>();
+        public List<Ore> Ores { get; set; } = new List<Ore>();
+        public List<Ship> Ships { get; set; } = new List<Ship>();
+        public List<Gate> Gates { get; set; } = new List<Gate>();
+        public List<Building> Buildings { get; set; } = new List<Building>();
 
         public API(Mode mode = Mode.BOT)
         {
             this.mode = mode;
 
             // Depedency injection
-            account = new Account(this);
+            Account = new Account(this);
             vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
 
-            account.LoginSucceed += (s, e) => Connect();
+            Account.LoginSucceed += (s, e) => Connect();
         }
 
         public void Login(string username = null, string password = null)
@@ -49,8 +50,8 @@ namespace PolskaBot.Core
                 username = Environment.GetEnvironmentVariable(Config.USERNAME_ENV);
                 password = Environment.GetEnvironmentVariable(Config.PASSWORD_ENV);
             }
-            account.SetCredentials(username, password);
-            account.Login();
+            Account.SetCredentials(username, password);
+            Account.Login();
         }
 
         public void Connect()
@@ -66,8 +67,8 @@ namespace PolskaBot.Core
         public string GetIP()
         {
             var webClient = new WebClient();
-            var response = webClient.DownloadString($"http://{account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
-            var match = Regex.Match(response, $"<map id=\"{account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
+            var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
+            var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
             return match.Groups[1].ToString();
         }
     }
