@@ -61,6 +61,13 @@ namespace PolskaBot.Core.Darkorbit
         public string ClanTag { get; set; }
         public uint FactionID { get; set; }
 
+        // Collected
+        public double CollectedUridium { get; set; }
+        public double CollectedCredits { get; set; }
+        public double CollectedXP { get; set; }
+        public double CollectedHonor { get; set; }
+        public int CollectedEE { get; set; }
+
         public bool Ready { get; set; } = false;
 
         HttpManager httpManager;

@@ -28,6 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Uridium");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Credits");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Experience");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Honor");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Extra energy");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Collected", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4,
+            treeNode5});
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bot));
             this.minimap = new System.Windows.Forms.PictureBox();
             this.startButton = new System.Windows.Forms.Button();
@@ -35,11 +46,18 @@
             this.changeConfigButton = new System.Windows.Forms.Button();
             this.log = new System.Windows.Forms.TextBox();
             this.hpBar = new System.Windows.Forms.TrackBar();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.UserTab = new System.Windows.Forms.TabPage();
+            this.statsView = new System.Windows.Forms.TreeView();
+            this.LogTab = new System.Windows.Forms.TabPage();
             this.cargoProgressBar = new PolskaBot.ColorProgressBar();
             this.shieldProgressBar = new PolskaBot.ColorProgressBar();
             this.hpProgressBar = new PolskaBot.ColorProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hpBar)).BeginInit();
+            this.tabControl1.SuspendLayout();
+            this.UserTab.SuspendLayout();
+            this.LogTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cargoProgressBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.shieldProgressBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.hpProgressBar)).BeginInit();
@@ -84,11 +102,11 @@
             // 
             // log
             // 
-            this.log.Location = new System.Drawing.Point(14, 388);
+            this.log.Location = new System.Drawing.Point(6, 6);
             this.log.Multiline = true;
             this.log.Name = "log";
             this.log.ReadOnly = true;
-            this.log.Size = new System.Drawing.Size(335, 185);
+            this.log.Size = new System.Drawing.Size(315, 172);
             this.log.TabIndex = 4;
             // 
             // hpBar
@@ -102,6 +120,60 @@
             this.hpBar.TabIndex = 8;
             this.hpBar.TickStyle = System.Windows.Forms.TickStyle.None;
             this.hpBar.Value = 30;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.UserTab);
+            this.tabControl1.Controls.Add(this.LogTab);
+            this.tabControl1.Location = new System.Drawing.Point(13, 389);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(335, 210);
+            this.tabControl1.TabIndex = 9;
+            // 
+            // UserTab
+            // 
+            this.UserTab.Controls.Add(this.statsView);
+            this.UserTab.Location = new System.Drawing.Point(4, 22);
+            this.UserTab.Name = "UserTab";
+            this.UserTab.Padding = new System.Windows.Forms.Padding(3);
+            this.UserTab.Size = new System.Drawing.Size(327, 184);
+            this.UserTab.TabIndex = 0;
+            this.UserTab.Text = "User";
+            this.UserTab.UseVisualStyleBackColor = true;
+            // 
+            // statsView
+            // 
+            this.statsView.Location = new System.Drawing.Point(7, 7);
+            this.statsView.Name = "statsView";
+            treeNode1.Name = "UridiumNode";
+            treeNode1.Text = "Uridium";
+            treeNode2.Name = "CreditsNode";
+            treeNode2.Text = "Credits";
+            treeNode3.Name = "XPNode";
+            treeNode3.Text = "Experience";
+            treeNode4.Name = "HonorNode";
+            treeNode4.Text = "Honor";
+            treeNode5.Name = "EENode";
+            treeNode5.Text = "Extra energy";
+            treeNode6.Checked = true;
+            treeNode6.Name = "collected";
+            treeNode6.Text = "Collected";
+            this.statsView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode6});
+            this.statsView.Size = new System.Drawing.Size(314, 171);
+            this.statsView.TabIndex = 0;
+            // 
+            // LogTab
+            // 
+            this.LogTab.Controls.Add(this.log);
+            this.LogTab.Location = new System.Drawing.Point(4, 22);
+            this.LogTab.Name = "LogTab";
+            this.LogTab.Padding = new System.Windows.Forms.Padding(3);
+            this.LogTab.Size = new System.Drawing.Size(327, 184);
+            this.LogTab.TabIndex = 1;
+            this.LogTab.Text = "Log";
+            this.LogTab.UseVisualStyleBackColor = true;
             // 
             // cargoProgressBar
             // 
@@ -146,12 +218,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 581);
+            this.ClientSize = new System.Drawing.Size(358, 604);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.hpBar);
             this.Controls.Add(this.cargoProgressBar);
             this.Controls.Add(this.shieldProgressBar);
             this.Controls.Add(this.hpProgressBar);
-            this.Controls.Add(this.log);
             this.Controls.Add(this.changeConfigButton);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.startButton);
@@ -161,11 +233,14 @@
             this.Text = "PolskaBot";
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hpBar)).EndInit();
+            this.tabControl1.ResumeLayout(false);
+            this.UserTab.ResumeLayout(false);
+            this.LogTab.ResumeLayout(false);
+            this.LogTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cargoProgressBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.shieldProgressBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.hpProgressBar)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -180,6 +255,10 @@
         private ColorProgressBar shieldProgressBar;
         private ColorProgressBar cargoProgressBar;
         private System.Windows.Forms.TrackBar hpBar;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage UserTab;
+        private System.Windows.Forms.TabPage LogTab;
+        private System.Windows.Forms.TreeView statsView;
     }
 }
 
