@@ -13,6 +13,7 @@ using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
+using MiscUtil.IO;
 
 namespace PolskaBot
 {
@@ -58,6 +59,11 @@ namespace PolskaBot
                 startButton.Enabled = true;
                 stopButton.Enabled = false;
                 running = false;
+            };
+
+            changeConfigButton.Click += (s, e) =>
+            {
+                ChangeConfig();
             };
 
             minimap.Click += (s, e) =>
@@ -440,6 +446,12 @@ namespace PolskaBot
                 api.account.Flying = false;
                 Console.WriteLine(ex);
             }
+        }
+
+        private void ChangeConfig()
+        {
+            int targetConfig = (api.account.Config == 1) ? 2 : 1;
+            api.vanillaClient.SendEncoded(new OldStylePacket($"S|CFG|{targetConfig}|{api.account.UserID}|{api.account.SID}"));
         }
 
         private int Scale(int value)
