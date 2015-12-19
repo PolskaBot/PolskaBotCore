@@ -160,6 +160,12 @@ namespace PolskaBot
         {
             while(true)
             {
+                if (!api.Account.Ready || !running)
+                {
+                    Thread.Sleep(50);
+                    continue;
+                }
+
                 Box[] boxes;
                 Box[] memorizedBoxes;
 
@@ -194,7 +200,6 @@ namespace PolskaBot
                     }
                     else
                     {
-                        Log($"Collecting box of type: {nearestBox.Type}");
                         FlyWithAnimation(nearestBox.Position.X, nearestBox.Position.Y);
                         state = State.CollectingBox;
                         Thread.Sleep(50);
