@@ -212,7 +212,7 @@ namespace PolskaBot
                     if (api.Account.Flying)
                     {
                         var flybyBox = memorizedBoxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
-                        if (CalculateDistance(flybyBox.Position) < CalculateDistance(api.Account.TargetX, api.Account.TargetY))
+                        if (flybyBox != null && CalculateDistance(flybyBox.Position) < CalculateDistance(api.Account.TargetX, api.Account.TargetY))
                             FlyWithAnimation(flybyBox.Position.X, flybyBox.Position.Y);
                         Thread.Sleep(50);
                         continue;
@@ -231,12 +231,12 @@ namespace PolskaBot
                                 tempShipY++;
                             }
                             api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
-                            lock(api.Boxes) lock (api.MemorizedBoxes)
+                        }
+                        lock (api.Boxes) lock (api.MemorizedBoxes)
                             {
                                 api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                                 api.MemorizedBoxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                             }
-                        }
                         state = State.SearchingBox;
                     }
 
@@ -259,12 +259,12 @@ namespace PolskaBot
 
                 lock(api.Boxes)
                 {
-                    boxes = api.Boxes.ToArray();
+                    boxes = api.Boxes.Where(box => collectable.Contains(box.Type)).ToArray();
                 }
 
-                lock(api.MemorizedBoxes)
+                lock(api.MemorizedBoxes) lock(boxes)
                 {
-                    memorizedBoxes = api.MemorizedBoxes.Where(box => !boxes.Contains(box)).ToArray();
+                    memorizedBoxes = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToArray();
                 }
 
                 lock(api.Ores)
