@@ -237,7 +237,11 @@ namespace PolskaBot.Core
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(cachedReader);
                     lock (api.Boxes)
+                    {
                         api.Boxes.RemoveAll(box => box.Hash == item.Hash);
+                        if(item.CollectedByPlayer)
+                            api.MemorizedBoxes.RemoveAll(box => box.Hash == item.Hash);
+                    }
                     lock (api.Ores)
                         api.Ores.RemoveAll(ore => ore.Hash == item.Hash);
                     break;
