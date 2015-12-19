@@ -13,6 +13,7 @@ using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
+using MiscUtil.IO;
 
 namespace PolskaBot
 {
@@ -450,7 +451,7 @@ namespace PolskaBot
         private void ChangeConfig()
         {
             int targetConfig = (api.account.Config == 1) ? 2 : 1;
-            api.vanillaClient.SendOldStylePacket($"S|CFG|{targetConfig}|{api.account.UserID}|{api.account.SID}");
+            api.vanillaClient.SendEncoded(new OldStylePacket($"S|CFG|{targetConfig}|{api.account.UserID}|{api.account.SID}"));
         }
 
         private int Scale(int value)
