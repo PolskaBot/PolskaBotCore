@@ -259,12 +259,12 @@ namespace PolskaBot
 
                 lock(api.Boxes)
                 {
-                    boxes = api.Boxes.ToArray();
+                    boxes = api.Boxes.Where(box => collectable.Contains(box.Type)).ToArray();
                 }
 
                 lock(api.MemorizedBoxes) lock(boxes)
                 {
-                    memorizedBoxes = api.MemorizedBoxes.Where(box => !boxes.Contains(box)).ToArray();
+                    memorizedBoxes = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToArray();
                 }
 
                 lock(api.Ores)
