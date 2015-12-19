@@ -13,10 +13,15 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public string Message { get; set; }
 
-        public OldStylePacket(EndianBinaryReader reader = null)
+        public OldStylePacket(EndianBinaryReader reader)
         {
-            if(reader != null)
-                Message = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            Message = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
+        }
+
+        public OldStylePacket(string message)
+        {
+            Message = message;
+            Write();
         }
 
         public override void Write()
