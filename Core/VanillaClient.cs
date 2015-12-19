@@ -228,7 +228,11 @@ namespace PolskaBot.Core
                 case BoxInit.ID:
                     BoxInit boxInit = new BoxInit(cachedReader);
                     if (boxInit.Hash.Length != 5)
-                        api.Boxes.Add(new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type));
+                    {
+                        Box box = new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type);
+                        api.Boxes.Add(box);
+                        api.MemorizedBoxes.Add(box);
+                    }
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(cachedReader);

@@ -165,10 +165,19 @@ namespace PolskaBot
                     var nearestBox = api.Boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
-                        if (api.Account.Flying)
-                            Thread.Sleep(50);
+                        var memorizedNearestBox = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).Where(box => !api.Boxes.Contains(box)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                        if (memorizedNearestBox == null)
+                        {
+                            if (api.Account.Flying)
+                                Thread.Sleep(50);
+                            else
+                                FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
+                        }
                         else
-                            FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
+                        {
+                            FlyWithAnimation(memorizedNearestBox.Position.X, memorizedNearestBox.Position.Y);
+                            state = State.CollectingBox;
+                        }
                     }
                     else
                     {
@@ -184,15 +193,16 @@ namespace PolskaBot
                 {
                     if (api.Account.Flying)
                     {
+                        var flybyBox = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                        if (CalculateDistance(flybyBox.Position) < CalculateDistance(api.Account.TargetX, api.Account.TargetY))
+                            FlyWithAnimation(flybyBox.Position.X, flybyBox.Position.Y);
                         Thread.Sleep(50);
                         continue;
                     }
 
                     var nearestBox = api.Boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
-                    {
                         state = State.SearchingBox;
-                    }
                     else
                     {
                         if (CalculateDistance(nearestBox.Position) < 50)
@@ -204,6 +214,7 @@ namespace PolskaBot
                             }
                             api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
                             api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
+                            api.MemorizedBoxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                         }
                         state = State.SearchingBox;
                     }
@@ -219,6 +230,7 @@ namespace PolskaBot
             {
                 stopwatch.Restart();
                 Box[] boxes;
+                Box[] memorizedBoxes;
                 Ore[] ores;
                 Ship[] ships;
                 Gate[] gates;
@@ -227,6 +239,11 @@ namespace PolskaBot
                 lock(api.Boxes)
                 {
                     boxes = api.Boxes.ToArray();
+                }
+
+                lock(api.MemorizedBoxes)
+                {
+                    memorizedBoxes = api.MemorizedBoxes.Where(box => !boxes.Contains(box)).ToArray();
                 }
 
                 lock(api.Ores)
@@ -258,6 +275,11 @@ namespace PolskaBot
                     foreach(Box box in boxes)
                     {
                         DrawBox(g, box);
+                    }
+
+                    foreach(Box box in memorizedBoxes)
+                    {
+                        DrawMemorizedBox(g, box);
                     }
 
                     foreach(Ore ore in ores)
@@ -321,6 +343,11 @@ namespace PolskaBot
         private void DrawBox(Graphics g, Box box)
         {
             g.DrawRectangle(new Pen(Config.box), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
+        }
+
+        private void DrawMemorizedBox(Graphics g, Box box)
+        {
+            g.DrawRectangle(new Pen(Config.boxMemorised), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
         }
 
         private void DrawOre(Graphics g, Ore ore)

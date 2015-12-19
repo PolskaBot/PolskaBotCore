@@ -25,6 +25,7 @@ namespace PolskaBot.Core
         // Logic
         public Account Account { get; set; }
         public List<Box> Boxes { get; set; } = new List<Box>();
+        public List<Box> MemorizedBoxes { get; set; } = new List<Box>();
         public List<Ore> Ores { get; set; } = new List<Ore>();
         public List<Ship> Ships { get; set; } = new List<Ship>();
         public List<Gate> Gates { get; set; } = new List<Gate>();
