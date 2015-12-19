@@ -36,6 +36,10 @@ namespace PolskaBot
 
         Tweener anim = new Tweener();
 
+        private string[] collectable = {
+                "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX"
+        };
+
         private Stopwatch stopwatch = new Stopwatch();
 
         public Bot()
@@ -158,7 +162,7 @@ namespace PolskaBot
             {
                 if(state == State.SearchingBox && running)
                 {
-                    var nearestBox = api.boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = api.boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
                         if (api.account.Flying)
@@ -184,7 +188,7 @@ namespace PolskaBot
                         continue;
                     }
 
-                    var nearestBox = api.boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = api.boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
                         state = State.SearchingBox;
