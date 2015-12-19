@@ -60,6 +60,11 @@ namespace PolskaBot
                 running = false;
             };
 
+            changeConfigButton.Click += (s, e) =>
+            {
+                ChangeConfig();
+            };
+
             minimap.Click += (s, e) =>
             {
                 var mouse = e as MouseEventArgs;
@@ -440,6 +445,12 @@ namespace PolskaBot
                 api.account.Flying = false;
                 Console.WriteLine(ex);
             }
+        }
+
+        private void ChangeConfig()
+        {
+            int targetConfig = (api.account.Config == 1) ? 2 : 1;
+            api.vanillaClient.SendOldStylePacket($"S|CFG|{targetConfig}|{api.account.UserID}|{api.account.SID}");
         }
 
         private int Scale(int value)
