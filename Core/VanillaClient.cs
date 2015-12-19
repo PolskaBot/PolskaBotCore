@@ -40,6 +40,14 @@ namespace PolskaBot.Core
             }
         }
 
+        public void SendOldStylePacket(string message)
+        {
+            OldStylePacket oldStylePacket = new OldStylePacket();
+            oldStylePacket.Message = message;
+            oldStylePacket.Write();
+            SendEncoded(oldStylePacket);
+        }
+
         public override void Parse(EndianBinaryReader reader)
         {
             lock(api.fadeClient.stream)
