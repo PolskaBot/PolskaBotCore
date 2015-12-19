@@ -36,6 +36,10 @@ namespace PolskaBot
 
         Tweener anim = new Tweener();
 
+        private string[] collectable = {
+                "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX"
+        };
+
         private Stopwatch stopwatch = new Stopwatch();
 
         public Bot()
@@ -158,7 +162,7 @@ namespace PolskaBot
             {
                 if(state == State.SearchingBox && running)
                 {
-                    var nearestBox = api.boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = api.boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
                         if (api.account.Flying)
@@ -168,6 +172,7 @@ namespace PolskaBot
                     }
                     else
                     {
+                        Log($"Collecting box of type: {nearestBox.Type}");
                         FlyWithAnimation(nearestBox.Position.X, nearestBox.Position.Y);
                         state = State.CollectingBox;
                         Thread.Sleep(50);
@@ -183,7 +188,7 @@ namespace PolskaBot
                         continue;
                     }
 
-                    var nearestBox = api.boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = api.boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
                         state = State.SearchingBox;
@@ -199,8 +204,8 @@ namespace PolskaBot
                             }
                             api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.account.X, tempShipY));
                             api.boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
-                            state = State.SearchingBox;
                         }
+                        state = State.SearchingBox;
                     }
 
                     Thread.Sleep(50);
