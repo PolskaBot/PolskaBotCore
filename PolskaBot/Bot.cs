@@ -219,6 +219,7 @@ namespace PolskaBot
             {
                 stopwatch.Restart();
                 Box[] boxes;
+                Box[] memorizedBoxes;
                 Ore[] ores;
                 Ship[] ships;
                 Gate[] gates;
@@ -227,6 +228,11 @@ namespace PolskaBot
                 lock(api.Boxes)
                 {
                     boxes = api.Boxes.ToArray();
+                }
+
+                lock(api.MemorizedBoxes)
+                {
+                    memorizedBoxes = api.MemorizedBoxes.ToArray();
                 }
 
                 lock(api.Ores)
@@ -258,6 +264,11 @@ namespace PolskaBot
                     foreach(Box box in boxes)
                     {
                         DrawBox(g, box);
+                    }
+
+                    foreach(Box box in memorizedBoxes)
+                    {
+                        DrawMemorizedBox(g, box);
                     }
 
                     foreach(Ore ore in ores)
@@ -321,6 +332,11 @@ namespace PolskaBot
         private void DrawBox(Graphics g, Box box)
         {
             g.DrawRectangle(new Pen(Config.box), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
+        }
+
+        private void DrawMemorizedBox(Graphics g, Box box)
+        {
+            g.DrawRectangle(new Pen(Config.boxMemorised), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
         }
 
         private void DrawOre(Graphics g, Ore ore)
