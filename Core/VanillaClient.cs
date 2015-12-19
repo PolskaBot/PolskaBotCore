@@ -246,8 +246,7 @@ namespace PolskaBot.Core
                     OreInit oreInit = new OreInit(cachedReader);
                     api.ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
                     break;
-                case 29794:
-                    Console.WriteLine("Received pong");
+                case 23240:
                     if (!pingThread.IsAlive)
                         pingThread.Start();
                     break;
