@@ -50,7 +50,6 @@ namespace PolskaBot.Core
         {
             if (!IsConnected())
             {
-                Console.WriteLine("Detected disconnect (onSendCommand)");
                 Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -62,7 +61,6 @@ namespace PolskaBot.Core
         {
             if (!IsConnected())
             {
-                Console.WriteLine("Detected disconnect (onSendBuffer)");
                 Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
             }
@@ -75,9 +73,8 @@ namespace PolskaBot.Core
             {
                 if (!IsConnected())
                 {
-                    Console.WriteLine("Detected disconnect");
                     Disconnected?.Invoke(this, EventArgs.Empty);
-                    continue;
+                    return;
                 }
 
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
@@ -89,7 +86,7 @@ namespace PolskaBot.Core
         {
             try
             {
-                return !(api.vanillaClient.tcpClient.Client.Poll(1, SelectMode.SelectRead) && api.vanillaClient.tcpClient.Client.Available == 0);
+                return !(tcpClient.Client.Poll(1, SelectMode.SelectRead) && tcpClient.Client.Available == 0);
             }
             catch (SocketException) { return false; }
         }
