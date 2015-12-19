@@ -165,10 +165,19 @@ namespace PolskaBot
                     var nearestBox = api.Boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
-                        if (api.Account.Flying)
-                            Thread.Sleep(50);
+                        var memorizedNearestBox = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).Where(box => !api.Boxes.Contains(box)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                        if (memorizedNearestBox == null)
+                        {
+                            if (api.Account.Flying)
+                                Thread.Sleep(50);
+                            else
+                                FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
+                        }
                         else
-                            FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
+                        {
+                            FlyWithAnimation(memorizedNearestBox.Position.X, memorizedNearestBox.Position.Y);
+                            state = State.CollectingBox;
+                        }
                     }
                     else
                     {
@@ -190,9 +199,7 @@ namespace PolskaBot
 
                     var nearestBox = api.Boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
-                    {
                         state = State.SearchingBox;
-                    }
                     else
                     {
                         if (CalculateDistance(nearestBox.Position) < 50)
@@ -204,6 +211,7 @@ namespace PolskaBot
                             }
                             api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
                             api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
+                            api.MemorizedBoxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                         }
                         state = State.SearchingBox;
                     }
@@ -232,7 +240,7 @@ namespace PolskaBot
 
                 lock(api.MemorizedBoxes)
                 {
-                    memorizedBoxes = api.MemorizedBoxes.ToArray();
+                    memorizedBoxes = api.MemorizedBoxes.Where(box => !boxes.Contains(box)).ToArray();
                 }
 
                 lock(api.Ores)
