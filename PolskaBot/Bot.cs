@@ -73,7 +73,7 @@ namespace PolskaBot
             minimap.Click += (s, e) =>
             {
                 var mouse = e as MouseEventArgs;
-                if (api.account.Ready && mouse.Button == MouseButtons.Left)
+                if (api.Account.Ready && mouse.Button == MouseButtons.Left)
                 {
                     FlyWithAnimation(ReverseScale(mouse.X - 10), ReverseScale(mouse.Y - 10));
                 }
@@ -81,20 +81,20 @@ namespace PolskaBot
 
             api = new API(API.Mode.BOT);
 
-            api.account.LoginFailed += (s, e) => Log("Login failed");
-            api.account.LoginSucceed += (s, e) => Log("Login succeed");
+            api.Account.LoginFailed += (s, e) => Log("Login failed");
+            api.Account.LoginSucceed += (s, e) => Log("Login succeed");
 
             api.vanillaClient.Compatible += (s, e) => Log("Bot is compatible");
             api.vanillaClient.NotCompatible += (s, e) => Log("Bot is not compatible. Check forums for new version");
 
             api.vanillaClient.Attacked += (s, e) =>
             {
-                lock (api.ships)
+                lock (api.Ships)
                 {
-                    var attacker = api.ships.Find(ship => ship.UserID == e.AttackerID);
-                    if (attacker != null && !attacker.NPC && e.UserID == api.account.UserID)
+                    var attacker = api.Ships.Find(ship => ship.UserID == e.AttackerID);
+                    if (attacker != null && !attacker.NPC && e.UserID == api.Account.UserID)
                     {
-                        var targetGate = api.gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.account.X, 2) + Math.Pow(gate.Position.Y - api.account.Y, 2))).Where(gate => gate.ID == 1).First();
+                        var targetGate = api.Gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.Account.X, 2) + Math.Pow(gate.Position.Y - api.Account.Y, 2))).Where(gate => gate.ID == 1).First();
                         FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
                     }
                 }
@@ -102,13 +102,13 @@ namespace PolskaBot
 
             api.vanillaClient.ShipMoving += (s, e) =>
             {
-                lock (api.ships)
+                lock (api.Ships)
                 {
                     try
                     {
-                        var target = api.ships.Find(ship => ship.UserID == e.UserID);
+                        var target = api.Ships.Find(ship => ship.UserID == e.UserID);
                         if (target != null)
-                            anim.Tween(api.ships.Find(ship => ship.UserID == e.UserID), new { X = e.X, Y = e.Y }, e.Duration);
+                            anim.Tween(api.Ships.Find(ship => ship.UserID == e.UserID), new { X = e.X, Y = e.Y }, e.Duration);
                     }
                     catch (Exception ex)
                     {
@@ -162,10 +162,10 @@ namespace PolskaBot
             {
                 if(state == State.SearchingBox && running)
                 {
-                    var nearestBox = api.boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = api.Boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
-                        if (api.account.Flying)
+                        if (api.Account.Flying)
                             Thread.Sleep(50);
                         else
                             FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
@@ -182,13 +182,13 @@ namespace PolskaBot
 
                 if(state == State.CollectingBox && running)
                 {
-                    if (api.account.Flying)
+                    if (api.Account.Flying)
                     {
                         Thread.Sleep(50);
                         continue;
                     }
 
-                    var nearestBox = api.boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = api.Boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
                         state = State.SearchingBox;
@@ -197,13 +197,13 @@ namespace PolskaBot
                     {
                         if (CalculateDistance(nearestBox.Position) < 50)
                         {
-                            var tempShipY = api.account.Y;
-                            if((api.account.X + api.account.Y + nearestBox.Position.Y) % 3 == 0)
+                            var tempShipY = api.Account.Y;
+                            if((api.Account.X + api.Account.Y + nearestBox.Position.Y) % 3 == 0)
                             {
                                 tempShipY++;
                             }
-                            api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.account.X, tempShipY));
-                            api.boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
+                            api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
+                            api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                         }
                         state = State.SearchingBox;
                     }
@@ -224,29 +224,29 @@ namespace PolskaBot
                 Gate[] gates;
                 Building[] buildings;
 
-                lock(api.boxes)
+                lock(api.Boxes)
                 {
-                    boxes = api.boxes.ToArray();
+                    boxes = api.Boxes.ToArray();
                 }
 
-                lock(api.ores)
+                lock(api.Ores)
                 {
-                    ores = api.ores.ToArray();
+                    ores = api.Ores.ToArray();
                 }
 
-                lock(api.ships)
+                lock(api.Ships)
                 {
-                    ships = api.ships.ToArray();
+                    ships = api.Ships.ToArray();
                 }
 
-                lock(api.gates)
+                lock(api.Gates)
                 {
-                    gates = api.gates.ToArray();
+                    gates = api.Gates.ToArray();
                 }
 
-                lock(api.buildings)
+                lock(api.Buildings)
                 {
-                    buildings = api.buildings.ToArray();
+                    buildings = api.Buildings.ToArray();
                 }
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
@@ -308,7 +308,7 @@ namespace PolskaBot
 
         private double CalculateDistance(int x, int y)
         {
-            return CalculateDistance(api.account.X, api.account.Y, x, y);
+            return CalculateDistance(api.Account.X, api.Account.Y, x, y);
         }
 
         private double CalculateDistance(Point point)
@@ -352,7 +352,7 @@ namespace PolskaBot
                 return;
             }
 
-            if(ship.FactionID != api.account.FactionID)
+            if(ship.FactionID != api.Account.FactionID)
             {
                 g.DrawRectangle(new Pen(Config.enemy), new Rectangle(Scale(ship.X), Scale(ship.Y), 1, 1));
                 return;
@@ -376,23 +376,23 @@ namespace PolskaBot
 
         private void DrawPlayer(Graphics g)
         {
-            if(api.account.Ready)
+            if(api.Account.Ready)
             {
-                g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), 0), new Point(Scale(api.account.X), minimap.Height));
-                g.DrawLine(new Pen(Config.hero), new Point(0, Scale(api.account.Y)), new Point(minimap.Width, Scale(api.account.Y)));
+                g.DrawLine(new Pen(Config.hero), new Point(Scale(api.Account.X), 0), new Point(Scale(api.Account.X), minimap.Height));
+                g.DrawLine(new Pen(Config.hero), new Point(0, Scale(api.Account.Y)), new Point(minimap.Width, Scale(api.Account.Y)));
 
-                if(api.account.Flying)
+                if(api.Account.Flying)
                 {
-                    g.DrawLine(new Pen(Config.hero), new Point(Scale(api.account.X), Scale(api.account.Y)), new Point(Scale(api.account.TargetX), Scale(api.account.TargetY)));
+                    g.DrawLine(new Pen(Config.hero), new Point(Scale(api.Account.X), Scale(api.Account.Y)), new Point(Scale(api.Account.TargetX), Scale(api.Account.TargetY)));
                 }
             }
         }
 
         private void DrawDetails(Graphics g)
         {
-            if (api.account.Ready)
+            if (api.Account.Ready)
             {
-                if(api.account.Cloaked)
+                if(api.Account.Cloaked)
                 {
                     string cloaked = "Invisible";
                     g.DrawString(cloaked, Config.font, new SolidBrush(Color.DarkGray), Config.poizoneSize + 4, minimap.Height - 16 - Config.poizoneSize);
@@ -416,34 +416,34 @@ namespace PolskaBot
 
         private void FlyWithAnimation(int x, int y)
         {
-            api.account.TargetX = x;
-            api.account.TargetY = y;
-            api.vanillaClient.SendEncoded(new Move((uint)api.account.TargetX, (uint)api.account.TargetY, (uint)api.account.X, (uint)api.account.Y));
+            api.Account.TargetX = x;
+            api.Account.TargetY = y;
+            api.vanillaClient.SendEncoded(new Move((uint)api.Account.TargetX, (uint)api.Account.TargetY, (uint)api.Account.X, (uint)api.Account.Y));
 
-            api.account.Flying = true;
+            api.Account.Flying = true;
 
-            double distance = Math.Sqrt(Math.Pow((api.account.TargetX - api.account.X), 2) + Math.Pow((api.account.TargetY - api.account.Y), 2));
+            double distance = Math.Sqrt(Math.Pow((api.Account.TargetX - api.Account.X), 2) + Math.Pow((api.Account.TargetY - api.Account.Y), 2));
 
-            double duration = (distance / api.account.Speed);
+            double duration = (distance / api.Account.Speed);
 
             float durationMS = (float)duration * 1000;
             try
             {
-                anim.TargetCancelAndComplete(api.account);
-                anim.Tween(api.account, new { X = api.account.TargetX, Y = api.account.TargetY }, durationMS).OnComplete(
-                    new Action(() => api.account.Flying = false
+                anim.TargetCancelAndComplete(api.Account);
+                anim.Tween(api.Account, new { X = api.Account.TargetX, Y = api.Account.TargetY }, durationMS).OnComplete(
+                    new Action(() => api.Account.Flying = false
                     ));
             } catch(Exception ex)
             {
-                api.account.Flying = false;
+                api.Account.Flying = false;
                 Console.WriteLine(ex);
             }
         }
 
         private void ChangeConfig()
         {
-            int targetConfig = (api.account.Config == 1) ? 2 : 1;
-            api.vanillaClient.SendEncoded(new OldStylePacket($"S|CFG|{targetConfig}|{api.account.UserID}|{api.account.SID}"));
+            int targetConfig = (api.Account.Config == 1) ? 2 : 1;
+            api.vanillaClient.SendEncoded(new OldStylePacket($"S|CFG|{targetConfig}|{api.Account.UserID}|{api.Account.SID}"));
         }
 
         private int Scale(int value)
@@ -464,11 +464,11 @@ namespace PolskaBot
         {
             Invoke((MethodInvoker)delegate
             {
-                statsView.Nodes.Find("UridiumNode", true).First().Text = $"Uridium: {api.account.CollectedUridium}";
-                statsView.Nodes.Find("CreditsNode", true).First().Text = $"Credits: {api.account.CollectedCredits}";
-                statsView.Nodes.Find("XPNode", true).First().Text = $"XP: {api.account.CollectedXP}";
-                statsView.Nodes.Find("HonorNode", true).First().Text = $"Honor: {api.account.CollectedHonor}";
-                statsView.Nodes.Find("EENode", true).First().Text = $"Extra energy: {api.account.CollectedEE}";
+                statsView.Nodes.Find("UridiumNode", true).First().Text = $"Uridium: {api.Account.CollectedUridium}";
+                statsView.Nodes.Find("CreditsNode", true).First().Text = $"Credits: {api.Account.CollectedCredits}";
+                statsView.Nodes.Find("XPNode", true).First().Text = $"XP: {api.Account.CollectedXP}";
+                statsView.Nodes.Find("HonorNode", true).First().Text = $"Honor: {api.Account.CollectedHonor}";
+                statsView.Nodes.Find("EENode", true).First().Text = $"Extra energy: {api.Account.CollectedEE}";
             });
         }
 
@@ -476,9 +476,9 @@ namespace PolskaBot
         {
             Invoke((MethodInvoker)delegate
             {
-                hpProgressBar.UpdateStats(api.account.HP, api.account.MaxHP);
-                shieldProgressBar.UpdateStats(api.account.Shield, api.account.MaxShield);
-                cargoProgressBar.UpdateStats(api.account.CargoCapacity - api.account.FreeCargoSpace, api.account.CargoCapacity);
+                hpProgressBar.UpdateStats(api.Account.HP, api.Account.MaxHP);
+                shieldProgressBar.UpdateStats(api.Account.Shield, api.Account.MaxShield);
+                cargoProgressBar.UpdateStats(api.Account.CargoCapacity - api.Account.FreeCargoSpace, api.Account.CargoCapacity);
             });
         }
 
