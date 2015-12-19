@@ -231,12 +231,12 @@ namespace PolskaBot
                                 tempShipY++;
                             }
                             api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
-                            lock(api.Boxes) lock (api.MemorizedBoxes)
+                        }
+                        lock (api.Boxes) lock (api.MemorizedBoxes)
                             {
                                 api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                                 api.MemorizedBoxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                             }
-                        }
                         state = State.SearchingBox;
                     }
 
@@ -262,7 +262,7 @@ namespace PolskaBot
                     boxes = api.Boxes.ToArray();
                 }
 
-                lock(api.MemorizedBoxes)
+                lock(api.MemorizedBoxes) lock(boxes)
                 {
                     memorizedBoxes = api.MemorizedBoxes.Where(box => !boxes.Contains(box)).ToArray();
                 }
