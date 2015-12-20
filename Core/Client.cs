@@ -40,10 +40,18 @@ namespace PolskaBot.Core
             tcpClient.Connect(this.IP, this.port);
             if(tcpClient.Connected)
             {
-                thread.Start();
+                if(!thread.IsAlive)
+                    thread.Start();
                 stream = tcpClient.GetStream();
                 OnConnected?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public void Disconnect()
+        {
+            tcpClient.Close();
+            thread = new Thread(new ThreadStart(Run));
+            tcpClient = new TcpClient();
         }
 
         public void Send(Command command)

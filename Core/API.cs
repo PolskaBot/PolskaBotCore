@@ -67,11 +67,16 @@ namespace PolskaBot.Core
 
         public void Reconnect()
         {
-            Console.WriteLine("Received disconnect invoke");
+            Console.WriteLine("Connection lost. Reconnecting.");
+            vanillaClient.pingThread.Abort();
+            Boxes.Clear();
+            MemorizedBoxes.Clear();
+            Ores.Clear();
+            Ships.Clear();
+            Gates.Clear();
+            Buildings.Clear();
             fadeClient.Send(new FadePandoraReset());
-            vanillaClient = new VanillaClient(this);
-            vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
-            vanillaClient.Disconnected += (o, e) => Reconnect();
+            vanillaClient.Disconnect();
             vanillaClient.Connect(GetIP(), 8080);
         }
 
