@@ -36,6 +36,8 @@ namespace PolskaBot
 
         Tweener anim = new Tweener();
 
+        Box boxToCollect;
+
         private string[] collectable = {
                 "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX"
         };
@@ -166,27 +168,22 @@ namespace PolskaBot
                     continue;
                 }
 
-                Box[] boxes;
-                Box[] memorizedBoxes;
+                List<Box> boxes;
+                List<Box> memorizedBoxes;
 
-                lock(api.Boxes)
-                {
-                    boxes = api.Boxes.ToArray();
-                }
+                boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
 
-                lock(api.MemorizedBoxes)
+                if (state == State.SearchingBox && running)
                 {
-                    memorizedBoxes = api.MemorizedBoxes.ToArray();
-                }
-
-                if(state == State.SearchingBox && running)
-                {
-                    var nearestBox = boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    var nearestBox = boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
                     {
-                        var memorizedNearestBox = memorizedBoxes.Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                        // There are no real boxes nearby.
+                        var memorizedNearestBox = memorizedBoxes.Where(box => !boxes.Contains(box)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                         if (memorizedNearestBox == null)
                         {
+                            // And no memorized ones. If flying continue. flying. If not fly to random position.
                             if (api.Account.Flying)
                                 Thread.Sleep(50);
                             else
@@ -194,13 +191,17 @@ namespace PolskaBot
                         }
                         else
                         {
-                            FlyWithAnimation(memorizedNearestBox.Position.X, memorizedNearestBox.Position.Y);
+                            // Fly to memorized box.
+                            boxToCollect = memorizedNearestBox;
+                            Fly(boxToCollect);
                             state = State.CollectingBox;
                         }
                     }
                     else
                     {
-                        FlyWithAnimation(nearestBox.Position.X, nearestBox.Position.Y);
+                        // There is real box nearby. Fly to it.
+                        boxToCollect = nearestBox;
+                        Fly(boxToCollect);
                         state = State.CollectingBox;
                         Thread.Sleep(50);
                         continue;
@@ -211,20 +212,40 @@ namespace PolskaBot
                 {
                     if (api.Account.Flying)
                     {
-                        var flybyBox = memorizedBoxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
-                        if (flybyBox != null && CalculateDistance(flybyBox.Position) < CalculateDistance(api.Account.TargetX, api.Account.TargetY))
-                            FlyWithAnimation(flybyBox.Position.X, flybyBox.Position.Y);
+                        // We are flying to box. Change target box if there is box closer than target. Otherwise just wait.
+                        var flybyBox = memorizedBoxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                        if (flybyBox != null && CalculateDistance(flybyBox.Position) < CalculateDistance(boxToCollect.Position))
+                        {
+                            boxToCollect = flybyBox;
+                            Fly(boxToCollect);
+                        }
                         Thread.Sleep(50);
                         continue;
                     }
 
-                    var nearestBox = boxes.Where(box => collectable.Contains(box.Type)).OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
+                    // Finished flying to box.
+                    var nearestBox = boxes.OrderBy(box => CalculateDistance(box.Position)).FirstOrDefault();
                     if (nearestBox == null)
+                    {
+                        // There is no box nearby.
+                        if (boxToCollect != null)
+                        {
+                            //But we had box to collect. Someone collected it. Remove it from memorizedBoxes (real boxes gets removed based on packets).
+                            lock(api.MemorizedBoxes)
+                            {
+                                api.MemorizedBoxes.RemoveAll(box => box.Hash == boxToCollect.Hash);
+                            }
+                            boxToCollect = null;
+                        }
+                        // Continue flying.
                         state = State.SearchingBox;
+                    }
                     else
                     {
+                        // There is box nearby.
                         if (CalculateDistance(nearestBox.Position) < 50)
                         {
+                            // We are close to box. Send packet to collect it.
                             var tempShipY = api.Account.Y;
                             if((api.Account.X + api.Account.Y + nearestBox.Position.Y) % 3 == 0)
                             {
@@ -236,6 +257,7 @@ namespace PolskaBot
                             {
                                 api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                                 api.MemorizedBoxes.RemoveAll(box => box.Hash == nearestBox.Hash);
+                                boxToCollect = null;
                             }
                         state = State.SearchingBox;
                     }
@@ -250,42 +272,20 @@ namespace PolskaBot
             while(true)
             {
                 stopwatch.Restart();
-                Box[] boxes;
-                Box[] memorizedBoxes;
-                Ore[] ores;
-                Ship[] ships;
-                Gate[] gates;
-                Building[] buildings;
+                List<Box> boxes;
+                List<Box> memorizedBoxes;
+                List<Ore> ores;
+                List<Ship> ships;
+                List<Gate> gates;
+                List<Building> buildings;
 
-                lock(api.Boxes)
-                {
-                    boxes = api.Boxes.Where(box => collectable.Contains(box.Type)).ToArray();
-                }
-
-                lock(api.MemorizedBoxes) lock(boxes)
-                {
-                    memorizedBoxes = api.MemorizedBoxes.Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToArray();
-                }
-
-                lock(api.Ores)
-                {
-                    ores = api.Ores.ToArray();
-                }
-
-                lock(api.Ships)
-                {
-                    ships = api.Ships.ToArray();
-                }
-
-                lock(api.Gates)
-                {
-                    gates = api.Gates.ToArray();
-                }
-
-                lock(api.Buildings)
-                {
-                    buildings = api.Buildings.ToArray();
-                }
+                // Locks by copying to list.
+                boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToList();
+                ores = api.Ores.ToList();
+                ships = api.Ships.ToList();
+                gates = api.Gates.ToList();
+                buildings = api.Buildings.ToList();
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
                 using (var g = Graphics.FromImage(bitmap))
@@ -460,6 +460,11 @@ namespace PolskaBot
                 return;
 
             g.DrawImage(Properties.Resources._1, 0, 0, 315, 202);
+        }
+
+        private void Fly(Box box)
+        {
+            FlyWithAnimation(box.Position.X, box.Position.Y);
         }
 
         private void FlyWithAnimation(int x, int y)
