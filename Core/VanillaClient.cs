@@ -15,7 +15,7 @@ namespace PolskaBot.Core
 {
     public class VanillaClient : Client
     {
-        Thread pingThread;
+        public Thread pingThread;
 
         public event EventHandler<EventArgs> Compatible;
         public event EventHandler<EventArgs> NotCompatible;
@@ -256,7 +256,10 @@ namespace PolskaBot.Core
                     break;
                 case 23240:
                     if (!pingThread.IsAlive)
+                    {
+                        pingThread = new Thread(new ThreadStart(PingLoop));
                         pingThread.Start();
+                    }
                     break;
                 case OldStylePacket.ID:
                     OldStylePacket oldStylePacket = new OldStylePacket(cachedReader);

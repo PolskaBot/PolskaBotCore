@@ -60,8 +60,24 @@ namespace PolskaBot.Core
             fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
             fadeClient.OnConnected += (o, e) => vanillaClient.Connect(GetIP(), 8080);
             vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
+            vanillaClient.Disconnected += (o, e) => Reconnect();
 
             fadeClient.Connect(Environment.GetEnvironmentVariable(Config.SERVER_IP_ENV), 8081);
+        }
+
+        public void Reconnect()
+        {
+            Console.WriteLine("Connection lost. Reconnecting.");
+            vanillaClient.pingThread.Abort();
+            Boxes.Clear();
+            MemorizedBoxes.Clear();
+            Ores.Clear();
+            Ships.Clear();
+            Gates.Clear();
+            Buildings.Clear();
+            fadeClient.Send(new FadePandoraReset());
+            vanillaClient.Disconnect();
+            vanillaClient.Connect(GetIP(), 8080);
         }
 
         public string GetIP()

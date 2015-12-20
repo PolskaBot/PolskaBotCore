@@ -23,6 +23,7 @@ namespace PolskaBot.Core
         public int port { get; set; }
 
         public event EventHandler<EventArgs> OnConnected;
+        public event EventHandler<EventArgs> Disconnected;
 
         public Client(API api)
         {
@@ -39,20 +40,38 @@ namespace PolskaBot.Core
             tcpClient.Connect(this.IP, this.port);
             if(tcpClient.Connected)
             {
-                thread.Start();
+                if(!thread.IsAlive)
+                    thread.Start();
                 stream = tcpClient.GetStream();
                 OnConnected?.Invoke(this, EventArgs.Empty);
             }
         }
 
+        public void Disconnect()
+        {
+            tcpClient.Close();
+            thread = new Thread(new ThreadStart(Run));
+            tcpClient = new TcpClient();
+        }
+
         public void Send(Command command)
         {
+            if (!IsConnected())
+            {
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
             byte[] buffer = command.ToArray();
             stream.Write(buffer, 0, buffer.Length);
         }
 
         public void Send(byte[] buffer)
         {
+            if (!IsConnected())
+            {
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
             stream.Write(buffer, 0, buffer.Length);
         }
 
@@ -60,14 +79,24 @@ namespace PolskaBot.Core
         {
             while(true)
             {
-                if (!tcpClient.Connected)
+                if (!IsConnected())
                 {
+                    Disconnected?.Invoke(this, EventArgs.Empty);
                     return;
                 }
 
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
             }
 
+        }
+
+        private bool IsConnected()
+        {
+            try
+            {
+                return !(tcpClient.Client.Poll(1, SelectMode.SelectRead) && tcpClient.Client.Available == 0);
+            }
+            catch (SocketException) { return false; }
         }
 
         public abstract void Parse(EndianBinaryReader reader);
