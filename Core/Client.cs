@@ -28,7 +28,6 @@ namespace PolskaBot.Core
         public Client(API api)
         {
             this.api = api;
-            thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
         }
 
@@ -36,6 +35,8 @@ namespace PolskaBot.Core
         {
             this.IP = IP;
             this.port = port;
+
+            thread = new Thread(new ThreadStart(Run));
 
             tcpClient.Connect(this.IP, this.port);
             if(tcpClient.Connected)

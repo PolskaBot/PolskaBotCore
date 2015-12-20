@@ -71,6 +71,7 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\GateInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\HeroInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\InitPacket.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\Jump.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Login.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Move.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\OldStylePacket.cs" />
