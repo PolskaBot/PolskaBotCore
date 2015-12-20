@@ -164,7 +164,7 @@ namespace PolskaBot
             {
                 if (!api.Account.Ready || !running)
                 {
-                    Thread.Sleep(50);
+                    Thread.Sleep(500);
                     continue;
                 }
 
@@ -184,9 +184,7 @@ namespace PolskaBot
                         if (memorizedNearestBox == null)
                         {
                             // And no memorized ones. If flying continue. flying. If not fly to random position.
-                            if (api.Account.Flying)
-                                Thread.Sleep(50);
-                            else
+                            if (!api.Account.Flying)
                                 FlyWithAnimation(random.Next(0, 21000), random.Next(0, 13500));
                         }
                         else
@@ -261,9 +259,8 @@ namespace PolskaBot
                             }
                         state = State.SearchingBox;
                     }
-
-                    Thread.Sleep(50);
                 }
+                Thread.Sleep(100);
             }
         }
 
@@ -290,7 +287,6 @@ namespace PolskaBot
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
                 using (var g = Graphics.FromImage(bitmap))
                 {
-                    DrawBackground(g);
                     DrawBorders(g);
 
                     foreach(Box box in boxes)
@@ -452,14 +448,6 @@ namespace PolskaBot
         {
             g.DrawRectangle(new Pen(Config.neutral), new Rectangle(Config.poizoneSize, Config.poizoneSize, minimap.Width - 2 * Config.poizoneSize,
                 minimap.Height - 2 * Config.poizoneSize));
-        }
-
-        private void DrawBackground(Graphics g)
-        {
-            if (!Properties.Settings.Default.DrawMap)
-                return;
-
-            g.DrawImage(Properties.Resources._1, 0, 0, 315, 202);
         }
 
         private void Fly(Box box)
