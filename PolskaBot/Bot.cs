@@ -121,13 +121,27 @@ namespace PolskaBot
 
             api.vanillaClient.LogMessage += (s, e) => Log(e);
 
+            api.vanillaClient.HeroInited += (s, e) =>
+            {
+                renderer = new Thread(new ThreadStart(Render));
+                logic = new Thread(new ThreadStart(Runner));
+                renderer.Start();
+                logic.Start();
+                FlyWithAnimation(api.Account.X, api.Account.Y); // Stop flying.
+            };
+
+            api.vanillaClient.Disconnected += (s, e) =>
+            {
+                anim.Cancel();
+                api.Account.Ready = false;
+                api.Account.Flying = false;
+                renderer.Abort();
+                logic.Abort();
+                DrawReconnecting();
+            };
+
             api.Login();
             AddContextMenu();
-            renderer = new Thread(new ThreadStart(Render));
-            renderer.Start();
-
-            logic = new Thread(new ThreadStart(Runner));
-            logic.Start();
         }
 
         private void AddContextMenu()
@@ -386,6 +400,21 @@ namespace PolskaBot
         }
 
         #region MapDrawing
+
+        private void DrawReconnecting()
+        {
+            var bitmap = new Bitmap(minimap.Width, minimap.Height);
+            using (var g = Graphics.FromImage(bitmap))
+            {
+                SizeF size = g.MeasureString("Reconnecting", Config.font);
+                g.DrawString("Reconnecting", Config.font, new SolidBrush(Color.DarkGray), minimap.Width/2 - size.Width/2,
+                    minimap.Height/2 - size.Height/2);
+            }
+                Invoke((MethodInvoker)delegate
+            {
+                minimap.Image = bitmap;
+            });
+        }
 
         private void DrawBox(Graphics g, Box box)
         {

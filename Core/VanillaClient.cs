@@ -17,6 +17,7 @@ namespace PolskaBot.Core
     {
         public Thread pingThread;
 
+        public event EventHandler<EventArgs> HeroInited;
         public event EventHandler<EventArgs> Compatible;
         public event EventHandler<EventArgs> NotCompatible;
         public event EventHandler<ShipAttacked> Attacked;
@@ -177,6 +178,7 @@ namespace PolskaBot.Core
                     api.Account.ClanTag = heroInit.ClanTag;
                     api.Account.FactionID = heroInit.FactionID;
 
+                    HeroInited?.Invoke(this, EventArgs.Empty);
                     api.Account.Ready = true;
                     break;
                 case DroneFormationUpdated.ID:
