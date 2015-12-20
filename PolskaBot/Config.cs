@@ -9,7 +9,7 @@ namespace PolskaBot
 {
     class Config
     {
-        public const int FPS = 60;
+        public const int FPS = 10;
         public const float k = 0.015f;
         public const int poizoneSize = 10;
         const byte alpha = 216;
