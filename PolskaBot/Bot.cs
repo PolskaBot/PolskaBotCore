@@ -171,8 +171,15 @@ namespace PolskaBot
                 List<Box> boxes;
                 List<Box> memorizedBoxes;
 
-                boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
-                memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                lock(api.Boxes)
+                {
+                    boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                }
+
+                lock(api.MemorizedBoxes)
+                {
+                    memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                }
 
                 if (state == State.SearchingBox && running)
                 {
@@ -277,12 +284,35 @@ namespace PolskaBot
                 List<Building> buildings;
 
                 // Locks by copying to list.
-                boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
-                memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToList();
-                ores = api.Ores.ToList();
-                ships = api.Ships.ToList();
-                gates = api.Gates.ToList();
-                buildings = api.Buildings.ToList();
+                lock (api.Boxes)
+                {
+                    boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                }
+ 
+                lock(api.MemorizedBoxes)
+                {
+                    memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToList();
+                }
+
+                lock(api.Ores)
+                {
+                    ores = api.Ores.ToList();
+                }
+
+                lock(api.Ships)
+                {
+                    ships = api.Ships.ToList();
+                }
+
+                lock(api.Gates)
+                {
+                    gates = api.Gates.ToList();
+                }
+
+                lock(api.Buildings)
+                {
+                    buildings = api.Buildings.ToList();
+                }
 
                 var bitmap = new Bitmap(minimap.Width, minimap.Height);
                 using (var g = Graphics.FromImage(bitmap))
