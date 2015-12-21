@@ -37,12 +37,25 @@ namespace PolskaBot
             {
                 if(!usernameBox.Text.Equals("") || !passwordBox.Text.Equals(""))
                 {
-                    usernameBox.Text = "";
-                    passwordBox.Text = "";
                     var botPage = new BotPage(usernameBox.Text, passwordBox.Text);
                     pages.Add(botPage);
                     botTabs.Controls.Add(botPage);
                     botTabs.SelectedIndex = ++AccountsCount;
+                    usernameBox.Text = "";
+                    passwordBox.Text = "";
+                }
+            };
+
+            botTabs.SelectedIndexChanged += (s, e) =>
+            {
+                if (botTabs.SelectedIndex == 0)
+                {
+                    startButton.Enabled = false;
+                    stopButton.Enabled = false;
+                } else
+                {
+                    startButton.Enabled = !pages[botTabs.SelectedIndex - 1].Running;
+                    stopButton.Enabled = pages[botTabs.SelectedIndex - 1].Running;
                 }
             };
 
