@@ -192,6 +192,9 @@ namespace PolskaBot.Core
                     ShieldUpdated shieldUpdated = new ShieldUpdated(cachedReader);
                     api.Account.UpdateShield(shieldUpdated.Shield, shieldUpdated.MaxShield);
                     break;
+                case CargoUpdated.ID:
+                    CargoUpdated cargoUpdated = new CargoUpdated(cachedReader);
+                    break;
                 case HitpointsUpdated.ID:
                     HitpointsUpdated hitpointsUpdated = new HitpointsUpdated(cachedReader);
                     api.Account.UpdateHitpoints(hitpointsUpdated.HP, hitpointsUpdated.MaxHP, hitpointsUpdated.NanoHP, hitpointsUpdated.MaxNanoHP);
