@@ -31,6 +31,8 @@ namespace PolskaBot.Core
         public List<Gate> Gates { get; set; } = new List<Gate>();
         public List<Building> Buildings { get; set; } = new List<Building>();
 
+        public event EventHandler<EventArgs> Connecting;
+
         public API(Mode mode = Mode.BOT)
         {
             this.mode = mode;
@@ -56,12 +58,12 @@ namespace PolskaBot.Core
 
         public void Connect()
         {
-            Console.WriteLine("Connecting");
             fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
             fadeClient.OnConnected += (o, e) => vanillaClient.Connect(GetIP(), 8080);
             vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
             vanillaClient.Disconnected += (o, e) => Reconnect();
 
+            Connecting?.Invoke(this, EventArgs.Empty);
             fadeClient.Connect(Environment.GetEnvironmentVariable(Config.SERVER_IP_ENV), 8081);
         }
 
