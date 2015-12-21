@@ -89,7 +89,7 @@ namespace PolskaBot.Core
 
         }
 
-        public bool IsConnected()
+        protected bool IsConnected()
         {
             try
             {
