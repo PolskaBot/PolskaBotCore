@@ -32,6 +32,9 @@ namespace PolskaBot
 
         private void Init()
         {
+            startButton.Enabled = false;
+            stopButton.Enabled = false;
+
             AcceptButton = loginButton;
             loginButton.Click += (s, e) =>
             {
@@ -62,11 +65,15 @@ namespace PolskaBot
             startButton.Click += (s, e) =>
             {
                 pages[botTabs.SelectedIndex - 1].Running = true;
+                startButton.Enabled = !pages[botTabs.SelectedIndex - 1].Running;
+                stopButton.Enabled = pages[botTabs.SelectedIndex - 1].Running;
             };
 
             stopButton.Click += (s, e) =>
             {
                 pages[botTabs.SelectedIndex - 1].Running = false;
+                startButton.Enabled = !pages[botTabs.SelectedIndex - 1].Running;
+                stopButton.Enabled = pages[botTabs.SelectedIndex - 1].Running;
             };
         }
     }

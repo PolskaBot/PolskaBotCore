@@ -44,6 +44,7 @@
             // 
             // startButton
             // 
+            this.startButton.Enabled = false;
             this.startButton.Location = new System.Drawing.Point(12, 12);
             this.startButton.Name = "startButton";
             this.startButton.Size = new System.Drawing.Size(176, 23);
@@ -53,6 +54,7 @@
             // 
             // stopButton
             // 
+            this.stopButton.Enabled = false;
             this.stopButton.Location = new System.Drawing.Point(194, 12);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(176, 23);
