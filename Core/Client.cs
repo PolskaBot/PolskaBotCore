@@ -85,13 +85,12 @@ namespace PolskaBot.Core
                     Disconnected?.Invoke(this, EventArgs.Empty);
                     return;
                 }
-
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
             }
 
         }
 
-        private bool IsConnected()
+        protected bool IsConnected()
         {
             try
             {

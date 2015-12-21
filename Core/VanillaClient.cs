@@ -53,6 +53,8 @@ namespace PolskaBot.Core
 
             lock (api.fadeClient.stream)
             {
+                if (!IsConnected())
+                    return;
                 api.fadeClient.Send(new FadeDecodePacket(lengthBuffer));
                 fadeLength = fadeReader.ReadUInt16();
             }
@@ -61,6 +63,8 @@ namespace PolskaBot.Core
 
             lock(api.fadeClient.stream)
             {
+                if (!IsConnected())
+                    return;
                 api.fadeClient.Send(new FadeDecodePacket(contentBuffer));
                 fadeID = fadeReader.ReadUInt16();
                 content = fadeReader.ReadBytes(fadeLength - 2);
