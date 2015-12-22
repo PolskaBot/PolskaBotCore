@@ -493,6 +493,16 @@ namespace PolskaBot
         {
             if (api.Account.Ready)
             {
+                string uridium = $"Uridium: {api.Account.CollectedUridium}";
+                string ee = $"Extra energy: {api.Account.CollectedEE}";
+                SizeF uridiumSize = g.MeasureString(uridium, Config.font);
+                SizeF eeSize = g.MeasureString(ee, Config.font);
+
+                g.DrawString(uridium, Config.font, new SolidBrush(Color.DarkGray), minimap.Width - Config.poizoneSize - uridiumSize.Width - 4,
+                    Config.poizoneSize + 4);
+                g.DrawString(ee, Config.font, new SolidBrush(Color.DarkGray), minimap.Width - Config.poizoneSize - eeSize.Width - 4,
+                    Config.poizoneSize + uridiumSize.Height + 4);
+
                 if (api.Account.Cloaked)
                 {
                     string cloaked = "Invisible";
