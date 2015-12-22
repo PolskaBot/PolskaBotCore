@@ -11,7 +11,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 16273;
 
-        public double Cargo { get; private set; }
+        public double CargoCount { get; private set; }
 
         public CargoUpdated(EndianBinaryReader reader)
         {
@@ -25,7 +25,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
                     int OreID = reader.ReadUInt16();                    //26978  | class_171
                     double Amount = reader.ReadDouble();                //6823   | class_364
                     if ((Ore.OreType)OreID != Ore.OreType.XENOMIT)
-                        Cargo += Amount;
+                        CargoCount += Amount;
                 }
             }
             reader.ReadUInt16();

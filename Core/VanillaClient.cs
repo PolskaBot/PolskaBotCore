@@ -198,6 +198,7 @@ namespace PolskaBot.Core
                     break;
                 case CargoUpdated.ID:
                     CargoUpdated cargoUpdated = new CargoUpdated(cachedReader);
+                    api.Account.FreeCargoSpace = api.Account.CargoCapacity - (int)cargoUpdated.CargoCount;
                     break;
                 case HitpointsUpdated.ID:
                     HitpointsUpdated hitpointsUpdated = new HitpointsUpdated(cachedReader);
