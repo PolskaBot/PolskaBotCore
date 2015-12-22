@@ -13,7 +13,7 @@ namespace PolskaBot
         public int Value { get; set; } = 0;
         public int Maximum { get; set; } = 100;
 
-        public Color PaintColor { get; set; }
+        public Color PaintColor { get; set; } = Color.DarkGray;
         public Color FontPrimary { get; set; } = Color.White;
         public Color FontSecondary { get; set; } = Color.FromArgb(95, 95, 95);
 

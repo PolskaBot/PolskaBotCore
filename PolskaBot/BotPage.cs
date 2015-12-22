@@ -43,6 +43,9 @@ namespace PolskaBot
 
         private Stopwatch stopwatch = new Stopwatch();
 
+        private ColorProgressBar hpBar;
+        private ColorProgressBar shieldBar;
+        private ColorProgressBar cargoBar;
         private PictureBox minimap;
 
         public BotPage(string username, string password)
@@ -352,7 +355,7 @@ namespace PolskaBot
                     }
 
                     DrawPlayer(g);
-                    //UpdateProgressBars();
+                    UpdateProgressBars();
                     DrawDetails(g);
                 }
 
@@ -564,10 +567,26 @@ namespace PolskaBot
 
         #region GUI
 
+        private void UpdateProgressBars()
+        {
+            Invoke((MethodInvoker)delegate
+            {
+                hpBar.UpdateStats(api.Account.HP, api.Account.MaxHP);
+                shieldBar.UpdateStats(api.Account.Shield, api.Account.MaxShield);
+                cargoBar.UpdateStats(api.Account.CargoCapacity - api.Account.FreeCargoSpace, api.Account.CargoCapacity);
+            });
+        }
+
         private void InitializeComponent()
         {
             this.minimap = new System.Windows.Forms.PictureBox();
+            this.hpBar = new PolskaBot.ColorProgressBar();
+            this.shieldBar = new PolskaBot.ColorProgressBar();
+            this.cargoBar = new PolskaBot.ColorProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hpBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldBar)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cargoBar)).BeginInit();
             this.SuspendLayout();
             // 
             // minimap
@@ -578,9 +597,58 @@ namespace PolskaBot
             this.minimap.Size = new System.Drawing.Size(335, 222);
             this.minimap.TabIndex = 0;
             this.minimap.TabStop = false;
+            // 
+            // hpBar
+            // 
+            this.hpBar.FontPrimary = System.Drawing.Color.White;
+            this.hpBar.FontSecondary = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(95)))), ((int)(((byte)(95)))));
+            this.hpBar.Location = new System.Drawing.Point(6, 234);
+            this.hpBar.Maximum = 100;
+            this.hpBar.Name = "hpBar";
+            this.hpBar.PaintColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(209)))), ((int)(((byte)(79)))));
+            this.hpBar.Size = new System.Drawing.Size(335, 25);
+            this.hpBar.TabIndex = 0;
+            this.hpBar.TabStop = false;
+            this.hpBar.Value = 0;
+            // 
+            // shieldBar
+            // 
+            this.shieldBar.FontPrimary = System.Drawing.Color.White;
+            this.shieldBar.FontSecondary = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(95)))), ((int)(((byte)(95)))));
+            this.shieldBar.Location = new System.Drawing.Point(6, 265);
+            this.shieldBar.Maximum = 100;
+            this.shieldBar.Name = "shieldBar";
+            this.shieldBar.PaintColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(157)))), ((int)(((byte)(209)))));
+            this.shieldBar.Size = new System.Drawing.Size(335, 25);
+            this.shieldBar.TabIndex = 0;
+            this.shieldBar.TabStop = false;
+            this.shieldBar.Value = 0;
+            // 
+            // cargoBar
+            // 
+            this.cargoBar.FontPrimary = System.Drawing.Color.White;
+            this.cargoBar.FontSecondary = System.Drawing.Color.FromArgb(((int)(((byte)(95)))), ((int)(((byte)(95)))), ((int)(((byte)(95)))));
+            this.cargoBar.Location = new System.Drawing.Point(6, 296);
+            this.cargoBar.Maximum = 100;
+            this.cargoBar.Name = "cargoBar";
+            this.cargoBar.PaintColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(179)))), ((int)(((byte)(71)))));
+            this.cargoBar.Size = new System.Drawing.Size(335, 25);
+            this.cargoBar.TabIndex = 0;
+            this.cargoBar.TabStop = false;
+            this.cargoBar.Value = 0;
+            // 
+            // BotPage
+            // 
+            this.Controls.Add(this.minimap);
+            this.Controls.Add(this.hpBar);
+            this.Controls.Add(this.shieldBar);
+            this.Controls.Add(this.cargoBar);
             ((System.ComponentModel.ISupportInitialize)(this.minimap)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.hpBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.shieldBar)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cargoBar)).EndInit();
             this.ResumeLayout(false);
-            Controls.Add(minimap);
+
         }
 
         #endregion
