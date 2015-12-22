@@ -63,6 +63,7 @@
     <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\BoxInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\BuildingInit.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\CargoUpdated.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Class326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\CollectBox.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\DestroyItem.cs" />
