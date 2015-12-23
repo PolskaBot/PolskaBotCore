@@ -25,6 +25,8 @@ namespace PolskaBot
 
         API api;
 
+        public BotSettings Settings { get; private set; } = new BotSettings();
+
         Thread renderer;
         Thread logic;
 
