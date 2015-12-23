@@ -17,7 +17,7 @@ namespace PolskaBot
 {
     public enum State
     {
-        SearchingBox, CollectingBox
+        SearchingBox, CollectingBox, Escaping, EsapingJumped, Reparing
     }
 
     public class BotPage : TabPage
@@ -38,6 +38,7 @@ namespace PolskaBot
         Tweener anim = new Tweener();
 
         Box boxToCollect;
+        Gate gateToJump;
 
         private Stopwatch stopwatch = new Stopwatch();
 
@@ -106,6 +107,8 @@ namespace PolskaBot
                     if (attacker != null && !attacker.NPC && e.UserID == api.Account.UserID)
                     {
                         var targetGate = api.Gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.Account.X, 2) + Math.Pow(gate.Position.Y - api.Account.Y, 2))).Where(gate => gate.ID == 1).First();
+                        gateToJump = targetGate;
+                        state = State.Escaping;
                         FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
                     }
                 }
@@ -175,6 +178,21 @@ namespace PolskaBot
         {
             while (true)
             {
+
+                if (state == State.Escaping)
+                {
+                    if (CalculateDistance(gateToJump.Position) < 300)
+                    {
+                        Jump();
+                        state = State.EsapingJumped;
+                    }
+                    else
+                    {
+                        Thread.Sleep(50);
+                        continue;
+                    }
+                }
+
                 if (!api.Account.Ready || !Running)
                 {
                     Thread.Sleep(500);
@@ -182,7 +200,7 @@ namespace PolskaBot
                 }
 
                 // Check if there is any task to do.
-                if(!Settings.CollectorEnabled)
+                if (!Settings.CollectorEnabled)
                 {
                     Thread.Sleep(500);
                     continue;
@@ -586,6 +604,11 @@ namespace PolskaBot
                 api.Account.Flying = false;
                 Console.WriteLine(ex);
             }
+        }
+
+        private void Jump()
+        {
+            api.vanillaClient.SendEncoded(new Jump());
         }
 
         private void ChangeConfig()

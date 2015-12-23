@@ -172,6 +172,14 @@ namespace PolskaBot.Core
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(cachedReader);
+
+                    api.Boxes.Clear();
+                    api.MemorizedBoxes.Clear();
+                    api.Ores.Clear();
+                    api.Ships.Clear();
+                    api.Gates.Clear();
+                    api.Buildings.Clear();
+
                     // Movement
                     api.Account.X = heroInit.X;
                     api.Account.Y = heroInit.Y;
