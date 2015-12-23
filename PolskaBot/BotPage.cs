@@ -165,8 +165,15 @@ namespace PolskaBot
                 Properties.Settings.Default.DrawOres = !Properties.Settings.Default.DrawOres;
                 ((MenuItem)s).Checked = Properties.Settings.Default.DrawOres;
             };
-
             contextMenu.MenuItems.Add(drawOres);
+
+            contextMenu.MenuItems.Add("-");
+
+            var jump = new MenuItem();
+            jump.Text = "Jump";
+            jump.Click += (s, e) => Jump();
+            contextMenu.MenuItems.Add(jump);
+
             minimap.ContextMenu = contextMenu;
         }
 
@@ -616,7 +623,6 @@ namespace PolskaBot
 
         private void Jump()
         {
-            api.Account.Ready = false;
             api.vanillaClient.SendEncoded(new Jump());
         }
 
