@@ -49,6 +49,7 @@ namespace PolskaBot.Core
         {
             vanillaClient.Running = false;
             vanillaClient.thread?.Abort();
+            vanillaClient.pingThread?.Abort();
             vanillaClient.tcpClient?.Close();
             vanillaClient.stream?.Close();
 

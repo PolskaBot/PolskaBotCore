@@ -28,6 +28,12 @@ namespace PolskaBot
         {
             InitializeComponent();
             Load += (s, e) => Init();
+            FormClosed += (s, e) => {
+                foreach(BotPage page in pages)
+                {
+                    page.Stop();
+                }
+            };
         }
 
         private void Init()
