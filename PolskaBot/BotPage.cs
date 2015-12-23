@@ -185,12 +185,20 @@ namespace PolskaBot
                     {
                         Jump();
                         state = State.EsapingJumped;
+                        continue;
                     }
                     else
                     {
                         Thread.Sleep(50);
                         continue;
                     }
+                }
+
+                if(state == State.EsapingJumped && api.Account.Ready)
+                {
+                    Thread.Sleep(5000);
+                    Jump();
+                    state = State.SearchingBox;
                 }
 
                 if (!api.Account.Ready || !Running)
@@ -608,6 +616,7 @@ namespace PolskaBot
 
         private void Jump()
         {
+            api.Account.Ready = false;
             api.vanillaClient.SendEncoded(new Jump());
         }
 

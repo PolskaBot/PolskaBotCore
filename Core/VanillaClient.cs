@@ -136,8 +136,6 @@ namespace PolskaBot.Core
                         SendEncoded(new Ping());
                         SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
                         SendEncoded(new Ready());
-                        SendEncoded(new InitPacket(1));
-                        SendEncoded(new InitPacket(2));
                     }
 
                     break;
@@ -216,6 +214,9 @@ namespace PolskaBot.Core
 
                     HeroInited?.Invoke(this, EventArgs.Empty);
                     api.Account.Ready = true;
+
+                    SendEncoded(new InitPacket(1));
+                    SendEncoded(new InitPacket(2));
                     break;
                 case DroneFormationUpdated.ID:
                     DroneFormationUpdated droneFormationUpdated = new DroneFormationUpdated(cachedReader);
