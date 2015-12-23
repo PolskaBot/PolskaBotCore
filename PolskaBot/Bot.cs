@@ -55,10 +55,14 @@ namespace PolskaBot
                 {
                     startButton.Enabled = false;
                     stopButton.Enabled = false;
+                    closeButton.Enabled = false;
+                    settingsButton.Enabled = false;
                 } else
                 {
                     startButton.Enabled = !pages[botTabs.SelectedIndex - 1].Running;
                     stopButton.Enabled = pages[botTabs.SelectedIndex - 1].Running;
+                    closeButton.Enabled = true;
+                    settingsButton.Enabled = true;
                 }
             };
 
@@ -74,6 +78,14 @@ namespace PolskaBot
                 pages[botTabs.SelectedIndex - 1].Running = false;
                 startButton.Enabled = !pages[botTabs.SelectedIndex - 1].Running;
                 stopButton.Enabled = pages[botTabs.SelectedIndex - 1].Running;
+            };
+
+            closeButton.Click += (s, e) =>
+            {
+                pages[botTabs.SelectedIndex - 1].Stop();
+                pages.RemoveAt(botTabs.SelectedIndex - 1);
+                botTabs.Controls.RemoveAt(botTabs.SelectedIndex);
+                AccountsCount--;
             };
         }
     }

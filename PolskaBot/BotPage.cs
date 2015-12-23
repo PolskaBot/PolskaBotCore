@@ -65,6 +65,14 @@ namespace PolskaBot
             loginTask.Start();
         }
 
+        public void Stop()
+        {
+            Running = false;
+            renderer?.Abort();
+            logic?.Abort();
+            api?.Stop();
+        }
+
         #region Setup
 
         private void AddHandlers()

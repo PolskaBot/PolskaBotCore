@@ -45,6 +45,19 @@ namespace PolskaBot.Core
             Account.LoginSucceed += (s, e) => Connect();
         }
 
+        public void Stop()
+        {
+            vanillaClient.Running = false;
+            vanillaClient.thread?.Abort();
+            vanillaClient.tcpClient?.Close();
+            vanillaClient.stream?.Close();
+
+            fadeClient.Running = false;
+            fadeClient.thread?.Abort();
+            fadeClient.tcpClient?.Close();
+            fadeClient.stream?.Close();
+        }
+
         public void Login(string username = null, string password = null)
         {
             if(username == null || password == null)
