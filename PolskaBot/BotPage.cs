@@ -37,6 +37,7 @@ namespace PolskaBot
 
         Tweener anim = new Tweener();
 
+        private List<string> collectable;
         Box boxToCollect;
         Gate gateToJump;
 
@@ -74,6 +75,8 @@ namespace PolskaBot
             renderer?.Abort();
             logic?.Abort();
             api?.Stop();
+            stopwatch.Stop();
+            anim.Cancel();
         }
 
         #region Setup
@@ -230,7 +233,6 @@ namespace PolskaBot
                     }
                 }
 
-                List<string> collectable;
                 List<Box> boxes;
                 List<Box> memorizedBoxes;
 
@@ -489,7 +491,8 @@ namespace PolskaBot
 
         private void DrawMemorizedBox(Graphics g, Box box)
         {
-            g.DrawRectangle(new Pen(Config.boxMemorised), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
+            if(collectable.Contains(box.Type))
+                g.DrawRectangle(new Pen(Config.boxMemorised), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
         }
 
         private void DrawOre(Graphics g, Ore ore)
