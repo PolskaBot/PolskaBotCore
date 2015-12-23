@@ -20,10 +20,12 @@ namespace PolskaBot
         SearchingBox, CollectingBox
     }
 
-    class BotPage : TabPage
+    public class BotPage : TabPage
     {
 
         API api;
+
+        public BotSettings Settings { get; private set; } = new BotSettings();
 
         Thread renderer;
         Thread logic;
@@ -37,16 +39,16 @@ namespace PolskaBot
 
         Box boxToCollect;
 
-        private string[] collectable = {
-                "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX"
-        };
-
         private Stopwatch stopwatch = new Stopwatch();
 
         private ColorProgressBar hpBar;
         private ColorProgressBar shieldBar;
         private ColorProgressBar cargoBar;
         private PictureBox minimap;
+
+        private string[] displayableBoxes = {
+            "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX", "PIRATE_BOOTY", "PIRATE_BOOTY_GOLD", "PIRATE_BOOTY_RED", "PIRATE_BOOTY_BLUE"
+            };
 
         public BotPage(string username, string password)
         {
@@ -177,8 +179,30 @@ namespace PolskaBot
                     continue;
                 }
 
+                // Check if there is any task to do.
+                if(!Settings.CollectorEnabled)
+                {
+                    Thread.Sleep(500);
+                    continue;
+                }
+
+                if (Settings.CollectorEnabled)
+                {
+                    if (!Settings.CollectBonusBoxes && !Settings.CollectEventBoxes)
+                    {
+                        Thread.Sleep(500);
+                        continue;
+                    }
+                }
+
+                List<string> collectable;
                 List<Box> boxes;
                 List<Box> memorizedBoxes;
+
+                lock(Settings.CollectableBoxes)
+                {
+                    collectable = Settings.CollectableBoxes.ToList();
+                }
 
                 lock (api.Boxes)
                 {
@@ -297,14 +321,15 @@ namespace PolskaBot
                 List<Building> buildings;
 
                 // Locks by copying to list.
+
                 lock (api.Boxes)
                 {
-                    boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
+                    boxes = api.Boxes.ToList().Where(box => displayableBoxes.Contains(box.Type)).ToList();
                 }
 
                 lock (api.MemorizedBoxes)
                 {
-                    memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToList();
+                    memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => displayableBoxes.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToList();
                 }
 
                 lock (api.Ores)
