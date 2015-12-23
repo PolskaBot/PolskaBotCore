@@ -136,8 +136,6 @@ namespace PolskaBot.Core
                         SendEncoded(new Ping());
                         SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
                         SendEncoded(new Ready());
-                        SendEncoded(new InitPacket(1));
-                        SendEncoded(new InitPacket(2));
                     }
 
                     break;
@@ -172,6 +170,14 @@ namespace PolskaBot.Core
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(cachedReader);
+
+                    api.Boxes.Clear();
+                    api.MemorizedBoxes.Clear();
+                    api.Ores.Clear();
+                    api.Ships.Clear();
+                    api.Gates.Clear();
+                    api.Buildings.Clear();
+
                     // Movement
                     api.Account.X = heroInit.X;
                     api.Account.Y = heroInit.Y;
@@ -208,6 +214,9 @@ namespace PolskaBot.Core
 
                     HeroInited?.Invoke(this, EventArgs.Empty);
                     api.Account.Ready = true;
+
+                    SendEncoded(new InitPacket(1));
+                    SendEncoded(new InitPacket(2));
                     break;
                 case DroneFormationUpdated.ID:
                     DroneFormationUpdated droneFormationUpdated = new DroneFormationUpdated(cachedReader);
