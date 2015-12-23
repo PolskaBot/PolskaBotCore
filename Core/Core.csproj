@@ -61,6 +61,7 @@
     <Compile Include="Darkorbit\Commands\FadeInitStageTwo.cs" />
     <Compile Include="Darkorbit\Commands\FadePandoraReset.cs" />
     <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\ActionRequest.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\BoxInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\BuildingInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\CargoUpdated.cs" />
