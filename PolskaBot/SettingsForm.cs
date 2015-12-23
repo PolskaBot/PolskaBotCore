@@ -26,6 +26,7 @@ namespace PolskaBot
                 botPage.Settings.CollectorEnabled = enableCollectorBox.Checked;
                 botPage.Settings.CollectBonusBoxes = bbBox.Checked;
                 botPage.Settings.CollectEventBoxes = ebBox.Checked;
+                botPage.Settings.Reload();
                 Close();
             };
         }
