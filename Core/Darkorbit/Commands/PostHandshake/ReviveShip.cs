@@ -45,7 +45,6 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             packetWriter.Write(Encoding.UTF8.GetBytes(Version));
             packetWriter.Write((UInt16)SID.Length);
             packetWriter.Write(Encoding.UTF8.GetBytes(SID));
-            Console.WriteLine(this.ToArray().Length);
         }
     }
 }

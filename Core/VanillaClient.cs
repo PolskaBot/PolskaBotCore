@@ -310,7 +310,7 @@ namespace PolskaBot.Core
                             }
                             break;
                         case OldPackets.PORTAL_JUMP:
-                            Console.WriteLine($"Map changed to: {splittedMessage[2]}");
+                            Console.WriteLine($"(Old) Map changed to: {splittedMessage[2]}");
                             SendEncoded(new MapChangeConfirmation(true));
                             break;
                         case OldPackets.LOG_MESSAGE:

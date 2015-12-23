@@ -43,7 +43,7 @@ namespace PolskaBot.Core
             tcpClient.Connect(this.IP, this.port);
             if(tcpClient.Connected)
             {
-                if(!thread.IsAlive)
+                if (!thread.IsAlive)
                     thread.Start();
                 stream = tcpClient.GetStream();
                 OnConnected?.Invoke(this, EventArgs.Empty);
@@ -52,7 +52,9 @@ namespace PolskaBot.Core
 
         public void Disconnect()
         {
+            tcpClient.Client.Disconnect(false);
             tcpClient.Close();
+            stream.Close();
             thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
         }
