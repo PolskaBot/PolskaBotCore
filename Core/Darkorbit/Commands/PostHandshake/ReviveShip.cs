@@ -31,19 +31,19 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public override void Write()
         {
-            packetWriter.Write((short)60);
+            packetWriter.Write((short)26 + Version.Length + SID.Length);
             packetWriter.Write(ID);
             packetWriter.Write((short)24278); //class_356.ID
             packetWriter.Write(Selected);
             packetWriter.Write((short)-25050);
             packetWriter.Write(Login.ID);
             packetWriter.Write((short)-19684);
-            packetWriter.Write((int)(InstanceID << 6 | InstanceID >> 26));
+            packetWriter.Write((int)((uint)InstanceID << 6 | (uint)InstanceID >> 26));
             packetWriter.Write((short)FactionID);
-            packetWriter.Write((int)(UserID >> 3 | UserID << 29));
-            packetWriter.Write((UInt16)Version.Length);
+            packetWriter.Write((int)((uint)UserID >> 3 | (uint)UserID << 29));
+            packetWriter.Write((short)Version.Length);
             packetWriter.Write(Encoding.UTF8.GetBytes(Version));
-            packetWriter.Write((UInt16)SID.Length);
+            packetWriter.Write((short)SID.Length);
             packetWriter.Write(Encoding.UTF8.GetBytes(SID));
         }
     }

@@ -169,7 +169,6 @@ namespace PolskaBot.Core
                     MapChanged mapChanged = new MapChanged(cachedReader);
                     Console.WriteLine($"Map changed to: {mapChanged.MapID} | {mapChanged.var_294}");
                     SendEncoded(new MapChangeConfirmation(true));
-                    api.Reconnect();
                     break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(cachedReader);

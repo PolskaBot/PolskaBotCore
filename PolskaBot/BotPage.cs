@@ -133,8 +133,10 @@ namespace PolskaBot
                 anim.Cancel();
                 api.Account.Ready = false;
                 api.Account.Flying = false;
-                renderer.Abort();
-                logic.Abort();
+                if(renderer != null)
+                    renderer.Abort();
+                if(logic != null)
+                    logic.Abort();
                 DrawText("Reconnecting");
             };
 
