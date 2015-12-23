@@ -38,6 +38,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.settingsButton = new System.Windows.Forms.Button();
+            this.closeButton = new System.Windows.Forms.Button();
             this.botTabs.SuspendLayout();
             this.loginPage.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +49,7 @@
             this.startButton.Enabled = false;
             this.startButton.Location = new System.Drawing.Point(12, 12);
             this.startButton.Name = "startButton";
-            this.startButton.Size = new System.Drawing.Size(176, 23);
+            this.startButton.Size = new System.Drawing.Size(85, 23);
             this.startButton.TabIndex = 1;
             this.startButton.Text = "Start";
             this.startButton.UseVisualStyleBackColor = true;
@@ -55,9 +57,9 @@
             // stopButton
             // 
             this.stopButton.Enabled = false;
-            this.stopButton.Location = new System.Drawing.Point(194, 12);
+            this.stopButton.Location = new System.Drawing.Point(103, 12);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(176, 23);
+            this.stopButton.Size = new System.Drawing.Size(85, 23);
             this.stopButton.TabIndex = 2;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
@@ -127,11 +129,33 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Username";
             // 
+            // settingsButton
+            // 
+            this.settingsButton.Enabled = false;
+            this.settingsButton.Location = new System.Drawing.Point(286, 12);
+            this.settingsButton.Name = "settingsButton";
+            this.settingsButton.Size = new System.Drawing.Size(85, 23);
+            this.settingsButton.TabIndex = 11;
+            this.settingsButton.Text = "Settings";
+            this.settingsButton.UseVisualStyleBackColor = true;
+            // 
+            // closeButton
+            // 
+            this.closeButton.Enabled = false;
+            this.closeButton.Location = new System.Drawing.Point(194, 12);
+            this.closeButton.Name = "closeButton";
+            this.closeButton.Size = new System.Drawing.Size(85, 23);
+            this.closeButton.TabIndex = 12;
+            this.closeButton.Text = "Close";
+            this.closeButton.UseVisualStyleBackColor = true;
+            // 
             // Bot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 411);
+            this.Controls.Add(this.settingsButton);
+            this.Controls.Add(this.closeButton);
             this.Controls.Add(this.botTabs);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.stopButton);
@@ -155,6 +179,8 @@
         private System.Windows.Forms.TextBox passwordBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button loginButton;
+        private System.Windows.Forms.Button settingsButton;
+        private System.Windows.Forms.Button closeButton;
     }
 }
 

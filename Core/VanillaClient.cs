@@ -32,6 +32,9 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
+            if (!Running)
+                return;
+
             byte[] rawBuffer = command.ToArray();
             byte[] encodedBuffer = new byte[rawBuffer.Length];
             lock (api.fadeClient.stream)

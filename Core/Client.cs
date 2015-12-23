@@ -15,6 +15,8 @@ namespace PolskaBot.Core
     {
         public API api { get; private set; }
 
+        public bool Running { get; set; } = true;
+
         public Thread thread { get; private set; }
         public TcpClient tcpClient { get; private set; }
         public NetworkStream stream { get; private set; }
@@ -57,6 +59,9 @@ namespace PolskaBot.Core
 
         public void Send(Command command)
         {
+            if (!Running)
+                return;
+
             if (!IsConnected())
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);
@@ -68,6 +73,9 @@ namespace PolskaBot.Core
 
         public void Send(byte[] buffer)
         {
+            if (!Running)
+                return;
+
             if (!IsConnected())
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);
