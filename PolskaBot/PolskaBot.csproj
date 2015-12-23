@@ -65,6 +65,7 @@
     <Compile Include="BotPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="BotSettings.cs" />
     <Compile Include="ColorProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>

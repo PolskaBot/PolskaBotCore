@@ -19,12 +19,21 @@ namespace PolskaBot
             this.botPage = botPage;
             InitializeComponent();
 
+            LoadSettings();
+
             saveButton.Click += (s, e) =>
             {
-                botPage.Settings.CollectEventBoxes = enableCollectorBox.Checked;
+                botPage.Settings.CollectorEnabled = enableCollectorBox.Checked;
                 botPage.Settings.CollectBonusBoxes = bbBox.Checked;
                 botPage.Settings.CollectEventBoxes = ebBox.Checked;
             };
+        }
+
+        private void LoadSettings()
+        {
+            enableCollectorBox.Checked = botPage.Settings.CollectorEnabled;
+            bbBox.Checked = botPage.Settings.CollectBonusBoxes;
+            ebBox.Checked = botPage.Settings.CollectEventBoxes;
         }
     }
 }
