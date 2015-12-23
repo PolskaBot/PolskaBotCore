@@ -24,5 +24,8 @@ namespace PolskaBot.Core.Darkorbit
         public const string BOX_CONTENT_DEDUCTION_HP = "DHP";
         public const string BOX_CONTENT_EE = "XEN";
         public const string BOX_CONTENT_ORE = "CAR";
+
+        // Map
+        public const string PORTAL_JUMP = "i";
     }
 }

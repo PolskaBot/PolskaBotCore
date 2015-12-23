@@ -149,6 +149,27 @@ namespace PolskaBot.Core
                     GateInit gateInit = new GateInit(cachedReader);
                     api.Gates.Add(new Gate(gateInit.GateType, gateInit.X, gateInit.Y));
                     break;
+                case ShipDestroyed.ID:
+                    ShipDestroyed shipDestroyed = new ShipDestroyed(cachedReader);
+                    if(shipDestroyed.UserID == api.Account.UserID)
+                    {
+                        Console.WriteLine("Our ship got destryoed");
+                        SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, 1));
+                    }
+                    break;
+                case Notify.ID:
+                    Notify notify = new Notify(cachedReader);
+                    if (notify.MessageType == "ttip_killscreen_basic_repair")
+                    {
+                        Console.WriteLine("Our ship is destryoed");
+                        SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, 1));
+                    }
+                    break;
+                case MapChanged.ID:
+                    MapChanged mapChanged = new MapChanged(cachedReader);
+                    Console.WriteLine($"Map changed to: {mapChanged.MapID} | {mapChanged.var_294}");
+                    SendEncoded(new MapChangeConfirmation(true));
+                    break;
                 case HeroInit.ID:
                     HeroInit heroInit = new HeroInit(cachedReader);
                     // Movement
@@ -286,6 +307,10 @@ namespace PolskaBot.Core
                                     api.Account.Config = Convert.ToInt32(splittedMessage[3]);
                                     break;
                             }
+                            break;
+                        case OldPackets.PORTAL_JUMP:
+                            Console.WriteLine($"(Old) Map changed to: {splittedMessage[2]}");
+                            SendEncoded(new MapChangeConfirmation(true));
                             break;
                         case OldPackets.LOG_MESSAGE:
                             switch(splittedMessage[3])
