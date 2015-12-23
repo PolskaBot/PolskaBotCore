@@ -84,7 +84,6 @@ namespace PolskaBot.Core
         {
             Console.WriteLine("Connection lost. Reconnecting.");
             vanillaClient.pingThread.Abort();
-            vanillaClient.thread.Abort();
             Boxes.Clear();
             MemorizedBoxes.Clear();
             Ores.Clear();
@@ -93,6 +92,7 @@ namespace PolskaBot.Core
             Buildings.Clear();
             fadeClient.Send(new FadePandoraReset());
             vanillaClient.Disconnect();
+            vanillaClient.thread.Abort();
             vanillaClient.Connect(GetIP(), 8080);
         }
 
