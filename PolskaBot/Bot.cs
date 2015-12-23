@@ -87,6 +87,12 @@ namespace PolskaBot
                 botTabs.Controls.RemoveAt(botTabs.SelectedIndex);
                 AccountsCount--;
             };
+
+            settingsButton.Click += (s, e) =>
+            {
+                SettingsForm settingsForm = new SettingsForm(pages[botTabs.SelectedIndex - 1]);
+                settingsForm.Show();
+            };
         }
     }
 }

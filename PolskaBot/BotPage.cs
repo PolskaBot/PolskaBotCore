@@ -20,7 +20,7 @@ namespace PolskaBot
         SearchingBox, CollectingBox
     }
 
-    class BotPage : TabPage
+    public class BotPage : TabPage
     {
 
         API api;
