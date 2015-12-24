@@ -17,7 +17,7 @@ namespace PolskaBot
 {
     public enum State
     {
-        SearchingBox, CollectingBox, Escaping, EsapingJumped, Reparing
+        Idle, Flying, FlyingToRepair, SearchingBox, CollectingBox, Escaping, EsapingJumped, EscapingJumpedBack, Repairing
     }
 
     public class BotPage : TabPage
@@ -39,7 +39,7 @@ namespace PolskaBot
 
         private List<string> collectable;
         Box boxToCollect;
-        Gate gateToJump;
+        Gate targetGate;
 
         private Stopwatch stopwatch = new Stopwatch();
 
@@ -109,8 +109,7 @@ namespace PolskaBot
                     var attacker = api.Ships.Find(ship => ship.UserID == e.AttackerID);
                     if (attacker != null && !attacker.NPC && e.UserID == api.Account.UserID)
                     {
-                        var targetGate = api.Gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.Account.X, 2) + Math.Pow(gate.Position.Y - api.Account.Y, 2))).Where(gate => gate.ID == 1).First();
-                        gateToJump = targetGate;
+                        targetGate = api.Gates.OrderBy(gate => Math.Sqrt(Math.Pow(gate.Position.X - api.Account.X, 2) + Math.Pow(gate.Position.Y - api.Account.Y, 2))).Where(gate => gate.ID == 1).FirstOrDefault();
                         state = State.Escaping;
                         FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
                     }
@@ -191,25 +190,70 @@ namespace PolskaBot
 
                 if (state == State.Escaping)
                 {
-                    if (CalculateDistance(gateToJump.Position) < 300)
+                    if (CalculateDistance(targetGate.Position) < 300)
                     {
                         Jump();
                         state = State.EsapingJumped;
-                        continue;
                     }
                     else
                     {
                         Thread.Sleep(50);
-                        continue;
                     }
+
+                    continue;
                 }
 
                 if(state == State.EsapingJumped && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
                     Jump();
-                    state = State.SearchingBox;
+                    state = State.EscapingJumpedBack;
+                    continue;
                 }
+
+                if(state == State.EscapingJumpedBack && api.Account.Ready)
+                {
+                    Thread.Sleep(5000);
+                    api.vanillaClient.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
+                    state = State.Repairing;
+                    continue;
+                }
+
+                if(state == State.Repairing && api.Account.Ready)
+                {
+                    if (api.Account.HP.Equals(api.Account.MaxHP) && api.Account.Shield.Equals(api.Account.MaxShield))
+                        state = State.SearchingBox;
+                    else
+                        Thread.Sleep(200);
+
+                    continue;
+                }
+
+                var ratio = api.Account.MaxHP * Settings.HPLimit / 100;
+
+                if ((api.Account.HP < ratio) && api.Account.Ready && state != State.FlyingToRepair)
+                {
+                    targetGate = api.Gates.OrderBy(gate => CalculateDistance(gate.Position)).Where(gate => gate.ID == 1).FirstOrDefault();
+                    if(targetGate != null)
+                    {
+                        FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
+                        state = State.FlyingToRepair;
+                    }
+                }
+
+                if(state == State.FlyingToRepair && api.Account.Ready)
+                {
+                    if (CalculateDistance(targetGate.Position) < 300)
+                    {
+                        api.vanillaClient.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
+                        state = State.Repairing;
+                    }
+                    else
+                        Thread.Sleep(50);
+
+                    continue;
+                }
+
 
                 if (!api.Account.Ready || !Running)
                 {
@@ -626,6 +670,7 @@ namespace PolskaBot
 
         private void Jump()
         {
+            api.Account.Ready = false;
             api.vanillaClient.SendEncoded(new Jump());
         }
 

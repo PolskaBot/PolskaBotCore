@@ -12,6 +12,7 @@ namespace PolskaBot
         public bool CollectorEnabled { get; set; }
         public bool CollectBonusBoxes { get; set; }
         public bool CollectEventBoxes { get; set; }
+        public int HPLimit { get; set; } = 70;
 
         public void Reload()
         {
