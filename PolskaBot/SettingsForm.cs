@@ -26,9 +26,12 @@ namespace PolskaBot
                 botPage.Settings.CollectorEnabled = enableCollectorBox.Checked;
                 botPage.Settings.CollectBonusBoxes = bbBox.Checked;
                 botPage.Settings.CollectEventBoxes = ebBox.Checked;
+                botPage.Settings.HPLimit = hpSlider.Value;
                 botPage.Settings.Reload();
                 Close();
             };
+
+            hpSlider.ValueChanged += (s, e) => repairLabel.Text = $"Repair when HP less than {hpSlider.Value}%";
         }
 
         private void LoadSettings()
@@ -36,6 +39,8 @@ namespace PolskaBot
             enableCollectorBox.Checked = botPage.Settings.CollectorEnabled;
             bbBox.Checked = botPage.Settings.CollectBonusBoxes;
             ebBox.Checked = botPage.Settings.CollectEventBoxes;
+            hpSlider.Value = botPage.Settings.HPLimit;
+            repairLabel.Text = $"Repair when HP less than {hpSlider.Value}%";
         }
     }
 }
