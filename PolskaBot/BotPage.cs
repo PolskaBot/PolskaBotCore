@@ -229,30 +229,30 @@ namespace PolskaBot
                     continue;
                 }
 
-                var ratio = api.Account.MaxHP * Settings.HPLimit / 100;
+                //var ratio = api.Account.MaxHP * Settings.HPLimit / 100;
 
-                if ((api.Account.HP < ratio) && api.Account.Ready && state != State.FlyingToRepair)
-                {
-                    targetGate = api.Gates.OrderBy(gate => CalculateDistance(gate.Position)).Where(gate => gate.ID == 1).FirstOrDefault();
-                    if(targetGate != null)
-                    {
-                        FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
-                        state = State.FlyingToRepair;
-                    }
-                }
+                //if ((api.Account.HP < ratio) && api.Account.Ready && state != State.FlyingToRepair)
+                //{
+                //    targetGate = api.Gates.OrderBy(gate => CalculateDistance(gate.Position)).Where(gate => gate.ID == 1).FirstOrDefault();
+                //    if(targetGate != null)
+                //    {
+                //        FlyWithAnimation(targetGate.Position.X, targetGate.Position.Y);
+                //        state = State.FlyingToRepair;
+                //    }
+                //}
 
-                if(state == State.FlyingToRepair && api.Account.Ready)
-                {
-                    if (CalculateDistance(targetGate.Position) < 300)
-                    {
-                        api.vanillaClient.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
-                        state = State.Repairing;
-                    }
-                    else
-                        Thread.Sleep(50);
+                //if(state == State.FlyingToRepair && api.Account.Ready)
+                //{
+                //    if (CalculateDistance(targetGate.Position) < 300)
+                //    {
+                //        api.vanillaClient.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
+                //        state = State.Repairing;
+                //    }
+                //    else
+                //        Thread.Sleep(50);
 
-                    continue;
-                }
+                //    continue;
+                //}
 
 
                 if (!api.Account.Ready || !Running)
