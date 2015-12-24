@@ -17,7 +17,7 @@ namespace PolskaBot
 {
     public enum State
     {
-        SearchingBox, CollectingBox, Escaping, EsapingJumped, Reparing
+        SearchingBox, CollectingBox, Escaping, EsapingJumped, EscapingJumpedBack, Repairing
     }
 
     public class BotPage : TabPage
@@ -195,20 +195,39 @@ namespace PolskaBot
                     {
                         Jump();
                         state = State.EsapingJumped;
-                        continue;
                     }
                     else
                     {
                         Thread.Sleep(50);
-                        continue;
                     }
+
+                    continue;
                 }
 
                 if(state == State.EsapingJumped && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
                     Jump();
-                    state = State.SearchingBox;
+                    state = State.EscapingJumpedBack;
+                    continue;
+                }
+
+                if(state == State.EscapingJumpedBack && api.Account.Ready)
+                {
+                    Thread.Sleep(5000);
+                    api.vanillaClient.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
+                    state = State.Repairing;
+                    continue;
+                }
+
+                if(state == State.Repairing && api.Account.Ready)
+                {
+                    if (api.Account.HP.Equals(api.Account.MaxHP) && api.Account.Shield.Equals(api.Account.MaxShield))
+                        state = State.SearchingBox;
+                    else
+                        Thread.Sleep(200);
+
+                    continue;
                 }
 
                 if (!api.Account.Ready || !Running)
@@ -626,6 +645,7 @@ namespace PolskaBot
 
         private void Jump()
         {
+            api.Account.Ready = false;
             api.vanillaClient.SendEncoded(new Jump());
         }
 
