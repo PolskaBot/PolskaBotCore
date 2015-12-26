@@ -15,7 +15,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
             Write();
         }
 
-        public override void Write()
+        public void Write()
         {
             short totalLength = (short)2;
             packetWriter.Write(totalLength);

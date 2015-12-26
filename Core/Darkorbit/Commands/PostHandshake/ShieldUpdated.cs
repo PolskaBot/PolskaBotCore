@@ -21,10 +21,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Shield = reader.ReadInt32();
             Shield = (int)((uint)Shield << 11 | (uint)Shield >> 21);
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

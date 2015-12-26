@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PolskaBot.Core.Darkorbit.Commands
+namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
-    class FadeInitStageOne : Command
+    class RemoteInitStageOne : Command
     {
         public const ushort ID = 101;
 
         public byte[] code { get; private set; }
 
-        public FadeInitStageOne(byte[] code)
+        public RemoteInitStageOne(byte[] code)
         {
             this.code = code;
             Write();
@@ -20,7 +20,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 
         public void Write()
         {
-            short totalLength = (short) (code.Length + 2);
+            short totalLength = (short)(code.Length + 2);
             packetWriter.Write(totalLength);
             packetWriter.Write(ID);
             packetWriter.Write(code);

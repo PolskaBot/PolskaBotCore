@@ -41,10 +41,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             AssetID = reader.ReadInt32();
             AssetID = (int)((uint)AssetID >> 3 | (uint)AssetID << 29);
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

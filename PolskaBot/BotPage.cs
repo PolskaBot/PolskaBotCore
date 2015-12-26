@@ -85,7 +85,7 @@ namespace PolskaBot
         {
             api.Account.LoginSucceed += (s, e) => DrawText("Login succeed");
             api.Account.LoginFailed += (s, e) => DrawText("Login failed");
-            api.vanillaClient.HeroInited += (s, e) =>
+            api.HeroInited += (s, e) =>
             {
                 // Change tab text
                 Invoke((MethodInvoker)delegate
@@ -102,7 +102,7 @@ namespace PolskaBot
                 FlyWithAnimation(api.Account.X, api.Account.Y); // Stop flying.
             };
 
-            api.vanillaClient.Attacked += (s, e) =>
+            api.Attacked += (s, e) =>
             {
                 lock (api.Ships)
                 {
@@ -116,7 +116,7 @@ namespace PolskaBot
                 }
             };
 
-            api.vanillaClient.ShipMoving += (s, e) =>
+            api.ShipMoving += (s, e) =>
             {
                 lock (api.Ships)
                 {
@@ -133,7 +133,7 @@ namespace PolskaBot
                 }
             };
 
-            api.vanillaClient.Disconnected += (s, e) =>
+            api.Disconnected += (s, e) =>
             {
                 anim.Cancel();
                 api.Account.Ready = false;
@@ -214,7 +214,7 @@ namespace PolskaBot
                 if(state == State.EscapingJumpedBack && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
-                    api.vanillaClient.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
+                    api.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
                     state = State.Repairing;
                     continue;
                 }
@@ -370,7 +370,7 @@ namespace PolskaBot
                             {
                                 tempShipY++;
                             }
-                            api.vanillaClient.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
+                            api.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
                         }
                         lock (api.Boxes) lock (api.MemorizedBoxes)
                             {
@@ -645,7 +645,7 @@ namespace PolskaBot
         {
             api.Account.TargetX = x;
             api.Account.TargetY = y;
-            api.vanillaClient.SendEncoded(new Move((uint)api.Account.TargetX, (uint)api.Account.TargetY, (uint)api.Account.X, (uint)api.Account.Y));
+            api.SendEncoded(new Move((uint)api.Account.TargetX, (uint)api.Account.TargetY, (uint)api.Account.X, (uint)api.Account.Y));
 
             api.Account.Flying = true;
 
@@ -671,13 +671,13 @@ namespace PolskaBot
         private void Jump()
         {
             api.Account.Ready = false;
-            api.vanillaClient.SendEncoded(new Jump());
+            api.SendEncoded(new Jump());
         }
 
         private void ChangeConfig()
         {
             int targetConfig = (api.Account.Config == 1) ? 2 : 1;
-            api.vanillaClient.SendEncoded(new OldStylePacket($"S|CFG|{targetConfig}|{api.Account.UserID}|{api.Account.SID}"));
+            api.SendEncoded(new OldStylePacket($"S|CFG|{targetConfig}|{api.Account.UserID}|{api.Account.SID}"));
         }
 
         #endregion

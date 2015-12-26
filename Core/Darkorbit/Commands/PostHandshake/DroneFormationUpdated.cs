@@ -22,10 +22,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             UID = reader.ReadInt32();
             UID = (int)((uint)UID >> 13 | (uint)UID << 19);
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

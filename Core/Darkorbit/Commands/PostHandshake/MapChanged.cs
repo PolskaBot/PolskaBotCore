@@ -23,10 +23,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             var_294 = reader.ReadInt32();
             var_294 = (int)((uint)var_294 >> 12 | (uint)var_294 << 20);
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

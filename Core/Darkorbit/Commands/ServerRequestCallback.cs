@@ -19,10 +19,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
             length = reader.ReadInt32();
             secretKey = reader.ReadBytes(length);
         }
-
-        public override void Write()
-        {
-            return;
-        }
     }
 }

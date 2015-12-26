@@ -73,11 +73,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Y = (int)((uint)Y <<  15 | (uint)Y >> 17);
             Shipname = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
-
-        public override void Write()
-        {
-            return;
-        }
-
     }
 }

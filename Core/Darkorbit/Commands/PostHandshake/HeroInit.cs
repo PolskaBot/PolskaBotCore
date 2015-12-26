@@ -106,11 +106,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Credits = reader.ReadDouble();
             var_3674 = reader.ReadBoolean();
         }
-
-        public override void Write()
-        {
-            return;
-        }
-
     }
 }

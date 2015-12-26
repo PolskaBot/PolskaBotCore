@@ -30,10 +30,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             }
             reader.ReadUInt16();
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

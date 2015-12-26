@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands;
+using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 
 namespace PolskaBot.Core
 {
@@ -19,8 +20,9 @@ namespace PolskaBot.Core
 
         public Mode mode;
 
-        public VanillaClient vanillaClient;
-        public FadeClient fadeClient;
+        private VanillaClient vanillaClient;
+        private FadeClient fadeClient;
+        private RemoteClient remoteClient;
 
         // Logic
         public Account Account { get; set; }
@@ -32,6 +34,10 @@ namespace PolskaBot.Core
         public List<Building> Buildings { get; set; } = new List<Building>();
 
         public event EventHandler<EventArgs> Connecting;
+        public event EventHandler<EventArgs> Disconnected;
+        public event EventHandler<EventArgs> HeroInited;
+        public event EventHandler<ShipAttacked> Attacked;
+        public event EventHandler<ShipMove> ShipMoving;
 
         public API(Mode mode = Mode.BOT)
         {
@@ -39,10 +45,16 @@ namespace PolskaBot.Core
 
             // Depedency injection
             Account = new Account(this);
-            vanillaClient = new VanillaClient(this);
             fadeClient = new FadeClient(this);
+            remoteClient = new RemoteClient(this);
+            vanillaClient = new VanillaClient(this, fadeClient, remoteClient);
 
             Account.LoginSucceed += (s, e) => Connect();
+
+            vanillaClient.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
+            vanillaClient.HeroInited += (s, e) => HeroInited?.Invoke(s, e);
+            vanillaClient.Attacked += (s, e) => Attacked?.Invoke(s, e);
+            vanillaClient.ShipMoving += (s, e) => ShipMoving?.Invoke(s, e);
         }
 
         public void Stop()
@@ -72,13 +84,29 @@ namespace PolskaBot.Core
 
         public void Connect()
         {
-            fadeClient.OnConnected += (s, args) => ((Client)s).thread.Abort();
-            fadeClient.OnConnected += (o, e) => vanillaClient.Connect(GetIP(), 8080);
+            remoteClient.OnConnected += (s, e) =>
+            {
+                Console.WriteLine("Connected to remoteServer");
+                ((Client)s).thread.Abort();
+                fadeClient.Connect("127.0.0.1", 8081);
+            };
+            fadeClient.OnConnected += (s, e) =>
+            {
+                ((Client)s).thread.Abort();
+                vanillaClient.Connect(GetIP(), 8080);
+            };
+
             vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
             vanillaClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
-            fadeClient.Connect(Environment.GetEnvironmentVariable(Config.SERVER_IP_ENV), 8081);
+            
+            remoteClient.Connect(Environment.GetEnvironmentVariable(Config.SERVER_IP_ENV), 8081);
+        }
+
+        public void SendEncoded(Command command)
+        {
+            vanillaClient.SendEncoded(command);
         }
 
         public void Reconnect()

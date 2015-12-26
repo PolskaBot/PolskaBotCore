@@ -64,10 +64,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             var_1531 = reader.ReadBoolean();
             Name = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

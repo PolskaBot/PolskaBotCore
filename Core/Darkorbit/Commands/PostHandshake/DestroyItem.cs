@@ -20,10 +20,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             CollectedByPlayer = reader.ReadBoolean();
             Hash = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

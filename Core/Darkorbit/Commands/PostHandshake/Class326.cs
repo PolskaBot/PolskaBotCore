@@ -30,10 +30,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Activated = reader.ReadBoolean();
             var_2742 = reader.ReadUInt16();
         }
-
-        public override void Write()
-        {
-            return;
-        }
     }
 }

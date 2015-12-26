@@ -29,10 +29,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Duration = reader.ReadUInt32();
             Duration = Duration >> 11 | Duration << 21;
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

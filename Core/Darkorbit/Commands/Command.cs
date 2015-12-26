@@ -19,7 +19,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
         {
             return memoryStream.ToArray();
         }
-
-        public abstract void Write();
     }
 }

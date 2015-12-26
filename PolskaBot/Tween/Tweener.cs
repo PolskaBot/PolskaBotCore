@@ -9,7 +9,7 @@ namespace Glide
 	
 	public partial class Tween
 	{
-		private interface IRemoveTweens	//	lol get it
+		public interface IRemoveTweens	//	lol get it
 		{
 			void Remove(Tween t);
 		}
@@ -324,7 +324,7 @@ namespace Glide
 	        }
 	        #endregion
 	        
-			private class NumericLerper : Lerper
+			public class NumericLerper : Lerper
 			{
 				float from, to, range;
 				
