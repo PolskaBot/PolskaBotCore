@@ -22,10 +22,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
             code = reader.ReadBytes(codeLength);
             fakeSize = reader.ReadInt32();
         }
-
-        public override void Write()
-        {
-            return;
-        }
     }
 }

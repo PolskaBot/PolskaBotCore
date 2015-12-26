@@ -19,10 +19,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             UserID = reader.ReadUInt32();
             UserID = UserID << 9 | UserID >> 23;
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

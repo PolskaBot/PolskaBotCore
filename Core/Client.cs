@@ -11,7 +11,7 @@ using PolskaBot.Core.Darkorbit.Commands;
 
 namespace PolskaBot.Core
 {
-    public abstract class Client
+    abstract class Client
     {
         public API api { get; private set; }
 

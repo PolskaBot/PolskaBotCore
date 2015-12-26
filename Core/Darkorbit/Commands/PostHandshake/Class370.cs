@@ -33,10 +33,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             reader.ReadInt16();
             MessageType = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
-
-        public override void Write()
-        {
-            return;
-        }
     }
 }

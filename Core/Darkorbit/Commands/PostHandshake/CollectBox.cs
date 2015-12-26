@@ -27,7 +27,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Write();
         }
 
-        public override void Write()
+        public void Write()
         {
             packetWriter.Write((short)(24 + Hash.Length));
             packetWriter.Write(ID);

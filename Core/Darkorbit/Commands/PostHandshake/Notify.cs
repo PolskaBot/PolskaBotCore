@@ -56,10 +56,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             reader.ReadInt16();
             var_2036 = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16())); //var_2036
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

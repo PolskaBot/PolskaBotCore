@@ -29,10 +29,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             AttackerID = (int)((uint)AttackerID >> 7 | (uint)AttackerID << 25);
             Var_2560 = reader.ReadBoolean();
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -26,10 +26,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Y = (int)((uint)Y << 3 | (uint)Y >> 29);
             Type = Encoding.Default.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

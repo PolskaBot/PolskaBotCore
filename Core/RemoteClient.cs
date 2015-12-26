@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MiscUtil.IO;
-using PolskaBot.Core.Darkorbit.Commands;
 
 namespace PolskaBot.Core
 {
-    class FadeClient : Client
+    class RemoteClient : Client
     {
-        public FadeClient(API api) : base(api)
+        public RemoteClient(API api) : base(api)
         {
 
         }

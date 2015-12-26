@@ -23,11 +23,5 @@ namespace PolskaBot.Core.Darkorbit.Commands
             build = reader.ReadInt32();
             compatible = reader.ReadBoolean();
         }
-
-        public override void Write()
-        {
-            return;
-        }
-
     }
 }

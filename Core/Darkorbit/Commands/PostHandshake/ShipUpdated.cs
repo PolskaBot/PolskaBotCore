@@ -39,10 +39,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Var_4939 = reader.ReadBoolean();
             reader.ReadUInt16();
         }
-
-        public override void Write()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

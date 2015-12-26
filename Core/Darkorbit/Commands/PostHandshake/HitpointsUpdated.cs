@@ -27,10 +27,5 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             MaxNanoHP = reader.ReadInt32();
             MaxNanoHP = (int)((uint)MaxNanoHP >> 8 | (uint)MaxNanoHP << 24);
         }
-
-        public override void Write()
-        {
-            return;
-        }
     }
 }
