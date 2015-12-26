@@ -37,7 +37,7 @@ namespace PolskaBot
 
         Tweener anim = new Tweener();
 
-        private List<string> collectable;
+        private List<string> collectable = new List<string>();
         Box boxToCollect;
         Gate targetGate;
 
