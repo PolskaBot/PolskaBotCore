@@ -124,8 +124,6 @@ namespace PolskaBot.Core
                     if (initialized)
                     {
                         Console.WriteLine("StageOne initialized");
-                        remoteClient.tcpClient.GetStream().Close();
-                        remoteClient.tcpClient.Close();
                         short callbackLength;
                         lock (fadeClient.stream)
                         {

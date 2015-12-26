@@ -102,6 +102,8 @@ namespace PolskaBot.Core
 
         protected bool IsConnected()
         {
+            if (tcpClient == null || tcpClient.Client == null)
+                return false;
             try
             {
                 return !(tcpClient.Client.Poll(1, SelectMode.SelectRead) && tcpClient.Client.Available == 0);
