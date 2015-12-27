@@ -28,6 +28,8 @@ namespace PolskaBot.Core
 
         public event EventHandler<string> LogMessage;
 
+        private bool reading = false;
+
         public VanillaClient(API api, FadeClient fadeClient, RemoteClient remoteClient) : base(api)
         {
             this.fadeClient = fadeClient;
@@ -52,34 +54,48 @@ namespace PolskaBot.Core
 
         public override void Parse(EndianBinaryReader reader)
         {
+            reading = true;
             EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, fadeClient.stream);
-
-            byte[] lengthBuffer = reader.ReadBytes(2);
+            Console.WriteLine("0");
+            byte[] lengthBuffer;
             ushort fadeLength;
             ushort fadeID;
+            byte[] contentBuffer;
             byte[] content;
+            Console.WriteLine("1");
 
-            lock (fadeClient.stream)
+            lock (fadeClient.stream) lock(stream)
             {
                 if (!IsConnected())
                     return;
+                lengthBuffer = reader.ReadBytes(2);
                 fadeClient.Send(new FadeDecodePacket(lengthBuffer));
+                Console.WriteLine("2");
                 fadeLength = fadeReader.ReadUInt16();
-            }
-
-            byte[] contentBuffer = reader.ReadBytes(fadeLength);
-
-            lock(fadeClient.stream)
-            {
-                if (!IsConnected())
-                    return;
+                Console.WriteLine("3");
+                Console.WriteLine($"ContentLength: {fadeLength}");
+                contentBuffer = reader.ReadBytes(fadeLength);
+                Console.WriteLine($"ArrayLength: {contentBuffer.Length}");
+                Console.WriteLine("4");
                 fadeClient.Send(new FadeDecodePacket(contentBuffer));
+                Console.WriteLine("6");
+                if(fadeLength == 0)
+                    {
+                        Console.WriteLine("KURWAAAAAAA");
+                    }
                 content = fadeReader.ReadBytes(fadeLength);
+                Console.WriteLine("7");
             }
+
+            reading = false;
+
 
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
+            Console.WriteLine("8");
 
             fadeID = cachedReader.ReadUInt16();
+            Console.WriteLine(fadeID);
+            Console.WriteLine("9");
 
             switch (fadeID)
             {
@@ -376,10 +392,16 @@ namespace PolskaBot.Core
 
         private void PingLoop()
         {
+            Thread.Sleep(1000);
             while(true)
             {
-                Thread.Sleep(1000);
-                SendEncoded(new Ping());
+                if(!reading)
+                {
+                    SendEncoded(new Ping());
+                    Console.WriteLine("Ping sent");
+                    return;
+                }
+                Thread.Sleep(50);
             }
         }
     }
