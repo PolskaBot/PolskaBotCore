@@ -28,8 +28,6 @@ namespace PolskaBot.Core
 
         public event EventHandler<string> LogMessage;
 
-        private bool reading = false;
-
         public VanillaClient(API api, FadeClient fadeClient, RemoteClient remoteClient) : base(api)
         {
             this.fadeClient = fadeClient;
@@ -39,63 +37,42 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
-            if (!Running)
-                return;
-
-            byte[] rawBuffer = command.ToArray();
-            byte[] encodedBuffer = new byte[rawBuffer.Length];
-            lock (fadeClient.stream)
+            lock(fadeClient.locker)
             {
+                if (!Running)
+                    return;
+                byte[] rawBuffer = command.ToArray();
+                byte[] encodedBuffer = new byte[rawBuffer.Length];
                 fadeClient.Send(new FadeEncodePacket(rawBuffer));
-                fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
+                fadeClient.synchronizedStream.Read(encodedBuffer, 0, rawBuffer.Length);
+                Send(encodedBuffer);
             }
-            Send(encodedBuffer);
         }
 
         public override void Parse(EndianBinaryReader reader)
         {
-            reading = true;
-            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, fadeClient.stream);
-            Console.WriteLine("0");
+            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, fadeClient.synchronizedStream);
             byte[] lengthBuffer;
             ushort fadeLength;
             ushort fadeID;
             byte[] contentBuffer;
             byte[] content;
-            Console.WriteLine("1");
 
-            lock (fadeClient.stream) lock(stream)
+            lock(fadeClient.locker)
             {
                 if (!IsConnected())
                     return;
                 lengthBuffer = reader.ReadBytes(2);
                 fadeClient.Send(new FadeDecodePacket(lengthBuffer));
-                Console.WriteLine("2");
                 fadeLength = fadeReader.ReadUInt16();
-                Console.WriteLine("3");
-                Console.WriteLine($"ContentLength: {fadeLength}");
                 contentBuffer = reader.ReadBytes(fadeLength);
-                Console.WriteLine($"ArrayLength: {contentBuffer.Length}");
-                Console.WriteLine("4");
                 fadeClient.Send(new FadeDecodePacket(contentBuffer));
-                Console.WriteLine("6");
-                if(fadeLength == 0)
-                    {
-                        Console.WriteLine("KURWAAAAAAA");
-                    }
                 content = fadeReader.ReadBytes(fadeLength);
-                Console.WriteLine("7");
             }
 
-            reading = false;
-
-
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
-            Console.WriteLine("8");
 
             fadeID = cachedReader.ReadUInt16();
-            Console.WriteLine(fadeID);
-            Console.WriteLine("9");
 
             switch (fadeID)
             {
@@ -118,15 +95,15 @@ namespace PolskaBot.Core
                     ServerRequestCode serverRequetCode = new ServerRequestCode(cachedReader);
                     bool initialized;
 
-                    lock(remoteClient.stream)
+                    lock(remoteClient.locker)
                     {
                         remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
-                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, remoteClient.stream);
+                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, remoteClient.synchronizedStream);
                         short length = remoteReader.ReadInt16();
                         if(remoteReader.ReadInt16() == 102)
                         {
                             Console.WriteLine("Received stageOne code response");
-                            lock (fadeClient.stream)
+                            lock (fadeClient.locker)
                             {
                                 fadeClient.Send(new FadeInitStageOne(remoteReader.ReadBytes(length - 2)));
                                 initialized = fadeReader.ReadBoolean();
@@ -141,13 +118,14 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageOne initialized");
                         short callbackLength;
-                        lock (fadeClient.stream)
+                        byte[] buffer;
+                        lock (fadeClient.locker)
                         {
                             fadeClient.Send(new FadeRequestCallback());
                             callbackLength = fadeReader.ReadInt16();
-                            byte[] buffer = fadeReader.ReadBytes(callbackLength);
-                            SendEncoded(new ClientRequestCallback(buffer));
+                            buffer = fadeReader.ReadBytes(callbackLength);
                         }
+                        SendEncoded(new ClientRequestCallback(buffer));
                     }
                     else
                     {
@@ -156,9 +134,10 @@ namespace PolskaBot.Core
 
                     break;
                 case ServerRequestCallback.ID:
+                    Console.WriteLine("Stage two received");
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(cachedReader);
                     bool initializedStageTwo;
-                    lock (fadeClient.stream)
+                    lock (fadeClient.locker)
                     {
                         fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
                         initializedStageTwo = fadeReader.ReadBoolean();
@@ -392,16 +371,11 @@ namespace PolskaBot.Core
 
         private void PingLoop()
         {
-            Thread.Sleep(1000);
             while(true)
             {
-                if(!reading)
-                {
-                    SendEncoded(new Ping());
-                    Console.WriteLine("Ping sent");
-                    return;
-                }
-                Thread.Sleep(50);
+                Thread.Sleep(1000);
+                SendEncoded(new Ping());
+                Console.WriteLine("Ping sent");
             }
         }
     }
