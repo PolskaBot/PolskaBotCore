@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using MiscUtil.IO;
@@ -13,13 +14,16 @@ namespace PolskaBot.Core
 {
     abstract class Client
     {
+        public object locker = new object();
+
         public API api { get; private set; }
 
         public bool Running { get; set; } = true;
 
         public Thread thread { get; private set; }
         public TcpClient tcpClient { get; private set; }
-        public NetworkStream stream { get; private set; }
+        private NetworkStream stream;
+        public Stream synchronizedStream { get; private set; }
 
         public string IP { get; set; }
         public int port { get; set; }
@@ -46,14 +50,25 @@ namespace PolskaBot.Core
                 if (!thread.IsAlive)
                     thread.Start();
                 stream = tcpClient.GetStream();
+                synchronizedStream = Stream.Synchronized(stream);
                 OnConnected?.Invoke(this, EventArgs.Empty);
             }
+        }
+
+        public void Stop()
+        {
+            Running = false;
+            thread?.Abort();
+            tcpClient?.Close();
+            stream?.Close();
+            synchronizedStream?.Close();
         }
 
         public void Disconnect()
         {
             tcpClient.Client.Disconnect(false);
             tcpClient.Close();
+            synchronizedStream.Close();
             stream.Close();
             thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
@@ -70,7 +85,7 @@ namespace PolskaBot.Core
                 return;
             }
             byte[] buffer = command.ToArray();
-            stream.Write(buffer, 0, buffer.Length);
+            synchronizedStream.Write(buffer, 0, buffer.Length);
         }
 
         public void Send(byte[] buffer)
@@ -83,7 +98,7 @@ namespace PolskaBot.Core
                 Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            stream.Write(buffer, 0, buffer.Length);
+            synchronizedStream.Write(buffer, 0, buffer.Length);
         }
 
         protected void Run()
@@ -95,7 +110,7 @@ namespace PolskaBot.Core
                     Disconnected?.Invoke(this, EventArgs.Empty);
                     return;
                 }
-                Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
+                Parse(new EndianBinaryReader(EndianBitConverter.Big, synchronizedStream));
             }
 
         }

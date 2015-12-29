@@ -59,16 +59,10 @@ namespace PolskaBot.Core
 
         public void Stop()
         {
-            vanillaClient.Running = false;
-            vanillaClient.thread?.Abort();
+            vanillaClient.Stop();
             vanillaClient.pingThread?.Abort();
-            vanillaClient.tcpClient?.Close();
-            vanillaClient.stream?.Close();
-
-            fadeClient.Running = false;
-            fadeClient.thread?.Abort();
-            fadeClient.tcpClient?.Close();
-            fadeClient.stream?.Close();
+            fadeClient.Stop();
+            remoteClient.Stop();
         }
 
         public void Login(string username = null, string password = null)
@@ -100,8 +94,7 @@ namespace PolskaBot.Core
             vanillaClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
-            
-            remoteClient.Connect(Environment.GetEnvironmentVariable(Config.SERVER_IP_ENV), 8081);
+            remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
         }
 
         public void SendEncoded(Command command)

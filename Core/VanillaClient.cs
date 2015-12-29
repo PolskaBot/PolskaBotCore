@@ -37,42 +37,35 @@ namespace PolskaBot.Core
 
         public void SendEncoded(Command command)
         {
-            if (!Running)
-                return;
-
-            byte[] rawBuffer = command.ToArray();
-            byte[] encodedBuffer = new byte[rawBuffer.Length];
-            lock (fadeClient.stream)
+            lock(fadeClient.locker)
             {
+                if (!Running)
+                    return;
+                byte[] rawBuffer = command.ToArray();
+                byte[] encodedBuffer = new byte[rawBuffer.Length];
                 fadeClient.Send(new FadeEncodePacket(rawBuffer));
-                fadeClient.stream.Read(encodedBuffer, 0, rawBuffer.Length);
+                fadeClient.synchronizedStream.Read(encodedBuffer, 0, rawBuffer.Length);
+                Send(encodedBuffer);
             }
-            Send(encodedBuffer);
         }
 
         public override void Parse(EndianBinaryReader reader)
         {
-            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, fadeClient.stream);
-
-            byte[] lengthBuffer = reader.ReadBytes(2);
+            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, fadeClient.synchronizedStream);
+            byte[] lengthBuffer;
             ushort fadeLength;
             ushort fadeID;
+            byte[] contentBuffer;
             byte[] content;
 
-            lock (fadeClient.stream)
+            lock(fadeClient.locker)
             {
                 if (!IsConnected())
                     return;
+                lengthBuffer = reader.ReadBytes(2);
                 fadeClient.Send(new FadeDecodePacket(lengthBuffer));
                 fadeLength = fadeReader.ReadUInt16();
-            }
-
-            byte[] contentBuffer = reader.ReadBytes(fadeLength);
-
-            lock(fadeClient.stream)
-            {
-                if (!IsConnected())
-                    return;
+                contentBuffer = reader.ReadBytes(fadeLength);
                 fadeClient.Send(new FadeDecodePacket(contentBuffer));
                 content = fadeReader.ReadBytes(fadeLength);
             }
@@ -102,15 +95,15 @@ namespace PolskaBot.Core
                     ServerRequestCode serverRequetCode = new ServerRequestCode(cachedReader);
                     bool initialized;
 
-                    lock(remoteClient.stream)
+                    lock(remoteClient.locker)
                     {
                         remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
-                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, remoteClient.stream);
+                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, remoteClient.synchronizedStream);
                         short length = remoteReader.ReadInt16();
                         if(remoteReader.ReadInt16() == 102)
                         {
                             Console.WriteLine("Received stageOne code response");
-                            lock (fadeClient.stream)
+                            lock (fadeClient.locker)
                             {
                                 fadeClient.Send(new FadeInitStageOne(remoteReader.ReadBytes(length - 2)));
                                 initialized = fadeReader.ReadBoolean();
@@ -125,13 +118,14 @@ namespace PolskaBot.Core
                     {
                         Console.WriteLine("StageOne initialized");
                         short callbackLength;
-                        lock (fadeClient.stream)
+                        byte[] buffer;
+                        lock (fadeClient.locker)
                         {
                             fadeClient.Send(new FadeRequestCallback());
                             callbackLength = fadeReader.ReadInt16();
-                            byte[] buffer = fadeReader.ReadBytes(callbackLength);
-                            SendEncoded(new ClientRequestCallback(buffer));
+                            buffer = fadeReader.ReadBytes(callbackLength);
                         }
+                        SendEncoded(new ClientRequestCallback(buffer));
                     }
                     else
                     {
@@ -140,9 +134,10 @@ namespace PolskaBot.Core
 
                     break;
                 case ServerRequestCallback.ID:
+                    Console.WriteLine("Stage two received");
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(cachedReader);
                     bool initializedStageTwo;
-                    lock (fadeClient.stream)
+                    lock (fadeClient.locker)
                     {
                         fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
                         initializedStageTwo = fadeReader.ReadBoolean();
@@ -160,6 +155,10 @@ namespace PolskaBot.Core
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(cachedReader);
                     api.Buildings.Add(new Building(buildingInit.Name, buildingInit.X, buildingInit.Y));
+                    break;
+                case DestroyBuilding.ID:
+                    DestroyBuilding destroyBuilding = new DestroyBuilding(cachedReader);
+                    Console.WriteLine($"Building destroyed | UID: {destroyBuilding.UID} AssetType: {destroyBuilding.AssetType}");
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(cachedReader);
@@ -380,6 +379,7 @@ namespace PolskaBot.Core
             {
                 Thread.Sleep(1000);
                 SendEncoded(new Ping());
+                Console.WriteLine("Ping sent");
             }
         }
     }
