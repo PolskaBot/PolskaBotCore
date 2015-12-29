@@ -68,6 +68,7 @@
     <Compile Include="Darkorbit\Commands\PostHandshake\Class326.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Class370.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\CollectBox.cs" />
+    <Compile Include="Darkorbit\Commands\PostHandshake\DestroyBuilding.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\Notify.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\MapChangeConfirmation.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\MapChanged.cs" />
