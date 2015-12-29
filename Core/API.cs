@@ -94,7 +94,7 @@ namespace PolskaBot.Core
             vanillaClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
-            remoteClient.Connect("127.0.0.1", 8082);
+            remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
         }
 
         public void SendEncoded(Command command)
