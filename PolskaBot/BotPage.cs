@@ -160,6 +160,7 @@ namespace PolskaBot
             var contextMenu = new ContextMenu();
 
             var drawOres = new MenuItem();
+            drawOres.Name = "drawOresMenuItem";
             drawOres.Text = "Draw ores";
             drawOres.Checked = Properties.Settings.Default.DrawOres;
             drawOres.Click += (s, e) =>
@@ -172,11 +173,28 @@ namespace PolskaBot
             contextMenu.MenuItems.Add("-");
 
             var jump = new MenuItem();
+            jump.Name = "jumpMenuItem";
             jump.Text = "Jump";
             jump.Click += (s, e) => Jump();
             contextMenu.MenuItems.Add(jump);
 
             minimap.ContextMenu = contextMenu;
+            minimap.ContextMenu.Popup += new EventHandler(minimap_ContextMenu_Popup);
+        }
+
+        private void minimap_ContextMenu_Popup(object sender, EventArgs e)
+        {
+            foreach (MenuItem item in minimap.ContextMenu.MenuItems)
+            {
+                if (item.Name == "jumpMenuItem")
+                {
+                    Point localCoords = minimap.PointToClient(Cursor.Position);
+                    if (api.Gates.Any(gate => CalculateDistance(Scale(gate.Position.X) - 5, Scale(gate.Position.Y) - 5, localCoords.X, localCoords.Y) > 12))
+                        item.Visible = false;
+                    else
+                        item.Visible = true;
+                }
+            }
         }
 
         #endregion

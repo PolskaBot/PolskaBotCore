@@ -94,7 +94,6 @@ namespace PolskaBot.Core
             vanillaClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
-            
             remoteClient.Connect("127.0.0.1", 8082);
         }
 
