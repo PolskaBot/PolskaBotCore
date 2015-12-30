@@ -77,7 +77,6 @@
             // 
             // loginPage
             // 
-            this.loginPage.Controls.Add(this.flashEmbed);
             this.loginPage.Controls.Add(this.loginButton);
             this.loginPage.Controls.Add(this.passwordBox);
             this.loginPage.Controls.Add(this.label2);
@@ -93,12 +92,11 @@
             // flashEmbed
             // 
             this.flashEmbed.Enabled = true;
-            this.flashEmbed.Location = new System.Drawing.Point(6, 247);
+            this.flashEmbed.Location = new System.Drawing.Point(377, 12);
             this.flashEmbed.Name = "flashEmbed";
             this.flashEmbed.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("flashEmbed.OcxState")));
-            this.flashEmbed.Size = new System.Drawing.Size(192, 192);
+            this.flashEmbed.Size = new System.Drawing.Size(566, 387);
             this.flashEmbed.TabIndex = 5;
-            this.flashEmbed.Visible = false;
             // 
             // loginButton
             // 
@@ -167,7 +165,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(378, 411);
+            this.ClientSize = new System.Drawing.Size(955, 411);
+            this.Controls.Add(this.flashEmbed);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.botTabs);

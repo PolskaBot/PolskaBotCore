@@ -40,9 +40,8 @@ namespace PolskaBot.Core
         {
             if (!Running)
                 return;
-            byte[] rawBuffer = command.ToArray();
-            byte[] encodedBuffer = new byte[rawBuffer.Length];
-            Send(proxy.Encrypt(encodedBuffer));
+
+            Send(proxy.Encrypt(command.ToArray()));
         }
 
         public override void Parse(EndianBinaryReader reader)
