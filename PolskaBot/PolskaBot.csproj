@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="Fade\FadeProxy.cs" />
+    <Compile Include="Fade\FadeProxyClient.cs" />
     <Compile Include="Flash\External\ExternalInterfaceCall.cs" />
     <Compile Include="Flash\External\ExternalInterfaceCallEventArgs.cs" />
     <Compile Include="Flash\External\ExternalInterfaceProxy.cs" />
