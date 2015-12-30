@@ -67,6 +67,7 @@ namespace PolskaBot.Fade
         {
             FadeProxyClient client = new FadeProxyClient(this);
             _clients.Add(client.ID, client);
+            proxy.Call("connect", client.ID);
             return client;
         }
 

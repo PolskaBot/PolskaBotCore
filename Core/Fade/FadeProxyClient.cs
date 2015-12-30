@@ -79,7 +79,7 @@ namespace PolskaBot.Fade
         /// <param name="code">Code which will be used for initialization.</param>
         public void InitStageOne(byte[] code)
         {
-            _proxy.proxy.Call(ID, "initStageOne", Convert.ToBase64String(code));
+            _proxy.proxy.Call("initStageOne", ID, Convert.ToBase64String(code));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace PolskaBot.Fade
         /// <returns>Public key for encryption</returns>
         public byte[] GenerateKey()
         {
-            return Convert.FromBase64String((string)_proxy.proxy.Call(ID, "generateKey"));
+            return Convert.FromBase64String((string)_proxy.proxy.Call("generateKey", ID));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace PolskaBot.Fade
         /// <param name="code">Code which will be used for initialization.</param>
         public void InitStageTwo(byte[] code)
         {
-            _proxy.proxy.Call(ID, "initStageTwo", Convert.ToBase64String(code));
+            _proxy.proxy.Call("initStageTwo", ID, Convert.ToBase64String(code));
         }
 
         #endregion

@@ -54,7 +54,12 @@ namespace PolskaBot.Core
             if (!IsConnected())
                 return;
 
-            length = BitConverter.ToUInt16(proxy.Decrypt(reader.ReadBytes(2)), 0);
+            var lengthBuffer = reader.ReadBytes(2);
+
+            if(BitConverter.IsLittleEndian)
+                Array.Reverse(lengthBuffer);
+
+            length = BitConverter.ToUInt16(proxy.Decrypt(lengthBuffer), 0);
             content = proxy.Decrypt(reader.ReadBytes(length));
 
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
@@ -91,7 +96,6 @@ namespace PolskaBot.Core
                         if(remoteReader.ReadInt16() == 102)
                         {
                             Console.WriteLine("Received stageOne code response");
-
                             proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
                         }
                     }
