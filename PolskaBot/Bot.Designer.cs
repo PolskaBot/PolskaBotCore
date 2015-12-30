@@ -33,6 +33,7 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.botTabs = new System.Windows.Forms.TabControl();
             this.loginPage = new System.Windows.Forms.TabPage();
+            this.flashEmbed = new AxShockwaveFlashObjects.AxShockwaveFlash();
             this.loginButton = new System.Windows.Forms.Button();
             this.passwordBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -42,6 +43,7 @@
             this.closeButton = new System.Windows.Forms.Button();
             this.botTabs.SuspendLayout();
             this.loginPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flashEmbed)).BeginInit();
             this.SuspendLayout();
             // 
             // startButton
@@ -75,6 +77,7 @@
             // 
             // loginPage
             // 
+            this.loginPage.Controls.Add(this.flashEmbed);
             this.loginPage.Controls.Add(this.loginButton);
             this.loginPage.Controls.Add(this.passwordBox);
             this.loginPage.Controls.Add(this.label2);
@@ -87,8 +90,19 @@
             this.loginPage.Text = "Login";
             this.loginPage.UseVisualStyleBackColor = true;
             // 
+            // flashEmbed
+            // 
+            this.flashEmbed.Enabled = true;
+            this.flashEmbed.Location = new System.Drawing.Point(6, 247);
+            this.flashEmbed.Name = "flashEmbed";
+            this.flashEmbed.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("flashEmbed.OcxState")));
+            this.flashEmbed.Size = new System.Drawing.Size(192, 192);
+            this.flashEmbed.TabIndex = 5;
+            this.flashEmbed.Visible = false;
+            // 
             // loginButton
             // 
+            this.loginButton.Enabled = false;
             this.loginButton.Location = new System.Drawing.Point(3, 218);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(343, 23);
@@ -165,6 +179,7 @@
             this.botTabs.ResumeLayout(false);
             this.loginPage.ResumeLayout(false);
             this.loginPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flashEmbed)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -181,6 +196,7 @@
         private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Button closeButton;
+        private AxShockwaveFlashObjects.AxShockwaveFlash flashEmbed;
     }
 }
 
