@@ -31,12 +31,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxInterop.ShockwaveFlashObjects">
+      <HintPath>..\..\AxInterop.ShockwaveFlashObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="Interop.ShockwaveFlashObjects">
+      <HintPath>..\..\Interop.ShockwaveFlashObjects.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="MiscUtil">
       <HintPath>.\MiscUtil.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,16 +59,9 @@
     <Compile Include="Darkorbit\Box.cs" />
     <Compile Include="Darkorbit\Building.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCallback.cs" />
-    <Compile Include="Darkorbit\Commands\FadeMimicDecodePacket.cs" />
-    <Compile Include="Darkorbit\Commands\FadeEncodePacket.cs" />
-    <Compile Include="Darkorbit\Commands\FadeDecodePacket.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
     <Compile Include="Darkorbit\Commands\Command.cs" />
-    <Compile Include="Darkorbit\Commands\FadeInitStageOne.cs" />
-    <Compile Include="Darkorbit\Commands\FadeInitStageTwo.cs" />
-    <Compile Include="Darkorbit\Commands\FadePandoraReset.cs" />
-    <Compile Include="Darkorbit\Commands\FadeRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\ActionRequest.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\BoxInit.cs" />
     <Compile Include="Darkorbit\Commands\PostHandshake\BuildingInit.cs" />
@@ -102,7 +103,12 @@
     <Compile Include="Darkorbit\OldPackets.cs" />
     <Compile Include="Darkorbit\Ore.cs" />
     <Compile Include="Darkorbit\Ship.cs" />
-    <Compile Include="FadeClient.cs" />
+    <Compile Include="Fade\FadeProxy.cs" />
+    <Compile Include="Fade\FadeProxyClient.cs" />
+    <Compile Include="Flash\External\ExternalInterfaceCall.cs" />
+    <Compile Include="Flash\External\ExternalInterfaceCallEventArgs.cs" />
+    <Compile Include="Flash\External\ExternalInterfaceProxy.cs" />
+    <Compile Include="Flash\External\ExternalInterfaceSerializer.cs" />
     <Compile Include="HttpManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteClient.cs" />

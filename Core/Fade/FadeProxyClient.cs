@@ -6,7 +6,7 @@ namespace PolskaBot.Fade
     /// <summary>
     /// FadeProxyClient represents single client that uses encryption.
     /// </summary>
-    class FadeProxyClient
+    public class FadeProxyClient
     {
         #region Properties
 
@@ -79,7 +79,7 @@ namespace PolskaBot.Fade
         /// <param name="code">Code which will be used for initialization.</param>
         public void InitStageOne(byte[] code)
         {
-            _proxy.Call(ID, "initStageOne", Convert.ToBase64String(code));
+            _proxy.proxy.Call(ID, "initStageOne", Convert.ToBase64String(code));
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace PolskaBot.Fade
         /// <returns>Public key for encryption</returns>
         public byte[] GenerateKey()
         {
-            return Convert.FromBase64String((string)_proxy.Call(ID, "generateKey"));
+            return Convert.FromBase64String((string)_proxy.proxy.Call(ID, "generateKey"));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace PolskaBot.Fade
         /// <param name="code">Code which will be used for initialization.</param>
         public void InitStageTwo(byte[] code)
         {
-            _proxy.Call(ID, "initStageTwo", Convert.ToBase64String(code));
+            _proxy.proxy.Call(ID, "initStageTwo", Convert.ToBase64String(code));
         }
 
         #endregion
@@ -111,7 +111,7 @@ namespace PolskaBot.Fade
         /// <returns>Encrypted input</returns>
         public byte[] Encrypt(byte[] input)
         {
-            return Convert.FromBase64String((string)_proxy.Call(ID, "encode", Convert.ToBase64String(input)));
+            return Convert.FromBase64String((string)_proxy.proxy.Call("encode", ID, Convert.ToBase64String(input)));
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace PolskaBot.Fade
         /// <returns></returns>
         public byte[] Decrypt(byte[] input)
         {
-            return Convert.FromBase64String((string)_proxy.Call(ID, "decode", Convert.ToBase64String(input)));
+            return Convert.FromBase64String((string)_proxy.proxy.Call("decode", ID, Convert.ToBase64String(input)));
         }
 
         #endregion

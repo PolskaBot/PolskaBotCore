@@ -12,6 +12,7 @@ using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
 using MiscUtil.IO;
+using PolskaBot.Fade;
 
 namespace PolskaBot
 {
@@ -37,6 +38,7 @@ namespace PolskaBot
 
         Tweener anim = new Tweener();
 
+
         private List<string> collectable = new List<string>();
         Box boxToCollect;
         Gate targetGate;
@@ -52,13 +54,13 @@ namespace PolskaBot
             "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX", "PIRATE_BOOTY", "PIRATE_BOOTY_GOLD", "PIRATE_BOOTY_RED", "PIRATE_BOOTY_BLUE"
             };
 
-        public BotPage(string username, string password)
+        public BotPage(FadeProxyClient proxy, string username, string password)
         {
             Text = "Loading";
             BackColor = Color.White;
             InitializeComponent();
             DrawText("Loading");
-            api = new API();
+            api = new API(proxy);
             AddHandlers();
             AddContextMenu();
 

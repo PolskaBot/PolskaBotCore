@@ -54,7 +54,7 @@ namespace PolskaBot
             {
                 if(!usernameBox.Text.Equals("") || !passwordBox.Text.Equals(""))
                 {
-                    var botPage = new BotPage(usernameBox.Text, passwordBox.Text);
+                    var botPage = new BotPage(proxy.CreateClient(), usernameBox.Text, passwordBox.Text);
                     pages.Add(botPage);
                     botTabs.Controls.Add(botPage);
                     botTabs.SelectedIndex = ++AccountsCount;

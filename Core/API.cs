@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
+using PolskaBot.Fade;
 
 namespace PolskaBot.Core
 {
@@ -20,9 +21,9 @@ namespace PolskaBot.Core
 
         public Mode mode;
 
-        private VanillaClient vanillaClient;
-        private FadeClient fadeClient;
-        private RemoteClient remoteClient;
+        private VanillaClient _vanillaClient;
+        private FadeProxyClient _proxy;
+        private RemoteClient _remoteClient;
 
         // Logic
         public Account Account { get; set; }
@@ -39,30 +40,29 @@ namespace PolskaBot.Core
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
 
-        public API(Mode mode = Mode.BOT)
+        public API(FadeProxyClient proxy, Mode mode = Mode.BOT)
         {
             this.mode = mode;
 
             // Depedency injection
             Account = new Account(this);
-            fadeClient = new FadeClient(this);
-            remoteClient = new RemoteClient(this);
-            vanillaClient = new VanillaClient(this, fadeClient, remoteClient);
+            _proxy = proxy;
+            _remoteClient = new RemoteClient(this);
+            _vanillaClient = new VanillaClient(this, proxy, _remoteClient);
 
             Account.LoginSucceed += (s, e) => Connect();
 
-            vanillaClient.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
-            vanillaClient.HeroInited += (s, e) => HeroInited?.Invoke(s, e);
-            vanillaClient.Attacked += (s, e) => Attacked?.Invoke(s, e);
-            vanillaClient.ShipMoving += (s, e) => ShipMoving?.Invoke(s, e);
+            _vanillaClient.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
+            _vanillaClient.HeroInited += (s, e) => HeroInited?.Invoke(s, e);
+            _vanillaClient.Attacked += (s, e) => Attacked?.Invoke(s, e);
+            _vanillaClient.ShipMoving += (s, e) => ShipMoving?.Invoke(s, e);
         }
 
         public void Stop()
         {
-            vanillaClient.Stop();
-            vanillaClient.pingThread?.Abort();
-            fadeClient.Stop();
-            remoteClient.Stop();
+            _vanillaClient.Stop();
+            _vanillaClient.pingThread?.Abort();
+            _remoteClient.Stop();
         }
 
         public void Login(string username = null, string password = null)
@@ -78,44 +78,40 @@ namespace PolskaBot.Core
 
         public void Connect()
         {
-            remoteClient.OnConnected += (s, e) =>
+            _remoteClient.OnConnected += (s, e) =>
             {
                 Console.WriteLine("Connected to remoteServer");
                 ((Client)s).thread.Abort();
-                fadeClient.Connect("127.0.0.1", 8081);
-            };
-            fadeClient.OnConnected += (s, e) =>
-            {
-                ((Client)s).thread.Abort();
-                vanillaClient.Connect(GetIP(), 8080);
+                _vanillaClient.Connect(GetIP(), 8080);
             };
 
-            vanillaClient.OnConnected += (o, e) => vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
-            vanillaClient.Disconnected += (o, e) => Reconnect();
+            _vanillaClient.OnConnected += (o, e) => _vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
+            _vanillaClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
-            remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
+            _remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
         }
 
         public void SendEncoded(Command command)
         {
-            vanillaClient.SendEncoded(command);
+            _vanillaClient.SendEncoded(command);
         }
 
         public void Reconnect()
         {
             Console.WriteLine("Connection lost. Reconnecting.");
-            vanillaClient.pingThread.Abort();
+            _vanillaClient.pingThread.Abort();
             Boxes.Clear();
             MemorizedBoxes.Clear();
             Ores.Clear();
             Ships.Clear();
             Gates.Clear();
             Buildings.Clear();
-            fadeClient.Send(new FadePandoraReset());
-            vanillaClient.Disconnect();
-            vanillaClient.thread.Abort();
-            vanillaClient.Connect(GetIP(), 8080);
+            // TODO: Add reseting system.
+            //fadeClient.Send(new FadePandoraReset());
+            _vanillaClient.Disconnect();
+            _vanillaClient.thread.Abort();
+            _vanillaClient.Connect(GetIP(), 8080);
         }
 
         public string GetIP()

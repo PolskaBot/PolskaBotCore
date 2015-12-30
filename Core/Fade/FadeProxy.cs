@@ -7,11 +7,12 @@ namespace PolskaBot.Fade
     /// <summary>
     /// Creates proxy that handles Fade Protocol on top of AxShockwaveFlash control.
     /// </summary>
-    class FadeProxy
+    public class FadeProxy
     {
+        public ExternalInterfaceProxy proxy { get; private set; }
+
         #region Private fields
 
-        private ExternalInterfaceProxy _proxy;
         private Dictionary<string, FadeProxyClient> _clients = new Dictionary<string, FadeProxyClient>();
 
         #endregion
@@ -33,9 +34,9 @@ namespace PolskaBot.Fade
         /// <param name="flashControl">AxShockwaveFlash control that contains Fade compatible SWF file.</param>
         public FadeProxy(AxShockwaveFlashObjects.AxShockwaveFlash flashControl)
         {
-            _proxy = new ExternalInterfaceProxy(flashControl);
+            proxy = new ExternalInterfaceProxy(flashControl);
 
-            _proxy.ExternalInterfaceCall += (s, e) =>
+            proxy.ExternalInterfaceCall += (s, e) =>
             {
                 switch(e.FunctionCall.FunctionName)
                 {
@@ -67,18 +68,6 @@ namespace PolskaBot.Fade
             FadeProxyClient client = new FadeProxyClient(this);
             _clients.Add(client.ID, client);
             return client;
-        }
-
-        /// <summary>
-        /// Calls SWF function for specified client.
-        /// </summary>
-        /// <param name="id">Client identifier.</param>
-        /// <param name="functionName">Function name to be called.</param>
-        /// <param name="arguments">Additional arguments to be passed to this function call.</param>
-        /// <returns>Object returned by SWF function.</returns>
-        public object Call(string id, string functionName, params object[] arguments)
-        {
-            return _proxy.Call(functionName, id, arguments);
         }
 
         #endregion

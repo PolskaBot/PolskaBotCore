@@ -70,12 +70,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Fade\FadeProxy.cs" />
-    <Compile Include="Fade\FadeProxyClient.cs" />
-    <Compile Include="Flash\External\ExternalInterfaceCall.cs" />
-    <Compile Include="Flash\External\ExternalInterfaceCallEventArgs.cs" />
-    <Compile Include="Flash\External\ExternalInterfaceProxy.cs" />
-    <Compile Include="Flash\External\ExternalInterfaceSerializer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsForm.cs">
