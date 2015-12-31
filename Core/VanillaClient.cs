@@ -206,6 +206,7 @@ namespace PolskaBot.Core
 
                     HeroInited?.Invoke(this, EventArgs.Empty);
                     api.Account.Ready = true;
+                    Task.Delay(15000).ContinueWith(_ => api.Account.JumpAllowed = true);
 
                     SendEncoded(new InitPacket(1));
                     SendEncoded(new InitPacket(2));

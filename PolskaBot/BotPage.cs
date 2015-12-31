@@ -181,22 +181,17 @@ namespace PolskaBot
             contextMenu.MenuItems.Add(jump);
 
             minimap.ContextMenu = contextMenu;
-            minimap.ContextMenu.Popup += new EventHandler(minimap_ContextMenu_Popup);
-        }
-
-        private void minimap_ContextMenu_Popup(object sender, EventArgs e)
-        {
-            foreach (MenuItem item in minimap.ContextMenu.MenuItems)
+            minimap.ContextMenu.Popup += (s, e) =>
             {
-                if (item.Name == "jumpMenuItem")
-                {
-                    Point localCoords = minimap.PointToClient(Cursor.Position);
-                    if (api.Gates.Any(gate => CalculateDistance(Scale(gate.Position.X) - 5, Scale(gate.Position.Y) - 5, localCoords.X, localCoords.Y) > 12))
-                        item.Visible = false;
-                    else
-                        item.Visible = true;
-                }
-            }
+                MenuItem jumpMenuItem = minimap.ContextMenu.MenuItems.Find("jumpMenuItem", false).FirstOrDefault();
+
+                Point localCoords = minimap.PointToClient(Cursor.Position);
+                var enabled = api.Gates.Any(gate => CalculateDistance(gate.Position.X, gate.Position.Y, ReverseScale(localCoords.X - 10), ReverseScale(localCoords.Y - 10)) < 700)
+                    && api.Account.JumpAllowed;
+
+                minimap.ContextMenu.MenuItems[jumpMenuItem.Index - 1].Visible = enabled;
+                jumpMenuItem.Visible = enabled;
+            };
         }
 
         #endregion
