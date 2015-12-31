@@ -70,6 +70,8 @@ namespace PolskaBot.Core.Darkorbit
 
         public bool Ready { get; set; } = false;
 
+        public bool JumpAllowed { get; set; }
+
         HttpManager httpManager;
 
         public event EventHandler<EventArgs> LoginFailed;
