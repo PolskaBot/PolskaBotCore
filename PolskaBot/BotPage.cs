@@ -186,11 +186,11 @@ namespace PolskaBot
                 MenuItem jumpMenuItem = minimap.ContextMenu.MenuItems.Find("jumpMenuItem", false).FirstOrDefault();
 
                 Point localCoords = minimap.PointToClient(Cursor.Position);
-                var enabled = api.Gates.Any(gate => CalculateDistance(gate.Position.X, gate.Position.Y, ReverseScale(localCoords.X - 10), ReverseScale(localCoords.Y - 10)) < 700)
-                    && api.Account.JumpAllowed;
+                var visible = api.Gates.Any(gate => CalculateDistance(gate.Position.X, gate.Position.Y, ReverseScale(localCoords.X - 10), ReverseScale(localCoords.Y - 10)) < 700);
 
-                minimap.ContextMenu.MenuItems[jumpMenuItem.Index - 1].Visible = enabled;
-                jumpMenuItem.Visible = enabled;
+                minimap.ContextMenu.MenuItems[jumpMenuItem.Index - 1].Visible = visible;
+                jumpMenuItem.Visible = visible;
+                jumpMenuItem.Enabled = api.Account.JumpAllowed;
             };
         }
 
