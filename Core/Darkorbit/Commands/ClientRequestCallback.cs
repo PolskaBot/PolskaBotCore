@@ -25,7 +25,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
             packetWriter.Write(ID);
             packetWriter.Write(callback.Length);
             packetWriter.Write(callback, 0, callback.Length);
-            packetWriter.Write((Int16)27622);
+            packetWriter.Write((short)27622);
         }
     }
 }

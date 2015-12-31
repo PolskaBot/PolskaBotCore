@@ -22,9 +22,8 @@ namespace PolskaBot.Core
 
         public Thread thread { get; private set; }
         public TcpClient tcpClient { get; private set; }
-        private NetworkStream stream;
-        public Stream synchronizedStream { get; private set; }
-
+        public NetworkStream stream { get; private set; }
+        
         public string IP { get; set; }
         public int port { get; set; }
 
@@ -50,25 +49,22 @@ namespace PolskaBot.Core
                 if (!thread.IsAlive)
                     thread.Start();
                 stream = tcpClient.GetStream();
-                synchronizedStream = Stream.Synchronized(stream);
                 OnConnected?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             Running = false;
             thread?.Abort();
             tcpClient?.Close();
             stream?.Close();
-            synchronizedStream?.Close();
         }
 
         public void Disconnect()
         {
             tcpClient.Client.Disconnect(false);
             tcpClient.Close();
-            synchronizedStream.Close();
             stream.Close();
             thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
@@ -85,7 +81,8 @@ namespace PolskaBot.Core
                 return;
             }
             byte[] buffer = command.ToArray();
-            synchronizedStream.Write(buffer, 0, buffer.Length);
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
 
         public void Send(byte[] buffer)
@@ -98,7 +95,8 @@ namespace PolskaBot.Core
                 Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
             }
-            synchronizedStream.Write(buffer, 0, buffer.Length);
+            stream.Write(buffer, 0, buffer.Length);
+            stream.Flush();
         }
 
         protected void Run()
@@ -110,7 +108,7 @@ namespace PolskaBot.Core
                     Disconnected?.Invoke(this, EventArgs.Empty);
                     return;
                 }
-                Parse(new EndianBinaryReader(EndianBitConverter.Big, synchronizedStream));
+                Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
             }
 
         }

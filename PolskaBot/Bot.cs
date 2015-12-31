@@ -42,8 +42,7 @@ namespace PolskaBot
 
         private void Init()
         {
-            //string swfPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Fade.swf";
-            string swfPath = @"E:\Fade\bin\Fade.swf";
+            string swfPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Fade.swf";
             flashEmbed.LoadMovie(0, swfPath);
 
             proxy = new FadeProxy(flashEmbed);

@@ -50,6 +50,15 @@ namespace PolskaBot.Fade
 
         #endregion
 
+        #region Connection
+
+        public void Disconnect()
+        {
+            _proxy.proxy.Call("disconnect", ID);
+        }
+
+        #endregion
+
         #region Handling calls
 
         /// <summary>

@@ -16,8 +16,9 @@ namespace PolskaBot.Core
 {
     class VanillaClient : Client
     {
-        private FadeProxyClient proxy;
-        private RemoteClient remoteClient;
+
+        private FadeProxyClient _proxy;
+        private RemoteClient _remoteClient;
 
         public Thread pingThread;
 
@@ -31,9 +32,24 @@ namespace PolskaBot.Core
 
         public VanillaClient(API api, FadeProxyClient proxy, RemoteClient remoteClient) : base(api)
         {
-            this.proxy = proxy;
-            this.remoteClient = remoteClient;
+            _proxy = proxy;
+
+            _proxy.StageOneLoaded += (s, e) =>
+            {
+                byte[] secret = proxy.GenerateKey();
+                SendEncoded(new ClientRequestCallback(secret));
+            };
+
+            _proxy.StageOneFailed += (s, e) => Console.WriteLine("StageOne failed");
+
+            _remoteClient = remoteClient;
             pingThread = new Thread(new ThreadStart(PingLoop));
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
+            _proxy.Disconnect();
         }
 
         public void SendEncoded(Command command)
@@ -41,7 +57,7 @@ namespace PolskaBot.Core
             if (!Running)
                 return;
 
-            Send(proxy.Encrypt(command.ToArray()));
+            Send(_proxy.Encrypt(command.ToArray()));
         }
 
         public override void Parse(EndianBinaryReader reader)
@@ -55,17 +71,16 @@ namespace PolskaBot.Core
 
             var lengthBuffer = reader.ReadBytes(2);
 
-            if(BitConverter.IsLittleEndian)
+            lengthBuffer = _proxy.Decrypt(lengthBuffer);
+            if (BitConverter.IsLittleEndian)
                 Array.Reverse(lengthBuffer);
+            length = BitConverter.ToUInt16(lengthBuffer, 0);
 
-            length = BitConverter.ToUInt16(proxy.Decrypt(lengthBuffer), 0);
-            content = proxy.Decrypt(reader.ReadBytes(length));
+            content = _proxy.Decrypt(reader.ReadBytes(length));
 
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
 
             id = cachedReader.ReadUInt16();
-
-            Console.WriteLine(id);
 
             switch (id)
             {
@@ -87,32 +102,24 @@ namespace PolskaBot.Core
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(cachedReader);
 
-                    lock(remoteClient.locker)
+                    lock(_remoteClient.locker)
                     {
-                        remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
-                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, remoteClient.synchronizedStream);
+                        _remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
+                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, _remoteClient.stream);
                         short remoteLength = remoteReader.ReadInt16();
                         if(remoteReader.ReadInt16() == 102)
                         {
                             Console.WriteLine("Received stageOne code response");
-                            proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
+                            _proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
                         }
                     }
-
-                    proxy.StageOneLoaded += (s, e) =>
-                    {
-                        Console.WriteLine("StageOne initialized");
-                        SendEncoded(new ClientRequestCallback(proxy.GenerateKey()));
-                    };
-
-                    proxy.StageOneFailed += (s, e) => Console.WriteLine("StageOne failed");
 
                     break;
                 case ServerRequestCallback.ID:
                     Console.WriteLine("Stage two received");
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(cachedReader);
 
-                    proxy.InitStageTwo(serverRequestCallback.secretKey);
+                    _proxy.InitStageTwo(serverRequestCallback.secretKey);
 
                     Console.WriteLine("StageTwo initialized");
                     SendEncoded(new Ping());
