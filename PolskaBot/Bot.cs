@@ -14,6 +14,8 @@ using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
 using MiscUtil.IO;
+using System.IO;
+using PolskaBot.Fade;
 
 namespace PolskaBot
 {
@@ -23,6 +25,8 @@ namespace PolskaBot
         public int AccountsCount { get; set; }
 
         private List<BotPage> pages = new List<BotPage>();
+
+        private FadeProxy proxy;
 
         public Bot()
         {
@@ -38,15 +42,19 @@ namespace PolskaBot
 
         private void Init()
         {
-            startButton.Enabled = false;
-            stopButton.Enabled = false;
+            string swfPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Fade.swf";
+            flashEmbed.LoadMovie(0, swfPath);
+
+            proxy = new FadeProxy(flashEmbed);
+            proxy.Ready += (s, e) => loginButton.Enabled = true;
+
 
             AcceptButton = loginButton;
             loginButton.Click += (s, e) =>
             {
                 if(!usernameBox.Text.Equals("") || !passwordBox.Text.Equals(""))
                 {
-                    var botPage = new BotPage(usernameBox.Text, passwordBox.Text);
+                    var botPage = new BotPage(proxy.CreateClient(), usernameBox.Text, passwordBox.Text);
                     pages.Add(botPage);
                     botTabs.Controls.Add(botPage);
                     botTabs.SelectedIndex = ++AccountsCount;

@@ -10,13 +10,15 @@ using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using System.Threading;
+using PolskaBot.Fade;
 
 namespace PolskaBot.Core
 {
     class VanillaClient : Client
     {
-        private FadeClient fadeClient;
-        private RemoteClient remoteClient;
+
+        private FadeProxyClient _proxy;
+        private RemoteClient _remoteClient;
 
         public Thread pingThread;
 
@@ -28,53 +30,59 @@ namespace PolskaBot.Core
 
         public event EventHandler<string> LogMessage;
 
-        public VanillaClient(API api, FadeClient fadeClient, RemoteClient remoteClient) : base(api)
+        public VanillaClient(API api, FadeProxyClient proxy, RemoteClient remoteClient) : base(api)
         {
-            this.fadeClient = fadeClient;
-            this.remoteClient = remoteClient;
+            _proxy = proxy;
+
+            _proxy.StageOneLoaded += (s, e) =>
+            {
+                byte[] secret = proxy.GenerateKey();
+                SendEncoded(new ClientRequestCallback(secret));
+            };
+
+            _proxy.StageOneFailed += (s, e) => Console.WriteLine("StageOne failed");
+
+            _remoteClient = remoteClient;
             pingThread = new Thread(new ThreadStart(PingLoop));
+        }
+
+        public override void Stop()
+        {
+            base.Stop();
+            _proxy.Disconnect();
         }
 
         public void SendEncoded(Command command)
         {
-            lock(fadeClient.locker)
-            {
-                if (!Running)
-                    return;
-                byte[] rawBuffer = command.ToArray();
-                byte[] encodedBuffer = new byte[rawBuffer.Length];
-                fadeClient.Send(new FadeEncodePacket(rawBuffer));
-                fadeClient.synchronizedStream.Read(encodedBuffer, 0, rawBuffer.Length);
-                Send(encodedBuffer);
-            }
+            if (!Running)
+                return;
+
+            Send(_proxy.Encrypt(command.ToArray()));
         }
 
         public override void Parse(EndianBinaryReader reader)
         {
-            EndianBinaryReader fadeReader = new EndianBinaryReader(EndianBitConverter.Big, fadeClient.synchronizedStream);
-            byte[] lengthBuffer;
-            ushort fadeLength;
-            ushort fadeID;
-            byte[] contentBuffer;
+            ushort length;
+            ushort id;
             byte[] content;
 
-            lock(fadeClient.locker)
-            {
-                if (!IsConnected())
-                    return;
-                lengthBuffer = reader.ReadBytes(2);
-                fadeClient.Send(new FadeDecodePacket(lengthBuffer));
-                fadeLength = fadeReader.ReadUInt16();
-                contentBuffer = reader.ReadBytes(fadeLength);
-                fadeClient.Send(new FadeDecodePacket(contentBuffer));
-                content = fadeReader.ReadBytes(fadeLength);
-            }
+            if (!IsConnected())
+                return;
+
+            var lengthBuffer = reader.ReadBytes(2);
+
+            lengthBuffer = _proxy.Decrypt(lengthBuffer);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(lengthBuffer);
+            length = BitConverter.ToUInt16(lengthBuffer, 0);
+
+            content = _proxy.Decrypt(reader.ReadBytes(length));
 
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
 
-            fadeID = cachedReader.ReadUInt16();
+            id = cachedReader.ReadUInt16();
 
-            switch (fadeID)
+            switch (id)
             {
                 case ServerVersionCheck.ID:
                     ServerVersionCheck serverVersionCheck = new ServerVersionCheck(cachedReader);
@@ -93,63 +101,30 @@ namespace PolskaBot.Core
 
                 case ServerRequestCode.ID:
                     ServerRequestCode serverRequetCode = new ServerRequestCode(cachedReader);
-                    bool initialized;
 
-                    lock(remoteClient.locker)
+                    lock(_remoteClient.locker)
                     {
-                        remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
-                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, remoteClient.synchronizedStream);
-                        short length = remoteReader.ReadInt16();
+                        _remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
+                        EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, _remoteClient.stream);
+                        short remoteLength = remoteReader.ReadInt16();
                         if(remoteReader.ReadInt16() == 102)
                         {
                             Console.WriteLine("Received stageOne code response");
-                            lock (fadeClient.locker)
-                            {
-                                fadeClient.Send(new FadeInitStageOne(remoteReader.ReadBytes(length - 2)));
-                                initialized = fadeReader.ReadBoolean();
-                            }
-                        } else
-                        {
-                            initialized = false;
+                            _proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
                         }
-                    }
-
-                    if (initialized)
-                    {
-                        Console.WriteLine("StageOne initialized");
-                        short callbackLength;
-                        byte[] buffer;
-                        lock (fadeClient.locker)
-                        {
-                            fadeClient.Send(new FadeRequestCallback());
-                            callbackLength = fadeReader.ReadInt16();
-                            buffer = fadeReader.ReadBytes(callbackLength);
-                        }
-                        SendEncoded(new ClientRequestCallback(buffer));
-                    }
-                    else
-                    {
-                        Console.WriteLine("StageOne failed");
                     }
 
                     break;
                 case ServerRequestCallback.ID:
                     Console.WriteLine("Stage two received");
                     ServerRequestCallback serverRequestCallback = new ServerRequestCallback(cachedReader);
-                    bool initializedStageTwo;
-                    lock (fadeClient.locker)
-                    {
-                        fadeClient.Send(new FadeInitStageTwo(serverRequestCallback.secretKey));
-                        initializedStageTwo = fadeReader.ReadBoolean();
-                    }
 
-                    if (initializedStageTwo)
-                    {
-                        Console.WriteLine("StageTwo initialized");
-                        SendEncoded(new Ping());
-                        SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
-                        SendEncoded(new Ready());
-                    }
+                    _proxy.InitStageTwo(serverRequestCallback.secretKey);
+
+                    Console.WriteLine("StageTwo initialized");
+                    SendEncoded(new Ping());
+                    SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
+                    SendEncoded(new Ready());
 
                     break;
                 case BuildingInit.ID:
@@ -368,7 +343,7 @@ namespace PolskaBot.Core
                     }
                     break;
                 default:
-                    Console.WriteLine("Received packet of ID {0} with total size of {1} which is not supported", fadeID, fadeLength + 4);
+                    Console.WriteLine("Received packet of ID {0} with total size of {1} which is not supported", id, length + 4);
                     break;
             }
         }

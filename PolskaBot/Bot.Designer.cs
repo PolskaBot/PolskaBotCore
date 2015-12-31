@@ -38,10 +38,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.usernameBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.flashEmbed = new AxShockwaveFlashObjects.AxShockwaveFlash();
             this.settingsButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.botTabs.SuspendLayout();
             this.loginPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flashEmbed)).BeginInit();
             this.SuspendLayout();
             // 
             // startButton
@@ -89,6 +91,7 @@
             // 
             // loginButton
             // 
+            this.loginButton.Enabled = false;
             this.loginButton.Location = new System.Drawing.Point(3, 218);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(343, 23);
@@ -129,6 +132,15 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Username";
             // 
+            // flashEmbed
+            // 
+            this.flashEmbed.Enabled = true;
+            this.flashEmbed.Location = new System.Drawing.Point(377, 12);
+            this.flashEmbed.Name = "flashEmbed";
+            this.flashEmbed.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("flashEmbed.OcxState")));
+            this.flashEmbed.Size = new System.Drawing.Size(566, 387);
+            this.flashEmbed.TabIndex = 5;
+            // 
             // settingsButton
             // 
             this.settingsButton.Enabled = false;
@@ -154,6 +166,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(378, 411);
+            this.Controls.Add(this.flashEmbed);
             this.Controls.Add(this.settingsButton);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.botTabs);
@@ -165,6 +178,7 @@
             this.botTabs.ResumeLayout(false);
             this.loginPage.ResumeLayout(false);
             this.loginPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.flashEmbed)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -181,6 +195,7 @@
         private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.Button closeButton;
+        private AxShockwaveFlashObjects.AxShockwaveFlash flashEmbed;
     }
 }
 
