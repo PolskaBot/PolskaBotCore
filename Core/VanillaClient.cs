@@ -129,11 +129,11 @@ namespace PolskaBot.Core
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(cachedReader);
-                    api.Buildings.Add(new Building(buildingInit.Name, buildingInit.X, buildingInit.Y));
+                    api.Buildings.Add(new Building(buildingInit.BuildingID, buildingInit.Name, buildingInit.X, buildingInit.Y, buildingInit.AssetType));
                     break;
                 case DestroyBuilding.ID:
                     DestroyBuilding destroyBuilding = new DestroyBuilding(cachedReader);
-                    Console.WriteLine($"Building destroyed | UID: {destroyBuilding.UID} AssetType: {destroyBuilding.AssetType}");
+                    api.Buildings.RemoveAll(building => building.BuildingID == destroyBuilding.BuildingID);
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(cachedReader);
