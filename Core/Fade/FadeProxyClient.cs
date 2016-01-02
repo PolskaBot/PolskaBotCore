@@ -83,6 +83,14 @@ namespace PolskaBot.Fade
         #region Initialization
 
         /// <summary>
+        /// Resets both stage one and stage two.
+        /// </summary>
+        public void Reset()
+        {
+            _proxy.proxy.Call("reset", ID);
+        }
+
+        /// <summary>
         /// Initializes stage one with specified code.
         /// </summary>
         /// <param name="code">Code which will be used for initialization.</param>

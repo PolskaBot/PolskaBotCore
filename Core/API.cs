@@ -107,11 +107,11 @@ namespace PolskaBot.Core
             Ships.Clear();
             Gates.Clear();
             Buildings.Clear();
-            // TODO: Add reseting system.
-            //fadeClient.Send(new FadePandoraReset());
+            _proxy.Reset();
+            _remoteClient.Disconnect();
             _vanillaClient.Disconnect();
             _vanillaClient.thread.Abort();
-            _vanillaClient.Connect(GetIP(), 8080);
+            _remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
         }
 
         public string GetIP()
