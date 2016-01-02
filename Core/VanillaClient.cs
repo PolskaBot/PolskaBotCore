@@ -76,11 +76,15 @@ namespace PolskaBot.Core
                 Array.Reverse(lengthBuffer);
             length = BitConverter.ToUInt16(lengthBuffer, 0);
 
+            Console.WriteLine(length);
+
             content = _proxy.Decrypt(reader.ReadBytes(length));
 
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
 
             id = cachedReader.ReadUInt16();
+
+            Console.WriteLine($"ID: {id}");
 
             switch (id)
             {

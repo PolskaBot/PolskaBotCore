@@ -31,11 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AxInterop.ShockwaveFlashObjects">
-      <HintPath>..\..\AxInterop.ShockwaveFlashObjects.dll</HintPath>
+    <Reference Include="AxInterop.ShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\AxInterop.ShockwaveFlashObjects.dll</HintPath>
     </Reference>
     <Reference Include="Interop.ShockwaveFlashObjects">
-      <HintPath>..\..\Interop.ShockwaveFlashObjects.dll</HintPath>
+      <HintPath>.\Interop.ShockwaveFlashObjects.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="MiscUtil">
