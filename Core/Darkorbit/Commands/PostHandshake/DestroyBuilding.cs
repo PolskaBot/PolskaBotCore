@@ -11,13 +11,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 23972;
 
-        public int UID { get; private set; }
+        public int BuildingID { get; private set; }
         public short AssetType { get; private set; }
 
         public DestroyBuilding(EndianBinaryReader reader)
         {
-            UID = reader.ReadInt32();
-            UID = (int)((uint)UID >> 15 | (uint)UID << 17);
+            BuildingID = reader.ReadInt32();
+            BuildingID = (int)((uint)BuildingID >> 15 | (uint)BuildingID << 17);
             reader.ReadInt16(); //entering class_455
             AssetType = reader.ReadInt16();
             reader.ReadInt16();

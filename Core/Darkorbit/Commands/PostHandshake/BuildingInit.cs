@@ -13,7 +13,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public string name_138 { get; private set; }        // name_138
         public int var_3378 { get; private set; }           // var_3378
-        public int AssetID { get; private set; }
+        public int BuildingID { get; private set; }
+        public int AssetType { get; private set; }
         //public var name_95:package_38.class_940;
         public bool var_3562 { get; private set; }          // var_3562
         //public var type:package_38.class_455;
@@ -33,8 +34,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             name_138 = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt16()));
             var_3378 = reader.ReadInt32();
             var_3378 = (int)((uint)var_3378 >> 1 | (uint)var_3378 << 31);
-            AssetID = reader.ReadInt32();
-            AssetID = (int)(uint)AssetID >> 10 | AssetID << 22;
+            BuildingID = reader.ReadInt32();
+            BuildingID = (int)((uint)BuildingID >> 10 | (uint)BuildingID << 22);
             //class_940 begin read
             reader.ReadUInt16();
             int type = reader.ReadUInt16();
@@ -42,7 +43,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             var_3562 = reader.ReadBoolean();
             //class_455 begin read
             reader.ReadUInt16();
-            int secondType = reader.ReadUInt16();
+            AssetType = reader.ReadUInt16();
             reader.ReadUInt16();
             //class_455 end read
             X = reader.ReadInt32();
