@@ -129,14 +129,16 @@ namespace PolskaBot.Core.Darkorbit
             match = Regex.Match(loginResponse, "http://(.*).darkorbit.bigpoint.com");
 
             if (!match.Success)
-            {
-                LoginFailed?.Invoke(this, EventArgs.Empty);
-                return;
-            }
+                match = Regex.Match(loginResponse, "http://(.*).darkorbit.com");
+                if (!match.Success)
+                {
+                    LoginFailed?.Invoke(this, EventArgs.Empty);
+                    return;
+                }
 
             Server = match.Groups[1].ToString();
 
-            string mapResponse = httpManager.Get($"http://{Server}.darkorbit.bigpoint.com/indexInternal.es?action=internalMapRevolution");
+            string mapResponse = httpManager.Get($"{match.Value}/indexInternal.es?action=internalMapRevolution");
             match = Regex.Match(mapResponse, "{\"pid\":([0-9]+),\"uid\":([0-9]+)[\\w,\":]+sid\":\"([0-9a-z]+)\"");
 
             if (!match.Success)
