@@ -35,6 +35,7 @@ namespace PolskaBot
         public Bot()
         {
             InitializeComponent();
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Load += (s, e) => Init();
             FormClosed += (s, e) => {
                 foreach(BotPage page in pages)
