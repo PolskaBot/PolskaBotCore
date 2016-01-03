@@ -126,10 +126,26 @@ namespace PolskaBot.Core
                     _proxy.InitStageTwo(serverRequestCallback.secretKey);
 
                     Console.WriteLine("StageTwo initialized");
-                    SendEncoded(new Ping());
-                    SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
-                    SendEncoded(new Ready());
-
+                    lock (_remoteClient.locker)
+                    {
+                        _remoteClient.Send(new RemoteLicenseCheck(api.Account.UserID));
+                        EndianBinaryReader _remoteReader = new EndianBinaryReader(EndianBitConverter.Big, _remoteClient.stream);
+                        short _remoteLength = _remoteReader.ReadInt16();
+                        if (_remoteReader.ReadInt16() == 104)
+                        {
+                            Console.WriteLine("check for license");
+                            if (_remoteReader.ReadBoolean())
+                            {
+                                SendEncoded(new Ping());
+                                SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
+                                SendEncoded(new Ready());
+                            }
+                            else
+                            {
+                                Console.WriteLine("Client doesn't have license");
+                            }
+                        }
+                    }
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(cachedReader);
