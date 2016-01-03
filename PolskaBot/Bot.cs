@@ -16,12 +16,15 @@ using Glide;
 using MiscUtil.IO;
 using System.IO;
 using PolskaBot.Fade;
+using System.Net;
 
 namespace PolskaBot
 {
     
     public partial class Bot : Form
     {
+        private string _ip;
+
         public int AccountsCount { get; set; }
 
         private List<BotPage> pages = new List<BotPage>();
@@ -43,7 +46,15 @@ namespace PolskaBot
         private void Init()
         {
             string swfPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Fade.swf";
-            flashEmbed.LoadMovie(0, swfPath);
+
+            Task serverTask = new Task(() =>
+            {
+                WebClient client = new WebClient();
+                _ip = client.DownloadString("https://www.muzari.com/pb/server.txt");
+                flashEmbed.LoadMovie(0, swfPath);
+            });
+            serverTask.Start();
+
 
             proxy = new FadeProxy(flashEmbed);
             proxy.Ready += (s, e) => loginButton.Enabled = true;
@@ -54,7 +65,7 @@ namespace PolskaBot
             {
                 if(!usernameBox.Text.Equals("") || !passwordBox.Text.Equals(""))
                 {
-                    var botPage = new BotPage(proxy.CreateClient(), usernameBox.Text, passwordBox.Text);
+                    var botPage = new BotPage(_ip, proxy.CreateClient(), usernameBox.Text, passwordBox.Text);
                     pages.Add(botPage);
                     botTabs.Controls.Add(botPage);
                     botTabs.SelectedIndex = ++AccountsCount;

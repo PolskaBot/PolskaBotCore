@@ -54,13 +54,13 @@ namespace PolskaBot
             "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX", "PIRATE_BOOTY", "PIRATE_BOOTY_GOLD", "PIRATE_BOOTY_RED", "PIRATE_BOOTY_BLUE"
             };
 
-        public BotPage(FadeProxyClient proxy, string username, string password)
+        public BotPage(string ip, FadeProxyClient proxy, string username, string password)
         {
             Text = "Loading";
             BackColor = Color.White;
             InitializeComponent();
             DrawText("Loading");
-            api = new API(proxy);
+            api = new API(ip, proxy);
             AddHandlers();
             AddContextMenu();
 
