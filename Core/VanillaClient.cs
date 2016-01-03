@@ -84,8 +84,6 @@ namespace PolskaBot.Core
 
             id = cachedReader.ReadUInt16();
 
-            Console.WriteLine($"ID: {id}");
-
             switch (id)
             {
                 case ServerVersionCheck.ID:
