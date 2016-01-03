@@ -28,6 +28,8 @@ namespace PolskaBot.Core
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
 
+        public event EventHandler<EventArgs> AuthFailed;
+
         public event EventHandler<string> LogMessage;
 
         public VanillaClient(API api, FadeProxyClient proxy, RemoteClient remoteClient) : base(api)
@@ -115,7 +117,7 @@ namespace PolskaBot.Core
                             if (remoteLength != 3)
                                 _proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
                             else
-                                Console.WriteLine("Client is not authed");
+                                AuthFailed?.Invoke(this, EventArgs.Empty);
                         }
                     }
 

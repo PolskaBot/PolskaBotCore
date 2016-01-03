@@ -85,6 +85,7 @@ namespace PolskaBot
 
         private void AddHandlers()
         {
+            api.AuthFailed += (s, e) => DrawText("No license for this account");
             api.Account.LoginSucceed += (s, e) => DrawText("Login succeed");
             api.Account.LoginFailed += (s, e) => DrawText("Login failed");
             api.HeroInited += (s, e) =>
