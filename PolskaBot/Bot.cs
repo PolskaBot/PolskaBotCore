@@ -17,6 +17,7 @@ using MiscUtil.IO;
 using System.IO;
 using PolskaBot.Fade;
 using System.Net;
+using System.Deployment.Application;
 
 namespace PolskaBot
 {
@@ -45,6 +46,11 @@ namespace PolskaBot
 
         private void Init()
         {
+            if(ApplicationDeployment.IsNetworkDeployed)
+            {
+                Text = $"PolskaBot {ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString(4)}";
+            }
+
             string swfPath = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar + "Fade.swf";
 
             Task serverTask = new Task(() =>
