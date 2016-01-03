@@ -117,7 +117,7 @@ namespace PolskaBot.Core
             _remoteClient.Disconnect();
             _vanillaClient.Disconnect();
             _vanillaClient.thread.Abort();
-            _remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
+            _remoteClient.Connect(_ip, 8082);
         }
 
         public string GetIP()
