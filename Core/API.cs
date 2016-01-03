@@ -25,6 +25,8 @@ namespace PolskaBot.Core
         private FadeProxyClient _proxy;
         private RemoteClient _remoteClient;
 
+        private string _ip;
+
         // Logic
         public Account Account { get; set; }
         public List<Box> Boxes { get; set; } = new List<Box>();
@@ -40,8 +42,10 @@ namespace PolskaBot.Core
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
 
-        public API(FadeProxyClient proxy, Mode mode = Mode.BOT)
+        public API(string ip, FadeProxyClient proxy, Mode mode = Mode.BOT)
         {
+            _ip = ip;
+
             this.mode = mode;
 
             // Depedency injection
@@ -89,7 +93,7 @@ namespace PolskaBot.Core
             _vanillaClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
-            _remoteClient.Connect(Environment.GetEnvironmentVariable("PB_SERVER_IP"), 8082);
+            _remoteClient.Connect(_ip, 8082);
         }
 
         public void SendEncoded(Command command)
