@@ -106,13 +106,16 @@ namespace PolskaBot.Core
 
                     lock(_remoteClient.locker)
                     {
-                        _remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code));
+                        _remoteClient.Send(new RemoteInitStageOne(serverRequetCode.code, api.Account.UserID));
                         EndianBinaryReader remoteReader = new EndianBinaryReader(EndianBitConverter.Big, _remoteClient.stream);
                         short remoteLength = remoteReader.ReadInt16();
                         if(remoteReader.ReadInt16() == 102)
                         {
                             Console.WriteLine("Received stageOne code response");
-                            _proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
+                            if (remoteLength != 3)
+                                _proxy.InitStageOne(remoteReader.ReadBytes(remoteLength - 2));
+                            else
+                                Console.WriteLine("Client is not authed");
                         }
                     }
 
@@ -124,26 +127,9 @@ namespace PolskaBot.Core
                     _proxy.InitStageTwo(serverRequestCallback.secretKey);
 
                     Console.WriteLine("StageTwo initialized");
-                    lock (_remoteClient.locker)
-                    {
-                        _remoteClient.Send(new RemoteLicenseCheck(api.Account.UserID));
-                        EndianBinaryReader _remoteReader = new EndianBinaryReader(EndianBitConverter.Big, _remoteClient.stream);
-                        short _remoteLength = _remoteReader.ReadInt16();
-                        if (_remoteReader.ReadInt16() == 104)
-                        {
-                            Console.WriteLine("check for license");
-                            if (_remoteReader.ReadBoolean())
-                            {
-                                SendEncoded(new Ping());
-                                SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
-                                SendEncoded(new Ready());
-                            }
-                            else
-                            {
-                                Console.WriteLine("Client doesn't have license");
-                            }
-                        }
-                    }
+                    SendEncoded(new Ping());
+                    SendEncoded(new Login(api.Account.UserID, api.Account.SID, 0, api.Account.InstanceID));
+                    SendEncoded(new Ready());
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(cachedReader);
