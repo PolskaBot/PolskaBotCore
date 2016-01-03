@@ -59,7 +59,6 @@
     <Compile Include="Darkorbit\Account.cs" />
     <Compile Include="Darkorbit\Box.cs" />
     <Compile Include="Darkorbit\Building.cs" />
-    <Compile Include="Darkorbit\Commands\RemoteLicenseCheck.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCallback.cs" />
     <Compile Include="Darkorbit\Commands\ClientRequestCode.cs" />
     <Compile Include="Darkorbit\Commands\ClientVersionCheck.cs" />
