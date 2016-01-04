@@ -26,7 +26,7 @@ namespace PolskaBot.Core
         private RemoteClient _remoteClient;
 
         private string _ip;
-        public DateTime LoginDateTime { get; set; }
+        public DateTime LoginTime { get; protected set; }
 
         // Logic
         public Account Account { get; set; }
@@ -62,7 +62,11 @@ namespace PolskaBot.Core
             _remoteClient = new RemoteClient(this);
             _vanillaClient = new VanillaClient(this, proxy, _remoteClient);
 
-            Account.LoginSucceed += (s, e) => Connect();
+            Account.LoginSucceed += (s, e) =>
+            {
+                Connect();
+                LoginTime = DateTime.Now;
+            };
 
             _vanillaClient.AuthFailed += (s, e) => AuthFailed?.Invoke(s, e);
             _vanillaClient.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
