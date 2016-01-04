@@ -153,6 +153,7 @@ namespace PolskaBot.Core.Darkorbit
             match = Regex.Match(mapResponse, "mapID\": \"([0-9]*)\"");
             Map = int.Parse(match.Groups[1].ToString());
 
+            api.LoginDateTime = DateTime.Now;
             LoginSucceed?.Invoke(this, EventArgs.Empty);
         }
     }

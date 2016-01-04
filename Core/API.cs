@@ -26,6 +26,7 @@ namespace PolskaBot.Core
         private RemoteClient _remoteClient;
 
         private string _ip;
+        public DateTime LoginDateTime { get; set; }
 
         // Logic
         public Account Account { get; set; }
