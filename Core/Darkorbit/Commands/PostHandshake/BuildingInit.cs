@@ -31,7 +31,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public BuildingInit(EndianBinaryReader reader)
         {
-            name_138 = Encoding.UTF8.GetString(reader.ReadBytes((int)reader.ReadUInt16()));
+            name_138 = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
             var_3378 = reader.ReadInt32();
             var_3378 = (int)((uint)var_3378 >> 1 | (uint)var_3378 << 31);
             BuildingID = reader.ReadInt32();
@@ -56,9 +56,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             Y = (int)((uint)Y >> 10 | (uint)Y << 22);
             var_4991 = reader.ReadBoolean();
             var_984 = reader.ReadBoolean();
-            for (int i = 0; i < reader.ReadInt32(); i++)
+            int length = reader.ReadInt32();
+            if (length > 0)
             {
-                Class326 class326 = new Class326(reader);
+                reader.ReadInt16();
+                for (int i = 0; i < length; i++)
+                {
+                    Class326 class326 = new Class326(reader);
+                }
             }
             FactionID = reader.ReadInt32();
             FactionID = (int)((uint)FactionID >> 3 | (uint)FactionID << 29);
