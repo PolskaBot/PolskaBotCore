@@ -36,6 +36,12 @@ namespace PolskaBot.Core
         public List<Gate> Gates { get; set; } = new List<Gate>();
         public List<Building> Buildings { get; set; } = new List<Building>();
 
+        public object boxesLocker = new object();
+        public object memorizedBoxesLocker = new object();
+        public object oresLocker = new object();
+        public object shipsLocker = new object();
+        public object buildingsLocker = new object();
+
         public event EventHandler<EventArgs> Connecting;
         public event EventHandler<EventArgs> Disconnected;
         public event EventHandler<EventArgs> HeroInited;

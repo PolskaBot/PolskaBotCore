@@ -107,7 +107,7 @@ namespace PolskaBot
 
             api.Attacked += (s, e) =>
             {
-                lock (api.Ships)
+                lock (api.shipsLocker)
                 {
                     var attacker = api.Ships.Find(ship => ship.UserID == e.AttackerID);
                     if (attacker != null && !attacker.NPC && e.UserID == api.Account.UserID)
@@ -121,7 +121,7 @@ namespace PolskaBot
 
             api.ShipMoving += (s, e) =>
             {
-                lock (api.Ships)
+                lock (api.shipsLocker)
                 {
                     try
                     {
@@ -301,12 +301,12 @@ namespace PolskaBot
                     collectable = Settings.CollectableBoxes.ToList();
                 }
 
-                lock (api.Boxes)
+                lock (api.boxesLocker)
                 {
                     boxes = api.Boxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
                 }
 
-                lock (api.MemorizedBoxes)
+                lock (api.memorizedBoxesLocker)
                 {
                     memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => collectable.Contains(box.Type)).ToList();
                 }
@@ -366,7 +366,7 @@ namespace PolskaBot
                         if (boxToCollect != null)
                         {
                             //But we had box to collect. Someone collected it. Remove it from memorizedBoxes (real boxes gets removed based on packets).
-                            lock (api.MemorizedBoxes)
+                            lock (api.memorizedBoxesLocker)
                             {
                                 api.MemorizedBoxes.RemoveAll(box => box.Hash == boxToCollect.Hash);
                             }
@@ -388,7 +388,7 @@ namespace PolskaBot
                             }
                             api.SendEncoded(new CollectBox(nearestBox.Hash, nearestBox.Position.X, nearestBox.Position.Y, api.Account.X, tempShipY));
                         }
-                        lock (api.Boxes) lock (api.MemorizedBoxes)
+                        lock (api.boxesLocker) lock (api.memorizedBoxesLocker)
                             {
                                 api.Boxes.RemoveAll(box => box.Hash == nearestBox.Hash);
                                 api.MemorizedBoxes.RemoveAll(box => box.Hash == nearestBox.Hash);
@@ -419,22 +419,22 @@ namespace PolskaBot
 
                 // Locks by copying to list.
 
-                lock (api.Boxes)
+                lock (api.boxesLocker)
                 {
                     boxes = api.Boxes.ToList().Where(box => displayableBoxes.Contains(box.Type)).ToList();
                 }
 
-                lock (api.MemorizedBoxes)
+                lock (api.memorizedBoxesLocker)
                 {
                     memorizedBoxes = api.MemorizedBoxes.ToList().Where(box => displayableBoxes.Contains(box.Type)).Where(box => !boxes.Contains(box)).ToList();
                 }
 
-                lock (api.Ores)
+                lock (api.oresLocker)
                 {
                     ores = api.Ores.ToList();
                 }
 
-                lock (api.Ships)
+                lock (api.shipsLocker)
                 {
                     ships = api.Ships.ToList();
                 }
@@ -444,7 +444,7 @@ namespace PolskaBot
                     gates = api.Gates.ToList();
                 }
 
-                lock (api.Buildings)
+                lock (api.buildingsLocker)
                 {
                     buildings = api.Buildings.ToList();
                 }
