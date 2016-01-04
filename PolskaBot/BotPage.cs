@@ -640,10 +640,10 @@ namespace PolskaBot
                     g.DrawString(cloaked, Config.font, new SolidBrush(Color.DarkGray), Config.poizoneSize + 4, minimap.Height - 16 - Config.poizoneSize);
                 }
 
-                TimeSpan diff = DateTime.Now - api.LoginDateTime;
-                string elapsedTime = $"{diff.TotalHours:00}:{diff.Minutes:00}:{diff.Seconds:00}";
-                SizeF timeElapsedSize = g.MeasureString(elapsedTime, Config.font);
-                g.DrawString(elapsedTime, Config.font, new SolidBrush(Color.DarkGray), minimap.Width - Config.poizoneSize - 4 - timeElapsedSize.Width, minimap.Height - 16 - Config.poizoneSize);
+                var deltaTimeSpan = DateTime.Now - api.LoginDateTime;
+                string runningText = $"{deltaTimeSpan.TotalHours:00}:{deltaTimeSpan.Minutes:00}:{deltaTimeSpan.Seconds:00}";
+                var runningTextSize = g.MeasureString(runningText, Config.font);
+                g.DrawString(runningText, Config.font, new SolidBrush(Color.DarkGray), minimap.Width - Config.poizoneSize - 4 - runningTextSize.Width, minimap.Height - 16 - Config.poizoneSize);
             }
         }
 
