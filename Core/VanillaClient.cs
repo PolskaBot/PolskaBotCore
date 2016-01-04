@@ -135,11 +135,13 @@ namespace PolskaBot.Core
                     break;
                 case BuildingInit.ID:
                     BuildingInit buildingInit = new BuildingInit(cachedReader);
-                    api.Buildings.Add(new Building(buildingInit.BuildingID, buildingInit.Name, buildingInit.X, buildingInit.Y, buildingInit.AssetType));
+                    lock(api.buildingsLocker)
+                        api.Buildings.Add(new Building(buildingInit.BuildingID, buildingInit.Name, buildingInit.X, buildingInit.Y, buildingInit.AssetType));
                     break;
                 case DestroyBuilding.ID:
                     DestroyBuilding destroyBuilding = new DestroyBuilding(cachedReader);
-                    api.Buildings.RemoveAll(building => building.BuildingID == destroyBuilding.BuildingID);
+                    lock(api.buildingsLocker)
+                        api.Buildings.RemoveAll(building => building.BuildingID == destroyBuilding.BuildingID);
                     break;
                 case GateInit.ID:
                     GateInit gateInit = new GateInit(cachedReader);
@@ -264,7 +266,8 @@ namespace PolskaBot.Core
                     newShip.ClanID = (int)shipInit.ClanID;
                     newShip.ClanTag = shipInit.ClanTag;
                     newShip.FactionID = (int)shipInit.FactionID;
-                    api.Ships.Add(newShip);
+                    lock(api.shipsLocker)
+                        api.Ships.Add(newShip);
                     break;
                 case ShipMove.ID:
                     ShipMove shipMove = new ShipMove(cachedReader);
@@ -275,19 +278,22 @@ namespace PolskaBot.Core
                     if (boxInit.Hash.Length != 5)
                     {
                         Box box = new Box(boxInit.Hash, boxInit.X, boxInit.Y, boxInit.Type);
-                        api.Boxes.Add(box);
-                        api.MemorizedBoxes.Add(box);
+                        lock(api.boxesLocker) lock (api.memorizedBoxesLocker)
+                        {
+                            api.Boxes.Add(box);
+                            api.MemorizedBoxes.Add(box);
+                        }
                     }
                     break;
                 case DestroyItem.ID:
                     DestroyItem item = new DestroyItem(cachedReader);
-                    lock (api.Boxes)
+                    lock (api.boxesLocker) lock (api.memorizedBoxesLocker)
                     {
                         api.Boxes.RemoveAll(box => box.Hash == item.Hash);
                         if(item.CollectedByPlayer)
                             api.MemorizedBoxes.RemoveAll(box => box.Hash == item.Hash);
                     }
-                    lock (api.Ores)
+                    lock (api.oresLocker)
                         api.Ores.RemoveAll(ore => ore.Hash == item.Hash);
                     break;
                 case DestroyShip.ID:
@@ -297,7 +303,8 @@ namespace PolskaBot.Core
                     break;
                 case OreInit.ID:
                     OreInit oreInit = new OreInit(cachedReader);
-                    api.Ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
+                    lock(api.oresLocker)
+                        api.Ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
                     break;
                 case 23240:
                     if (!pingThread.IsAlive)
