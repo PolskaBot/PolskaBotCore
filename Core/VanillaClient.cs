@@ -80,6 +80,9 @@ namespace PolskaBot.Core
 
             Console.WriteLine(length);
 
+            if (!IsConnected())
+                return;
+
             content = _proxy.Decrypt(reader.ReadBytes(length));
 
             EndianBinaryReader cachedReader = new EndianBinaryReader(EndianBitConverter.Big, new MemoryStream(content));
