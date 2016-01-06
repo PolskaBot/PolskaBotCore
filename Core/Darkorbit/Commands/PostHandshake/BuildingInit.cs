@@ -59,9 +59,9 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             int length = reader.ReadInt32();
             if (length > 0)
             {
-                reader.ReadInt16();
                 for (int i = 0; i < length; i++)
                 {
+                    reader.ReadInt16();
                     Class326 class326 = new Class326(reader);
                 }
             }
