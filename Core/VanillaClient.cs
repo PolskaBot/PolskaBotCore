@@ -27,6 +27,7 @@ namespace PolskaBot.Core
         public event EventHandler<EventArgs> NotCompatible;
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
+        public event EventHandler<EventArgs> Destroyed;
 
         public event EventHandler<EventArgs> AuthFailed;
 
@@ -152,16 +153,14 @@ namespace PolskaBot.Core
                     ShipDestroyed shipDestroyed = new ShipDestroyed(cachedReader);
                     if(shipDestroyed.UserID == api.Account.UserID)
                     {
-                        Console.WriteLine("Our ship got destryoed");
-                        SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, 1));
+                        Destroyed?.Invoke(this, EventArgs.Empty);
                     }
                     break;
                 case Notify.ID:
                     Notify notify = new Notify(cachedReader);
                     if (notify.MessageType == "ttip_killscreen_basic_repair")
                     {
-                        Console.WriteLine("Our ship is destryoed");
-                        SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, 1));
+                        Destroyed?.Invoke(this, EventArgs.Empty);
                     }
                     break;
                 case MapChanged.ID:

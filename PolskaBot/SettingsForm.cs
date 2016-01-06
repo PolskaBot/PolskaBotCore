@@ -27,6 +27,14 @@ namespace PolskaBot
                 botPage.Settings.CollectBonusBoxes = bbBox.Checked;
                 botPage.Settings.CollectEventBoxes = ebBox.Checked;
                 botPage.Settings.HPLimit = hpSlider.Value;
+
+                if (repairBase.Checked)
+                    botPage.Settings.RepairAt = 1;
+                else if (repairPortal.Checked)
+                    botPage.Settings.RepairAt = 2;
+                else if (repairBattle.Checked)
+                    botPage.Settings.RepairAt = 3;
+
                 botPage.Settings.Reload();
                 Close();
             };
@@ -41,6 +49,19 @@ namespace PolskaBot
             ebBox.Checked = botPage.Settings.CollectEventBoxes;
             hpSlider.Value = botPage.Settings.HPLimit;
             repairLabel.Text = $"Repair when HP less than {hpSlider.Value}%";
+
+            switch(botPage.Settings.RepairAt)
+            {
+                case 1:
+                    repairBase.Checked = true;
+                    break;
+                case 2:
+                    repairPortal.Checked = true;
+                    break;
+                case 3:
+                    repairBattle.Checked = true;
+                    break;
+            }
         }
     }
 }

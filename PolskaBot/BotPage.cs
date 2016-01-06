@@ -136,7 +136,12 @@ namespace PolskaBot
                 }
             };
 
-            api.Disconnected += (s, e) =>
+            api.Destroyed += (s, e) =>
+            {
+                api.SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, (short) Settings.RepairAt));
+            };
+
+            api.Disconnected += (s, e) => 
             {
                 anim.Cancel();
                 api.Account.Ready = false;
