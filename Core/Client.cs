@@ -72,17 +72,7 @@ namespace PolskaBot.Core
 
         public void Send(Command command)
         {
-            if (!Running)
-                return;
-
-            if (!IsConnected())
-            {
-                Disconnected?.Invoke(this, EventArgs.Empty);
-                return;
-            }
-            byte[] buffer = command.ToArray();
-            stream.Write(buffer, 0, buffer.Length);
-            stream.Flush();
+            Send(command.ToArray());
         }
 
         public void Send(byte[] buffer)
@@ -90,7 +80,7 @@ namespace PolskaBot.Core
             if (!Running)
                 return;
 
-            if (!IsConnected())
+            if (!IsConnected() || !stream.CanWrite)
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
