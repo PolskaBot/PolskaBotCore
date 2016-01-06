@@ -69,7 +69,7 @@ namespace PolskaBot.Core
             ushort id;
             byte[] content;
 
-            if (!IsConnected() || tcpClient.Available == 0)
+            if (!IsConnected() || tcpClient.Available == 0 || !stream.CanRead)
                 return;
 
             var lengthBuffer = reader.ReadBytes(2);
