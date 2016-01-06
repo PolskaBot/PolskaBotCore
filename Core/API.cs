@@ -49,6 +49,7 @@ namespace PolskaBot.Core
         public event EventHandler<ShipAttacked> Attacked;
         public event EventHandler<ShipMove> ShipMoving;
         public event EventHandler<EventArgs> AuthFailed;
+        public event EventHandler<EventArgs> Destroyed;
 
         public API(string ip, FadeProxyClient proxy, Mode mode = Mode.BOT)
         {
@@ -73,6 +74,7 @@ namespace PolskaBot.Core
             _vanillaClient.HeroInited += (s, e) => HeroInited?.Invoke(s, e);
             _vanillaClient.Attacked += (s, e) => Attacked?.Invoke(s, e);
             _vanillaClient.ShipMoving += (s, e) => ShipMoving?.Invoke(s, e);
+            _vanillaClient.Destroyed += (s, e) => Destroyed?.Invoke(s, e);
         }
 
         public void Stop()

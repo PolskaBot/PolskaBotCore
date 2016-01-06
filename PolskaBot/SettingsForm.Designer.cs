@@ -35,8 +35,12 @@
             this.bbBox = new System.Windows.Forms.CheckBox();
             this.saveButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.repairLabel = new System.Windows.Forms.Label();
             this.hpSlider = new System.Windows.Forms.TrackBar();
+            this.repairLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.repairBase = new System.Windows.Forms.RadioButton();
+            this.repairPortal = new System.Windows.Forms.RadioButton();
+            this.repairBattle = new System.Windows.Forms.RadioButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.hpSlider)).BeginInit();
@@ -95,6 +99,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.repairBattle);
+            this.groupBox2.Controls.Add(this.repairPortal);
+            this.groupBox2.Controls.Add(this.repairBase);
+            this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.hpSlider);
             this.groupBox2.Controls.Add(this.repairLabel);
             this.groupBox2.Location = new System.Drawing.Point(220, 13);
@@ -103,15 +111,6 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "General";
-            // 
-            // repairLabel
-            // 
-            this.repairLabel.AutoSize = true;
-            this.repairLabel.Location = new System.Drawing.Point(7, 20);
-            this.repairLabel.Name = "repairLabel";
-            this.repairLabel.Size = new System.Drawing.Size(130, 13);
-            this.repairLabel.TabIndex = 0;
-            this.repairLabel.Text = "Repair when HP less than";
             // 
             // hpSlider
             // 
@@ -123,6 +122,57 @@
             this.hpSlider.TabIndex = 1;
             this.hpSlider.TickStyle = System.Windows.Forms.TickStyle.None;
             this.hpSlider.Value = 60;
+            // 
+            // repairLabel
+            // 
+            this.repairLabel.AutoSize = true;
+            this.repairLabel.Location = new System.Drawing.Point(7, 20);
+            this.repairLabel.Name = "repairLabel";
+            this.repairLabel.Size = new System.Drawing.Size(130, 13);
+            this.repairLabel.TabIndex = 0;
+            this.repairLabel.Text = "Repair when HP less than";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 65);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Repair at";
+            // 
+            // repairBase
+            // 
+            this.repairBase.AutoSize = true;
+            this.repairBase.Location = new System.Drawing.Point(10, 82);
+            this.repairBase.Name = "repairBase";
+            this.repairBase.Size = new System.Drawing.Size(95, 17);
+            this.repairBase.TabIndex = 3;
+            this.repairBase.TabStop = true;
+            this.repairBase.Text = "Company base";
+            this.repairBase.UseVisualStyleBackColor = true;
+            // 
+            // repairPortal
+            // 
+            this.repairPortal.AutoSize = true;
+            this.repairPortal.Location = new System.Drawing.Point(10, 105);
+            this.repairPortal.Name = "repairPortal";
+            this.repairPortal.Size = new System.Drawing.Size(52, 17);
+            this.repairPortal.TabIndex = 4;
+            this.repairPortal.TabStop = true;
+            this.repairPortal.Text = "Portal";
+            this.repairPortal.UseVisualStyleBackColor = true;
+            // 
+            // repairBattle
+            // 
+            this.repairBattle.AutoSize = true;
+            this.repairBattle.Location = new System.Drawing.Point(10, 128);
+            this.repairBattle.Name = "repairBattle";
+            this.repairBattle.Size = new System.Drawing.Size(63, 17);
+            this.repairBattle.TabIndex = 5;
+            this.repairBattle.TabStop = true;
+            this.repairBattle.Text = "In battle";
+            this.repairBattle.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -154,5 +204,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label repairLabel;
         private System.Windows.Forms.TrackBar hpSlider;
+        private System.Windows.Forms.RadioButton repairBattle;
+        private System.Windows.Forms.RadioButton repairPortal;
+        private System.Windows.Forms.RadioButton repairBase;
+        private System.Windows.Forms.Label label1;
     }
 }
