@@ -12,7 +12,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         public const ushort ID = 30093;
 
         public int FactionID { get; private set; }
-        public List<int> var_2358 { get; private set; }
+        public List<int> var_2358 { get; private set; } = new List<int>();
         public int X { get; private set; }
         public int GateType { get; private set; } //name_158
         public bool var_138 { get; private set; }
@@ -24,11 +24,15 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
         {
             FactionID = reader.ReadInt32();
             FactionID = (int)((uint)FactionID >> 1 | (uint)FactionID << 31);
-            for (int i = 0; i < reader.ReadInt32(); i++)
+            int length = reader.ReadInt32();
+            if (length > 0)
             {
-                int value = reader.ReadInt32();
-                value = (int)((uint)value << 8 | (uint)value >> 24);
-                var_2358.Add(value);
+                for (int i = 0; i < length; i++)
+                {
+                    int value = reader.ReadInt32();
+                    value = (int)((uint)value << 8 | (uint)value >> 24);
+                    var_2358.Add(value);
+                }
             }
             X = reader.ReadInt32();
             X = (int)((uint)X << 1 | (uint)X >> 31);
