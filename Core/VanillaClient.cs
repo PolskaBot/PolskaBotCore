@@ -68,7 +68,7 @@ namespace PolskaBot.Core
             ushort id;
             byte[] content;
 
-            if (!IsConnected())
+            if (!IsConnected() || tcpClient.Available == 0)
                 return;
 
             var lengthBuffer = reader.ReadBytes(2);
@@ -77,8 +77,6 @@ namespace PolskaBot.Core
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(lengthBuffer);
             length = BitConverter.ToUInt16(lengthBuffer, 0);
-
-            Console.WriteLine(length);
 
             if (!IsConnected())
                 return;
@@ -371,7 +369,6 @@ namespace PolskaBot.Core
             {
                 Thread.Sleep(1000);
                 SendEncoded(new Ping());
-                Console.WriteLine("Ping sent");
             }
         }
     }
