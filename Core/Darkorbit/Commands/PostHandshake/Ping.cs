@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Ping : Command
     {
-        public const ushort ID = 20638;
+        public const ushort ID = 15776;
 
         public Ping()
         {
@@ -17,8 +17,9 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public void Write()
         {
-            packetWriter.Write((short)2);
+            packetWriter.Write((short)4);
             packetWriter.Write(ID);
+            packetWriter.Write((short)-8609);
         }
     }
 }

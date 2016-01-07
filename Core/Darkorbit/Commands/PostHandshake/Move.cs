@@ -10,10 +10,10 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 11943;
 
-        public uint TargetX { get; private set; }
-        public uint TargetY { get; private set; }
-        public uint CurrentX { get; private set; }
-        public uint CurrentY { get; private set; }
+        public uint TargetX { get; private set; }   // name_135
+        public uint TargetY { get; private set; }   // name_20
+        public uint CurrentX { get; private set; }  // var_3310
+        public uint CurrentY { get; private set; }  // var_14
 
         public Move(uint targetX, uint targetY, uint currentX, uint currentY)
         {
@@ -26,12 +26,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public void Write()
         {
-            packetWriter.Write((short)18);
+            packetWriter.Write((short)24);
             packetWriter.Write(ID);
-            packetWriter.Write(TargetY << 6 | TargetY >> 26);
-            packetWriter.Write(CurrentY >> 9 | CurrentY << 23);
-            packetWriter.Write(TargetX >> 1 | TargetX << 31);
-            packetWriter.Write(CurrentX << 10 | CurrentX >> 22);
+            packetWriter.Write((short)-13024);
+            packetWriter.Write((short)21768);
+            packetWriter.Write(TargetX >> 12 | TargetX << 20);
+            packetWriter.Write(CurrentX << 6 | CurrentX >> 26);
+            packetWriter.Write(CurrentY >> 12 | CurrentY << 20);
+            packetWriter.Write(TargetY >> 6 | TargetY << 26);
         }
     }
 }

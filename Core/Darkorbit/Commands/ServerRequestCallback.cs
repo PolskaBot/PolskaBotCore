@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands
 {
     class ServerRequestCallback : Command
     {
-        public const ushort ID = 2501;
+        public const ushort ID = 26446;
 
         public int length { get; private set; }
         public byte[] secretKey { get; private set; }

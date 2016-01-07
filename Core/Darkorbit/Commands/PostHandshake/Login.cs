@@ -31,14 +31,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             short totalLength = (short)(SID.Length + Version.Length + 18);
             packetWriter.Write(totalLength);
             packetWriter.Write(ID);
-            packetWriter.Write((short)-19684);
-            packetWriter.Write((int)(InstanceID << 6 | InstanceID >> 26));
-            packetWriter.Write((short)FactionID);
-            packetWriter.Write((int)(UserID >> 3 | UserID << 29));
+            packetWriter.Write(UserID >> 6 | UserID << 26);
             packetWriter.Write((byte)0);
             packetWriter.Write(Version);
+            packetWriter.Write(InstanceID << 7 | InstanceID >> 25);
             packetWriter.Write((byte)0);
             packetWriter.Write(SID);
+            packetWriter.Write(FactionID);
         }
     }
 }

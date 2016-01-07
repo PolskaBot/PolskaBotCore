@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     public class ShipMove : Command
     {
-        public const ushort ID = 1771;
+        public const ushort ID = 17441;
 
         public uint UserID { get; private set; } //name_125
         public int X { get; private set; }
@@ -18,16 +18,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public ShipMove(EndianBinaryReader reader)
         {
-            reader.ReadInt16();
-            reader.ReadInt16();
-            Y = reader.ReadInt32();
-            Y = (int)((uint)Y << 1 | (uint)Y >> 31);
-            UserID = reader.ReadUInt32();
-            UserID = UserID << 10 | UserID >> 22;
-            X = reader.ReadInt32();
-            X = (int)((uint)X >> 6 | (uint)X << 26);
             Duration = reader.ReadUInt32();
-            Duration = Duration >> 11 | Duration << 21;
+            Duration = Duration >> 13 | Duration << 19;
+            Y = reader.ReadInt32();
+            Y = (int)((uint)Y >> 3 | (uint)Y << 29);
+            UserID = reader.ReadUInt32();
+            UserID = UserID >> 8 | UserID << 24;
+            X = reader.ReadInt32();
+            X = (int)((uint)X << 2 | (uint)X >> 30);
         }
     }
 }
