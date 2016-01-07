@@ -24,12 +24,14 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
                     Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadInt16()));
                     reader.ReadInt16();                                               //3660  | class_124
                     reader.ReadInt16();
+                    reader.ReadInt16();
                     Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
                 }
             }
             reader.ReadInt16();
             reader.ReadInt16();
             reader.ReadInt16();                                                       //3660  | class_124
+            reader.ReadInt16();
             reader.ReadInt16();
             MessageType = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
         }

@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     public class Jump : Command
     {
-        public const short ID = 571;
+        public const short ID = 5050;
 
         public Jump()
         {
@@ -17,10 +17,9 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public void Write()
         {
-            packetWriter.Write((short)6);
+            packetWriter.Write((short)4);
             packetWriter.Write(ID);
-            packetWriter.Write((short)17370);
-            packetWriter.Write((short)1032);
+            packetWriter.Write((short)16290);
         }
     }
 }

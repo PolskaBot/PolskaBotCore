@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class InitPacket : Command
     {
-        public const ushort ID = 13686;
+        public const ushort ID = 31519;
 
         public short Index { get; private set; }
 

@@ -219,7 +219,7 @@ namespace PolskaBot.Core
                     SendEncoded(new InitPacket(1));
                     SendEncoded(new InitPacket(2));
                     break;
-                case 31982: //CpuInitializationCommand
+                case 7744: //CpuInitializationCommand
                     SendEncoded(new OldStylePacket("JCPU|GET"));
                     break;
                 case DroneFormationUpdated.ID:
