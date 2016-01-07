@@ -9,16 +9,16 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class DestroyItem : Command
     {
-        public const ushort ID = 24098;
+        public const ushort ID = 11901;
 
-        public bool CollectedByPlayer { get; private set; }
+        public bool CollectedByPlayer { get; private set; } // name_46
         public string Hash { get; private set; }
 
         public DestroyItem(EndianBinaryReader reader)
         {
-            reader.ReadInt16();
-            CollectedByPlayer = reader.ReadBoolean();
             Hash = Encoding.UTF8.GetString(reader.ReadBytes(reader.ReadUInt16()));
+            CollectedByPlayer = reader.ReadBoolean();
+            reader.ReadInt16();
         }
     }
 }
