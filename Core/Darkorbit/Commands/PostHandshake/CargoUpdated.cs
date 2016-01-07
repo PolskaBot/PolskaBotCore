@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class CargoUpdated : Command
     {
-        public const ushort ID = 16273;
+        public const ushort ID = 25488;
 
         public double CargoCount { get; private set; }
 
@@ -20,10 +20,13 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
             {
                 for (int i = 0; i < length; i++)
                 {
-                    reader.ReadInt16();                                 //16273  | class_919
-                    reader.ReadInt16();                                 //6823   | class_364
-                    int OreID = reader.ReadUInt16();                    //26978  | class_171
-                    double Amount = reader.ReadDouble();                //6823   | class_364
+                    reader.ReadInt16();                                 //class_364
+                    reader.ReadInt16();
+                    reader.ReadInt16();
+                    double Amount = reader.ReadDouble();
+                    reader.ReadInt16();                                 //class_171
+                    int OreID = reader.ReadUInt16();                    
+                    reader.ReadUInt16();
                     if ((Ore.OreType)OreID != Ore.OreType.XENOMIT)
                         CargoCount += Amount;
                 }

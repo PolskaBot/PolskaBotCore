@@ -9,18 +9,17 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class ShipDestroyed : Command
     {
-        public const ushort ID = 649;
+        public const ushort ID = 28834;
 
-        public int UserID { get; private set; } //var_2748
-        public int var_1091 { get; private set; } //var_1091
+        public int UserID { get; private set; } //var_2750
+        public int var_1092 { get; private set; } //var_1092
 
         public ShipDestroyed(EndianBinaryReader reader)
         {
             UserID = reader.ReadInt32();
-            UserID = (int)((uint)UserID << 5 | (uint)UserID >> 27);
-            int test = reader.ReadInt16();
-            var_1091 = reader.ReadInt32();
-            var_1091 = (int)((uint)var_1091 >> 4 | (uint)var_1091 << 28);
+            UserID = (int)((uint)UserID << 8 | (uint)UserID >> 24);
+            var_1092 = reader.ReadInt32();
+            var_1092 = (int)((uint)var_1092 << 9 | (uint)var_1092 >> 23);
         }
     }
 }

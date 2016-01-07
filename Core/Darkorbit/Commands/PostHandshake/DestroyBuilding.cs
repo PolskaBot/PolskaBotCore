@@ -9,18 +9,18 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class DestroyBuilding : Command
     {
-        public const ushort ID = 23972;
+        public const ushort ID = 19339;
 
         public int BuildingID { get; private set; }
         public short AssetType { get; private set; }
 
         public DestroyBuilding(EndianBinaryReader reader)
         {
-            BuildingID = reader.ReadInt32();
-            BuildingID = (int)((uint)BuildingID >> 15 | (uint)BuildingID << 17);
+            reader.ReadInt16();
             reader.ReadInt16(); //entering class_455
             AssetType = reader.ReadInt16();
-            reader.ReadInt16();
+            BuildingID = reader.ReadInt32();
+            BuildingID = (int)((uint)BuildingID >> 9 | (uint)BuildingID << 23);
         }
     }
 }

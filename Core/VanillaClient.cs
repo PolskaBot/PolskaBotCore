@@ -219,7 +219,7 @@ namespace PolskaBot.Core
                     SendEncoded(new InitPacket(1));
                     SendEncoded(new InitPacket(2));
                     break;
-                case 31982: //CpuInitializationCommand
+                case 7744: //CpuInitializationCommand
                     SendEncoded(new OldStylePacket("JCPU|GET"));
                     break;
                 case DroneFormationUpdated.ID:
@@ -306,7 +306,7 @@ namespace PolskaBot.Core
                     lock(api.oresLocker)
                         api.Ores.Add(new Ore(oreInit.Hash, oreInit.X, oreInit.Y, oreInit.Type));
                     break;
-                case 23240:
+                case 19680:
                     if (!pingThread.IsAlive)
                     {
                         pingThread = new Thread(new ThreadStart(PingLoop));

@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class BoxInit : Command
     {
-        public const ushort ID = 20862;
+        public const ushort ID = 3775;
 
         public string Hash { get; private set; }
         public int X { get; private set; }

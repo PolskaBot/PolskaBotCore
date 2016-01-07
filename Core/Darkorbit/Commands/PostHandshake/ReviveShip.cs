@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     public class ReviveShip : Command
     {
-        public const ushort ID = 16044;
+        public const ushort ID = 23242;
 
         public short Selected { get; private set; }
         public int UserID { get; private set; }
@@ -31,20 +31,23 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public void Write()
         {
-            packetWriter.Write((short)(26 + Version.Length + SID.Length));
+            packetWriter.Write((short)(30 + Version.Length + SID.Length));
             packetWriter.Write(ID);
-            packetWriter.Write((short)24278); //class_356.ID
+            packetWriter.Write((short)-22573);
+            packetWriter.Write((short)2455); //class_356.ID
             packetWriter.Write(Selected);
-            packetWriter.Write((short)-25050);
+            packetWriter.Write((short)2306);
+            packetWriter.Write((short)24292);
+            packetWriter.Write((short)13280);
             packetWriter.Write(Login.ID);
-            packetWriter.Write((short)-19684);
-            packetWriter.Write((int)((uint)InstanceID << 6 | (uint)InstanceID >> 26));
-            packetWriter.Write(FactionID);
-            packetWriter.Write((int)((uint)UserID >> 3 | (uint)UserID << 29));
+            packetWriter.Write((int)((uint)UserID >> 6 | (uint)UserID << 26));
             packetWriter.Write((short)Version.Length);
             packetWriter.Write(Encoding.UTF8.GetBytes(Version));
+            packetWriter.Write((int)((uint)InstanceID << 7 | (uint)InstanceID >> 25));
             packetWriter.Write((short)SID.Length);
             packetWriter.Write(Encoding.UTF8.GetBytes(SID));
+            packetWriter.Write(FactionID);
+
         }
     }
 }
