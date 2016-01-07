@@ -8,7 +8,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class Login : Command
     {
-        public const ushort ID = 21821;
+        public const ushort ID = 28887;
 
         public int UserID { get; private set; }
         public string SID { get; private set; }
@@ -28,7 +28,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public void Write()
         {
-            short totalLength = (short)(SID.Length + Version.Length + 18);
+            short totalLength = (short)(SID.Length + Version.Length + 16);
             packetWriter.Write(totalLength);
             packetWriter.Write(ID);
             packetWriter.Write(UserID >> 6 | UserID << 26);

@@ -9,7 +9,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 {
     class ShieldUpdated : Command
     {
-        public const ushort ID = 5107;
+        public const ushort ID = 21535;
 
         public int MaxShield { get; private set; }  //name_101
         public int Shield { get; private set; }     //var_752

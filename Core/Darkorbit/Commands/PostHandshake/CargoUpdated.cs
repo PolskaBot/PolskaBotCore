@@ -24,7 +24,8 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
                     reader.ReadInt16();
                     reader.ReadInt16();
                     double Amount = reader.ReadDouble();
-                    int OreID = reader.ReadUInt16();                    //class_171
+                    reader.ReadInt16();                                 //class_171
+                    int OreID = reader.ReadUInt16();                    
                     reader.ReadUInt16();
                     if ((Ore.OreType)OreID != Ore.OreType.XENOMIT)
                         CargoCount += Amount;

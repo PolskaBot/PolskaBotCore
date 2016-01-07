@@ -12,7 +12,7 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
 
         public short Index { get; private set; }
 
-        public string Message { get; private set; } = "3D 1122x667 .root1.instance190.MainClientApplication0.ApplicationSkin2.Group3.Group4._-O2B5.instance24616 root1";
+        public string Message { get; private set; } = "3D 1366x659 .root1.instance226.MainClientApplication0.ApplicationSkin2.Group3.Group4._-m5_5.instance24734 root1 false -1";
 
         public InitPacket(short num)
         {
