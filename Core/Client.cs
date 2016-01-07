@@ -80,7 +80,7 @@ namespace PolskaBot.Core
             if (!Running)
                 return;
 
-            if (!IsConnected() || !stream.CanWrite)
+            if (!IsConnected())
             {
                 Disconnected?.Invoke(this, EventArgs.Empty);
                 return;
@@ -105,7 +105,7 @@ namespace PolskaBot.Core
 
         protected bool IsConnected()
         {
-            if (tcpClient == null || tcpClient.Client == null)
+            if (tcpClient == null || tcpClient.Client == null || !stream.CanRead || !stream.CanWrite)
                 return false;
             try
             {
