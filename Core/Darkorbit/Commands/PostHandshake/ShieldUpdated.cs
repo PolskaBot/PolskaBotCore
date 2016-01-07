@@ -11,15 +11,16 @@ namespace PolskaBot.Core.Darkorbit.Commands.PostHandshake
     {
         public const ushort ID = 5107;
 
-        public int MaxShield { get; private set; } //name_101
-        public int Shield { get; private set; } //var_752
+        public int MaxShield { get; private set; }  //name_101
+        public int Shield { get; private set; }     //var_752
 
         public ShieldUpdated(EndianBinaryReader reader)
         {
-            MaxShield = reader.ReadInt32();
-            MaxShield = (int)((uint)MaxShield >> 5 | (uint)MaxShield << 27);
             Shield = reader.ReadInt32();
-            Shield = (int)((uint)Shield << 11 | (uint)Shield >> 21);
+            Shield = (int)((uint)Shield >> 14 | (uint)Shield << 18);
+            MaxShield = reader.ReadInt32();
+            MaxShield = (int)((uint)MaxShield >> 2 | (uint)MaxShield << 30);
+            reader.ReadInt16();
         }
     }
 }
