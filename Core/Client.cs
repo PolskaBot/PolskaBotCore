@@ -99,7 +99,6 @@ namespace PolskaBot.Core
                     return;
                 }
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
-                stream = null;
             }
 
         }
