@@ -63,9 +63,9 @@ namespace PolskaBot.Core
 
         public void Disconnect()
         {
-            tcpClient.Client.Disconnect(false);
-            tcpClient.Close();
-            stream.Close();
+            tcpClient?.Client?.Disconnect(false);
+            tcpClient?.Close();
+            stream?.Close();
             thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
         }
@@ -99,13 +99,14 @@ namespace PolskaBot.Core
                     return;
                 }
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
+                stream = null;
             }
 
         }
 
         protected bool IsConnected()
         {
-            if (tcpClient == null || tcpClient.Client == null || !stream.CanRead || !stream.CanWrite)
+            if (tcpClient == null || tcpClient.Client == null || stream == null || !stream.CanWrite || !stream.CanRead)
                 return false;
             try
             {
