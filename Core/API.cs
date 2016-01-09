@@ -26,7 +26,7 @@ namespace PolskaBot.Core
         private RemoteClient _remoteClient;
 
         private string _ip;
-        public DateTime LoginTime { get; protected set; }
+        public DateTime LoginTime { get; protected set; } = DateTime.MinValue;
 
         // Logic
         public Account Account { get; set; }
@@ -63,15 +63,16 @@ namespace PolskaBot.Core
             _remoteClient = new RemoteClient(this);
             _vanillaClient = new VanillaClient(this, proxy, _remoteClient);
 
-            Account.LoginSucceed += (s, e) =>
-            {
-                Connect();
-                LoginTime = DateTime.Now;
-            };
+            Account.LoginSucceed += (s, e) => Connect();
 
             _vanillaClient.AuthFailed += (s, e) => AuthFailed?.Invoke(s, e);
             _vanillaClient.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
-            _vanillaClient.HeroInited += (s, e) => HeroInited?.Invoke(s, e);
+            _vanillaClient.HeroInited += (s, e) =>
+            {
+                HeroInited?.Invoke(s, e);
+                if (LoginTime == DateTime.MinValue)
+                    LoginTime = DateTime.Now;
+            };
             _vanillaClient.Attacked += (s, e) => Attacked?.Invoke(s, e);
             _vanillaClient.ShipMoving += (s, e) => ShipMoving?.Invoke(s, e);
             _vanillaClient.Destroyed += (s, e) => Destroyed?.Invoke(s, e);
