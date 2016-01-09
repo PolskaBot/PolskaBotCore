@@ -47,9 +47,9 @@ namespace PolskaBot.Core
             if(tcpClient.Connected)
             {
                 stream = tcpClient.GetStream();
-                OnConnected?.Invoke(this, EventArgs.Empty);
                 if (!thread.IsAlive)
                     thread.Start();
+                OnConnected?.Invoke(this, EventArgs.Empty);
             }
         }
 
