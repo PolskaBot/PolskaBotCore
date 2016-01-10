@@ -87,7 +87,7 @@ namespace PolskaBot.Core
 
         public void Login(string username = null, string password = null)
         {
-            if(username == null || password == null)
+            if (username == null || password == null)
             {
                 username = Environment.GetEnvironmentVariable(Config.USERNAME_ENV);
                 password = Environment.GetEnvironmentVariable(Config.PASSWORD_ENV);
@@ -136,10 +136,12 @@ namespace PolskaBot.Core
 
         public string GetIP()
         {
-            var webClient = new WebClient();
-            var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
-            var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
-            return match.Groups[1].ToString();
+            using (var webClient = new WebClient())
+            {
+                var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
+                var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
+                return match.Groups[1].ToString();
+            }
         }
     }
 }

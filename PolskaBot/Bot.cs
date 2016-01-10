@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
-using System.Threading;
-using PolskaBot.Core;
-using PolskaBot.Core.Darkorbit;
-using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
-using Glide;
-using MiscUtil.IO;
 using System.IO;
 using PolskaBot.Fade;
 using System.Net;
@@ -21,7 +8,7 @@ using System.Deployment.Application;
 
 namespace PolskaBot
 {
-    
+
     public partial class Bot : Form
     {
         private string _ip;
@@ -38,7 +25,7 @@ namespace PolskaBot
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Load += (s, e) => Init();
             FormClosed += (s, e) => {
-                foreach(BotPage page in pages)
+                foreach (BotPage page in pages)
                 {
                     page.Stop();
                 }
@@ -47,7 +34,7 @@ namespace PolskaBot
 
         private void Init()
         {
-            if(ApplicationDeployment.IsNetworkDeployed)
+            if (ApplicationDeployment.IsNetworkDeployed)
             {
                 Text = $"PolskaBot {ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString(4)}";
             }
@@ -56,21 +43,21 @@ namespace PolskaBot
 
             Task serverTask = new Task(() =>
             {
-                WebClient client = new WebClient();
-                _ip = client.DownloadString("https://www.muzari.com/pb/server.txt");
-                flashEmbed.LoadMovie(0, swfPath);
+                using (var client = new WebClient())
+                {
+                    _ip = client.DownloadString("https://www.muzari.com/pb/server.txt");
+                    flashEmbed.LoadMovie(0, swfPath);
+                }
             });
             serverTask.Start();
-
 
             proxy = new FadeProxy(flashEmbed);
             proxy.Ready += (s, e) => loginButton.Enabled = true;
 
-
             AcceptButton = loginButton;
             loginButton.Click += (s, e) =>
             {
-                if(!usernameBox.Text.Equals("") || !passwordBox.Text.Equals(""))
+                if (!usernameBox.Text.Equals("") || !passwordBox.Text.Equals(""))
                 {
                     var botPage = new BotPage(_ip, proxy.CreateClient(), usernameBox.Text, passwordBox.Text);
                     pages.Add(botPage);
@@ -89,7 +76,8 @@ namespace PolskaBot
                     stopButton.Enabled = false;
                     closeButton.Enabled = false;
                     settingsButton.Enabled = false;
-                } else
+                }
+                else
                 {
                     startButton.Enabled = !pages[botTabs.SelectedIndex - 1].Running;
                     stopButton.Enabled = pages[botTabs.SelectedIndex - 1].Running;
