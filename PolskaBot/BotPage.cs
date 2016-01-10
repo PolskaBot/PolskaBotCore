@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,7 +10,6 @@ using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
-using MiscUtil.IO;
 using PolskaBot.Fade;
 
 namespace PolskaBot
@@ -49,6 +47,8 @@ namespace PolskaBot
         private ColorProgressBar shieldBar;
         private ColorProgressBar cargoBar;
         private PictureBox minimap;
+
+        private object minimapLocker = new object();
 
         private string[] displayableBoxes = {
             "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX", "PIRATE_BOOTY", "PIRATE_BOOTY_GOLD", "PIRATE_BOOTY_RED", "PIRATE_BOOTY_BLUE"
@@ -166,7 +166,6 @@ namespace PolskaBot
         private void AddContextMenu()
         {
             var contextMenu = new ContextMenu();
-
             var drawOres = new MenuItem();
             drawOres.Name = "drawOresMenuItem";
             drawOres.Text = "Draw ores";
@@ -454,50 +453,57 @@ namespace PolskaBot
                     buildings = api.Buildings.ToList();
                 }
 
-                var bitmap = new Bitmap(minimap.Width, minimap.Height);
-                using (var g = Graphics.FromImage(bitmap))
+                using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
                 {
-                    DrawBorders(g);
-
-                    foreach (Box box in boxes)
+                    using (var g = Graphics.FromImage(bitmap))
                     {
-                        DrawBox(g, box);
+                        DrawBorders(g);
+
+                        foreach (Box box in boxes)
+                        {
+                            DrawBox(g, box);
+                        }
+
+                        foreach (Box box in memorizedBoxes)
+                        {
+                            DrawMemorizedBox(g, box);
+                        }
+
+                        foreach (Ore ore in ores)
+                        {
+                            DrawOre(g, ore);
+                        }
+
+                        foreach (Ship ship in ships)
+                        {
+                            DrawShip(g, ship);
+                        }
+
+                        foreach (Gate gate in gates)
+                        {
+                            DrawGate(g, gate);
+                        }
+
+                        foreach (Building building in buildings)
+                        {
+                            DrawBuilding(g, building);
+                        }
+
+                        DrawPlayer(g);
+                        UpdateProgressBars();
+                        DrawDetails(g);
                     }
 
-                    foreach (Box box in memorizedBoxes)
+                    if (minimap.Image != null)
                     {
-                        DrawMemorizedBox(g, box);
+                        minimap.Image.Dispose();
                     }
 
-                    foreach (Ore ore in ores)
+                    lock (minimapLocker)
                     {
-                        DrawOre(g, ore);
+                        minimap.Image = (Image)bitmap.Clone();
                     }
-
-                    foreach (Ship ship in ships)
-                    {
-                        DrawShip(g, ship);
-                    }
-
-                    foreach (Gate gate in gates)
-                    {
-                        DrawGate(g, gate);
-                    }
-
-                    foreach (Building building in buildings)
-                    {
-                        DrawBuilding(g, building);
-                    }
-
-                    DrawPlayer(g);
-                    UpdateProgressBars();
-                    DrawDetails(g);
                 }
-
-                Invoke((MethodInvoker)delegate
-                {
-                    minimap.Image = bitmap;
-                });
                 Thread.Sleep(1000 / Config.FPS);
                 stopwatch.Stop();
                 try
@@ -529,23 +535,19 @@ namespace PolskaBot
         private void DrawText(string text)
         {
             Console.WriteLine(text);
-            var bitmap = new Bitmap(minimap.Width, minimap.Height);
-            using (var g = Graphics.FromImage(bitmap))
+            using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
             {
-                SizeF size = g.MeasureString(text, Config.font);
-                g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
-                    minimap.Height / 2 - size.Height / 2);
-            }
-            if (minimap.InvokeRequired)
-            {
-                Invoke((MethodInvoker)delegate
+                using (var g = Graphics.FromImage(bitmap))
                 {
-                    minimap.Image = bitmap;
-                });
-            }
-            else
-            {
-                minimap.Image = bitmap;
+                    SizeF size = g.MeasureString(text, Config.font);
+                    g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
+                        minimap.Height / 2 - size.Height / 2);
+                }
+
+                lock (minimapLocker)
+                {
+                    minimap.Image = (Image)bitmap.Clone();
+                }
             }
         }
 
