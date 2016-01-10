@@ -453,54 +453,54 @@ namespace PolskaBot
                     buildings = api.Buildings.ToList();
                 }
 
-                using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
+                lock (minimapLocker)
                 {
-                    using (var g = Graphics.FromImage(bitmap))
+                    using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
                     {
-                        DrawBorders(g);
-
-                        foreach (Box box in boxes)
+                        using (var g = Graphics.FromImage(bitmap))
                         {
-                            DrawBox(g, box);
+                            DrawBorders(g);
+
+                            foreach (Box box in boxes)
+                            {
+                                DrawBox(g, box);
+                            }
+
+                            foreach (Box box in memorizedBoxes)
+                            {
+                                DrawMemorizedBox(g, box);
+                            }
+
+                            foreach (Ore ore in ores)
+                            {
+                                DrawOre(g, ore);
+                            }
+
+                            foreach (Ship ship in ships)
+                            {
+                                DrawShip(g, ship);
+                            }
+
+                            foreach (Gate gate in gates)
+                            {
+                                DrawGate(g, gate);
+                            }
+
+                            foreach (Building building in buildings)
+                            {
+                                DrawBuilding(g, building);
+                            }
+
+                            DrawPlayer(g);
+                            UpdateProgressBars();
+                            DrawDetails(g);
                         }
 
-                        foreach (Box box in memorizedBoxes)
+                        if (minimap.Image != null)
                         {
-                            DrawMemorizedBox(g, box);
+                            minimap.Image.Dispose();
                         }
 
-                        foreach (Ore ore in ores)
-                        {
-                            DrawOre(g, ore);
-                        }
-
-                        foreach (Ship ship in ships)
-                        {
-                            DrawShip(g, ship);
-                        }
-
-                        foreach (Gate gate in gates)
-                        {
-                            DrawGate(g, gate);
-                        }
-
-                        foreach (Building building in buildings)
-                        {
-                            DrawBuilding(g, building);
-                        }
-
-                        DrawPlayer(g);
-                        UpdateProgressBars();
-                        DrawDetails(g);
-                    }
-
-                    if (minimap.Image != null)
-                    {
-                        minimap.Image.Dispose();
-                    }
-
-                    lock (minimapLocker)
-                    {
                         minimap.Image = (Image)bitmap.Clone();
                     }
                 }
@@ -534,18 +534,17 @@ namespace PolskaBot
 
         private void DrawText(string text)
         {
-            Console.WriteLine(text);
-            using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
+            lock (minimapLocker)
             {
-                using (var g = Graphics.FromImage(bitmap))
+                using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
                 {
-                    SizeF size = g.MeasureString(text, Config.font);
-                    g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
-                        minimap.Height / 2 - size.Height / 2);
-                }
+                    using (var g = Graphics.FromImage(bitmap))
+                    {
+                        SizeF size = g.MeasureString(text, Config.font);
+                        g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
+                            minimap.Height / 2 - size.Height / 2);
+                    }
 
-                lock (minimapLocker)
-                {
                     minimap.Image = (Image)bitmap.Clone();
                 }
             }
