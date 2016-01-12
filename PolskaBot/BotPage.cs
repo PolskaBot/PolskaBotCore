@@ -505,12 +505,14 @@ namespace PolskaBot
                         {
                             Invoke((MethodInvoker)delegate
                             {
-                                minimap.Image = (Image)bitmap.Clone(); ;
+                                minimap.Image = (Image)bitmap.Clone();
+                                minimap.Refresh();
                             });
                         }
                         else
                         {
-                            minimap.Image = (Image)bitmap.Clone(); ;
+                            minimap.Image = (Image)bitmap.Clone();
+                            minimap.Refresh();
                         }
                     }
                 }
@@ -559,12 +561,14 @@ namespace PolskaBot
                     {
                         Invoke((MethodInvoker)delegate
                         {
-                            minimap.Image = (Image)bitmap.Clone(); ;
+                            minimap.Image = (Image)bitmap.Clone();
+                            minimap.Refresh();
                         });
                     }
                     else
                     {
-                        minimap.Image = (Image)bitmap.Clone(); ;
+                        minimap.Image = (Image)bitmap.Clone();
+                        minimap.Refresh();
                     }
                 }
             }
