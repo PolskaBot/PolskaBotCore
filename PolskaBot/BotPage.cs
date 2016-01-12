@@ -501,7 +501,17 @@ namespace PolskaBot
                             minimap.Image.Dispose();
                         }
 
-                        minimap.Image = (Image)bitmap.Clone();
+                        if (minimap.InvokeRequired)
+                        {
+                            Invoke((MethodInvoker)delegate
+                            {
+                                minimap.Image = (Image)bitmap.Clone(); ;
+                            });
+                        }
+                        else
+                        {
+                            minimap.Image = (Image)bitmap.Clone(); ;
+                        }
                     }
                 }
                 Thread.Sleep(1000 / Config.FPS);
@@ -545,7 +555,17 @@ namespace PolskaBot
                             minimap.Height / 2 - size.Height / 2);
                     }
 
-                    minimap.Image = (Image)bitmap.Clone();
+                    if (minimap.InvokeRequired)
+                    {
+                        Invoke((MethodInvoker)delegate
+                        {
+                            minimap.Image = (Image)bitmap.Clone(); ;
+                        });
+                    }
+                    else
+                    {
+                        minimap.Image = (Image)bitmap.Clone(); ;
+                    }
                 }
             }
         }
