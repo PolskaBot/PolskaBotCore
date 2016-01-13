@@ -48,8 +48,6 @@ namespace PolskaBot
         private ColorProgressBar cargoBar;
         private PictureBox minimap;
 
-        private object minimapLocker = new object();
-
         private string[] displayableBoxes = {
             "BONUS_BOX", "GIFT_BOXES", "EVENT_BOX", "PIRATE_BOOTY", "PIRATE_BOOTY_GOLD", "PIRATE_BOOTY_RED", "PIRATE_BOOTY_BLUE"
             };
@@ -138,17 +136,17 @@ namespace PolskaBot
 
             api.Destroyed += (s, e) =>
             {
-                api.SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, (short) Settings.RepairAt));
+                api.SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, (short)Settings.RepairAt));
             };
 
-            api.Disconnected += (s, e) => 
+            api.Disconnected += (s, e) =>
             {
                 anim.Cancel();
                 api.Account.Ready = false;
                 api.Account.Flying = false;
-                if(renderer != null)
+                if (renderer != null)
                     renderer.Abort();
-                if(logic != null)
+                if (logic != null)
                     logic.Abort();
                 DrawText("Reconnecting");
             };
@@ -223,7 +221,7 @@ namespace PolskaBot
                     continue;
                 }
 
-                if(state == State.EsapingJumped && api.Account.Ready)
+                if (state == State.EsapingJumped && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
                     Jump();
@@ -231,7 +229,7 @@ namespace PolskaBot
                     continue;
                 }
 
-                if(state == State.EscapingJumpedBack && api.Account.Ready)
+                if (state == State.EscapingJumpedBack && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
                     api.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
@@ -239,7 +237,7 @@ namespace PolskaBot
                     continue;
                 }
 
-                if(state == State.Repairing && api.Account.Ready)
+                if (state == State.Repairing && api.Account.Ready)
                 {
                     if (api.Account.HP.Equals(api.Account.MaxHP) && api.Account.Shield.Equals(api.Account.MaxShield))
                         state = State.SearchingBox;
@@ -300,7 +298,7 @@ namespace PolskaBot
                 List<Box> boxes;
                 List<Box> memorizedBoxes;
 
-                lock(Settings.CollectableBoxes)
+                lock (Settings.CollectableBoxes)
                 {
                     collectable = Settings.CollectableBoxes.ToList();
                 }
@@ -453,69 +451,63 @@ namespace PolskaBot
                     buildings = api.Buildings.ToList();
                 }
 
-                lock (minimapLocker)
+                var bitmap = new Bitmap(minimap.Width, minimap.Height);
+                using (var g = Graphics.FromImage(bitmap))
                 {
-                    using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
+                    DrawBorders(g);
+
+                    foreach (Box box in boxes)
                     {
-                        using (var g = Graphics.FromImage(bitmap))
-                        {
-                            DrawBorders(g);
-
-                            foreach (Box box in boxes)
-                            {
-                                DrawBox(g, box);
-                            }
-
-                            foreach (Box box in memorizedBoxes)
-                            {
-                                DrawMemorizedBox(g, box);
-                            }
-
-                            foreach (Ore ore in ores)
-                            {
-                                DrawOre(g, ore);
-                            }
-
-                            foreach (Ship ship in ships)
-                            {
-                                DrawShip(g, ship);
-                            }
-
-                            foreach (Gate gate in gates)
-                            {
-                                DrawGate(g, gate);
-                            }
-
-                            foreach (Building building in buildings)
-                            {
-                                DrawBuilding(g, building);
-                            }
-
-                            DrawPlayer(g);
-                            UpdateProgressBars();
-                            DrawDetails(g);
-                        }
-
-                        if (minimap.Image != null)
-                        {
-                            minimap.Image.Dispose();
-                        }
-
-                        if (minimap.InvokeRequired)
-                        {
-                            Invoke((MethodInvoker)delegate
-                            {
-                                minimap.Image = (Image)bitmap.Clone();
-                                minimap.Refresh();
-                            });
-                        }
-                        else
-                        {
-                            minimap.Image = (Image)bitmap.Clone();
-                            minimap.Refresh();
-                        }
+                        DrawBox(g, box);
                     }
+
+                    foreach (Box box in memorizedBoxes)
+                    {
+                        DrawMemorizedBox(g, box);
+                    }
+
+                    foreach (Ore ore in ores)
+                    {
+                        DrawOre(g, ore);
+                    }
+
+                    foreach (Ship ship in ships)
+                    {
+                        DrawShip(g, ship);
+                    }
+
+                    foreach (Gate gate in gates)
+                    {
+                        DrawGate(g, gate);
+                    }
+
+                    foreach (Building building in buildings)
+                    {
+                        DrawBuilding(g, building);
+                    }
+
+                    DrawPlayer(g);
+                    UpdateProgressBars();
+                    DrawDetails(g);
                 }
+
+                if (minimap.Image != null)
+                {
+                    minimap.Image.Dispose();
+                }
+
+                if (minimap.InvokeRequired)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        minimap.Image = bitmap;
+                    });
+                }
+                else
+                {
+                    minimap.Image = bitmap;
+                }
+
                 Thread.Sleep(1000 / Config.FPS);
                 stopwatch.Stop();
                 try
@@ -546,31 +538,29 @@ namespace PolskaBot
 
         private void DrawText(string text)
         {
-            lock (minimapLocker)
+            var bitmap = new Bitmap(minimap.Width, minimap.Height);
+            using (var g = Graphics.FromImage(bitmap))
             {
-                using (var bitmap = new Bitmap(minimap.Width, minimap.Height))
-                {
-                    using (var g = Graphics.FromImage(bitmap))
-                    {
-                        SizeF size = g.MeasureString(text, Config.font);
-                        g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
-                            minimap.Height / 2 - size.Height / 2);
-                    }
+                SizeF size = g.MeasureString(text, Config.font);
+                g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
+                    minimap.Height / 2 - size.Height / 2);
+            }
 
-                    if (minimap.InvokeRequired)
-                    {
-                        Invoke((MethodInvoker)delegate
-                        {
-                            minimap.Image = (Image)bitmap.Clone();
-                            minimap.Refresh();
-                        });
-                    }
-                    else
-                    {
-                        minimap.Image = (Image)bitmap.Clone();
-                        minimap.Refresh();
-                    }
-                }
+            if (minimap.Image != null)
+            {
+                minimap.Image.Dispose();
+            }
+
+            if (minimap.InvokeRequired)
+            {
+                Invoke((MethodInvoker)delegate
+                {
+                    minimap.Image = bitmap;
+                });
+            }
+            else
+            {
+                minimap.Image = bitmap;
             }
         }
 
@@ -581,7 +571,7 @@ namespace PolskaBot
 
         private void DrawMemorizedBox(Graphics g, Box box)
         {
-            if(collectable.Contains(box.Type))
+            if (collectable.Contains(box.Type))
                 g.DrawRectangle(new Pen(Config.boxMemorised), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
         }
 
