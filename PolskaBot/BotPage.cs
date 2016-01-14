@@ -491,10 +491,7 @@ namespace PolskaBot
                     DrawDetails(g);
                 }
 
-                if (minimap.Image != null)
-                {
-                    minimap.Image.Dispose();
-                }
+                var oldImage = minimap.Image;
 
                 if (minimap.InvokeRequired)
                 {
@@ -507,6 +504,9 @@ namespace PolskaBot
                 {
                     minimap.Image = bitmap;
                 }
+
+                if (oldImage != null)
+                    oldImage.Dispose();
 
                 Thread.Sleep(1000 / Config.FPS);
                 stopwatch.Stop();
@@ -546,10 +546,7 @@ namespace PolskaBot
                     minimap.Height / 2 - size.Height / 2);
             }
 
-            if (minimap.Image != null)
-            {
-                minimap.Image.Dispose();
-            }
+            var oldImage = minimap.Image;
 
             if (minimap.InvokeRequired)
             {
@@ -562,6 +559,9 @@ namespace PolskaBot
             {
                 minimap.Image = bitmap;
             }
+
+            if (oldImage != null)
+                oldImage.Dispose();
         }
 
         private void DrawBox(Graphics g, Box box)
