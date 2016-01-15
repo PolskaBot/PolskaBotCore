@@ -107,6 +107,7 @@ namespace PolskaBot.Core
 
             _vanillaClient.OnConnected += (o, e) => _vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
             _vanillaClient.Disconnected += (o, e) => Reconnect();
+            _remoteClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
             _remoteClient.Connect(_ip, 8082);
@@ -120,7 +121,7 @@ namespace PolskaBot.Core
         public void Reconnect()
         {
             Console.WriteLine("Connection lost. Reconnecting.");
-            _vanillaClient.pingThread.Abort();
+            _vanillaClient.pingThread?.Abort();
             Boxes.Clear();
             MemorizedBoxes.Clear();
             Ores.Clear();
@@ -128,9 +129,11 @@ namespace PolskaBot.Core
             Gates.Clear();
             Buildings.Clear();
             _proxy.Reset();
-            _remoteClient.Disconnect();
-            _vanillaClient.Disconnect();
-            _vanillaClient.thread.Abort();
+            if(_remoteClient.tcpClient.Connected)
+                _remoteClient.Disconnect();
+            if(_vanillaClient.tcpClient.Connected)
+                _vanillaClient.Disconnect();
+            _vanillaClient.thread?.Abort();
             _remoteClient.Connect(_ip, 8082);
         }
 
