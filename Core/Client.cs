@@ -43,7 +43,17 @@ namespace PolskaBot.Core
 
             thread = new Thread(new ThreadStart(Run));
 
-            tcpClient.Connect(this.IP, this.port);
+            try
+            {
+                tcpClient.Connect(this.IP, this.port);
+            }
+            catch (SocketException ex)
+            {
+                Thread.Sleep(5000);
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             if(tcpClient.Connected)
             {
                 stream = tcpClient.GetStream();

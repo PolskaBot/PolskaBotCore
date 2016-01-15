@@ -102,11 +102,16 @@ namespace PolskaBot.Core
             {
                 Console.WriteLine("Connected to remoteServer");
                 ((Client)s).thread.Abort();
-                _vanillaClient.Connect(GetIP(), 8080);
+                var serverIP = GetIP();
+                if (serverIP != null)
+                    _vanillaClient.Connect(serverIP, 8080);
+                else
+                    Reconnect();
             };
 
             _vanillaClient.OnConnected += (o, e) => _vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
             _vanillaClient.Disconnected += (o, e) => Reconnect();
+            _remoteClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
             _remoteClient.Connect(_ip, 8082);
@@ -120,7 +125,7 @@ namespace PolskaBot.Core
         public void Reconnect()
         {
             Console.WriteLine("Connection lost. Reconnecting.");
-            _vanillaClient.pingThread.Abort();
+            _vanillaClient.pingThread?.Abort();
             Boxes.Clear();
             MemorizedBoxes.Clear();
             Ores.Clear();
@@ -128,9 +133,11 @@ namespace PolskaBot.Core
             Gates.Clear();
             Buildings.Clear();
             _proxy.Reset();
-            _remoteClient.Disconnect();
-            _vanillaClient.Disconnect();
-            _vanillaClient.thread.Abort();
+            if(_remoteClient.tcpClient.Connected)
+                _remoteClient.Disconnect();
+            if(_vanillaClient.tcpClient.Connected)
+                _vanillaClient.Disconnect();
+            _vanillaClient.thread?.Abort();
             _remoteClient.Connect(_ip, 8082);
         }
 
@@ -138,9 +145,16 @@ namespace PolskaBot.Core
         {
             using (var webClient = new WebClient())
             {
-                var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
-                var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
-                return match.Groups[1].ToString();
+                try
+                {
+                    var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
+                    var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
+                    return match.Groups[1].ToString();
+                }
+                catch
+                {
+                    return null;
+                }
             }
         }
     }
