@@ -1,7 +1,7 @@
 # PolskaBotCore
 
 ### PolskaBot - Post mortem
-We did it. No system is 100% secure. Nor was DO. We are sharing all of our work to public. Our job is done. Many said it's impossible, we proved them wrong. We completed our challenge. Anti-bot system is not our target to beat.
+We did it. No system is 100% secure. Nor was DO. We are sharing all of our work to the public. Our job is done. Many said it's impossible, we proved them wrong. We completed our challenge. Anti-bot system is not our target to beat.
 
 **You should threat this code more as PoC than real bot. I was rewritting it, but we decided to give it to the public.**
 
