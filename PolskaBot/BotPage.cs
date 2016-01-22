@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
@@ -11,7 +10,6 @@ using PolskaBot.Core;
 using PolskaBot.Core.Darkorbit;
 using PolskaBot.Core.Darkorbit.Commands.PostHandshake;
 using Glide;
-using MiscUtil.IO;
 using PolskaBot.Fade;
 
 namespace PolskaBot
@@ -138,17 +136,17 @@ namespace PolskaBot
 
             api.Destroyed += (s, e) =>
             {
-                api.SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, (short) Settings.RepairAt));
+                api.SendEncoded(new ReviveShip(api.Account.UserID, api.Account.SID, (short)api.Account.FactionID, 0, (short)Settings.RepairAt));
             };
 
-            api.Disconnected += (s, e) => 
+            api.Disconnected += (s, e) =>
             {
                 anim.Cancel();
                 api.Account.Ready = false;
                 api.Account.Flying = false;
-                if(renderer != null)
+                if (renderer != null)
                     renderer.Abort();
-                if(logic != null)
+                if (logic != null)
                     logic.Abort();
                 DrawText("Reconnecting");
             };
@@ -166,7 +164,6 @@ namespace PolskaBot
         private void AddContextMenu()
         {
             var contextMenu = new ContextMenu();
-
             var drawOres = new MenuItem();
             drawOres.Name = "drawOresMenuItem";
             drawOres.Text = "Draw ores";
@@ -224,7 +221,7 @@ namespace PolskaBot
                     continue;
                 }
 
-                if(state == State.EsapingJumped && api.Account.Ready)
+                if (state == State.EsapingJumped && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
                     Jump();
@@ -232,7 +229,7 @@ namespace PolskaBot
                     continue;
                 }
 
-                if(state == State.EscapingJumpedBack && api.Account.Ready)
+                if (state == State.EscapingJumpedBack && api.Account.Ready)
                 {
                     Thread.Sleep(5000);
                     api.SendEncoded(new ActionRequest("equipment_extra_repbot_rep", 1, 0));
@@ -240,7 +237,7 @@ namespace PolskaBot
                     continue;
                 }
 
-                if(state == State.Repairing && api.Account.Ready)
+                if (state == State.Repairing && api.Account.Ready)
                 {
                     if (api.Account.HP.Equals(api.Account.MaxHP) && api.Account.Shield.Equals(api.Account.MaxShield))
                         state = State.SearchingBox;
@@ -301,7 +298,7 @@ namespace PolskaBot
                 List<Box> boxes;
                 List<Box> memorizedBoxes;
 
-                lock(Settings.CollectableBoxes)
+                lock (Settings.CollectableBoxes)
                 {
                     collectable = Settings.CollectableBoxes.ToList();
                 }
@@ -494,10 +491,23 @@ namespace PolskaBot
                     DrawDetails(g);
                 }
 
-                Invoke((MethodInvoker)delegate
+                var oldImage = minimap.Image;
+
+                if (minimap.InvokeRequired)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        minimap.Image = bitmap;
+                    });
+                }
+                else
                 {
                     minimap.Image = bitmap;
-                });
+                }
+
+                if (oldImage != null)
+                    oldImage.Dispose();
+
                 Thread.Sleep(1000 / Config.FPS);
                 stopwatch.Stop();
                 try
@@ -528,7 +538,6 @@ namespace PolskaBot
 
         private void DrawText(string text)
         {
-            Console.WriteLine(text);
             var bitmap = new Bitmap(minimap.Width, minimap.Height);
             using (var g = Graphics.FromImage(bitmap))
             {
@@ -536,6 +545,9 @@ namespace PolskaBot
                 g.DrawString(text, Config.font, new SolidBrush(Color.White), minimap.Width / 2 - size.Width / 2,
                     minimap.Height / 2 - size.Height / 2);
             }
+
+            var oldImage = minimap.Image;
+
             if (minimap.InvokeRequired)
             {
                 Invoke((MethodInvoker)delegate
@@ -547,6 +559,9 @@ namespace PolskaBot
             {
                 minimap.Image = bitmap;
             }
+
+            if (oldImage != null)
+                oldImage.Dispose();
         }
 
         private void DrawBox(Graphics g, Box box)
@@ -556,7 +571,7 @@ namespace PolskaBot
 
         private void DrawMemorizedBox(Graphics g, Box box)
         {
-            if(collectable.Contains(box.Type))
+            if (collectable.Contains(box.Type))
                 g.DrawRectangle(new Pen(Config.boxMemorised), new Rectangle(Scale(box.Position.X), Scale(box.Position.Y), 1, 1));
         }
 

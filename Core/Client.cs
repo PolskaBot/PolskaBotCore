@@ -43,12 +43,22 @@ namespace PolskaBot.Core
 
             thread = new Thread(new ThreadStart(Run));
 
-            tcpClient.Connect(this.IP, this.port);
+            try
+            {
+                tcpClient.Connect(this.IP, this.port);
+            }
+            catch (SocketException ex)
+            {
+                Thread.Sleep(5000);
+                Disconnected?.Invoke(this, EventArgs.Empty);
+                return;
+            }
+
             if(tcpClient.Connected)
             {
+                stream = tcpClient.GetStream();
                 if (!thread.IsAlive)
                     thread.Start();
-                stream = tcpClient.GetStream();
                 OnConnected?.Invoke(this, EventArgs.Empty);
             }
         }
@@ -63,9 +73,9 @@ namespace PolskaBot.Core
 
         public void Disconnect()
         {
-            tcpClient.Client.Disconnect(false);
-            tcpClient.Close();
-            stream.Close();
+            tcpClient?.Client?.Disconnect(false);
+            tcpClient?.Close();
+            stream?.Close();
             thread = new Thread(new ThreadStart(Run));
             tcpClient = new TcpClient();
         }
@@ -100,12 +110,11 @@ namespace PolskaBot.Core
                 }
                 Parse(new EndianBinaryReader(EndianBitConverter.Big, stream));
             }
-
         }
 
         protected bool IsConnected()
         {
-            if (tcpClient == null || tcpClient.Client == null || !stream.CanRead || !stream.CanWrite)
+            if (tcpClient == null || tcpClient.Client == null || !stream.CanWrite || !stream.CanRead)
                 return false;
             try
             {

@@ -26,7 +26,7 @@ namespace PolskaBot.Core
         private RemoteClient _remoteClient;
 
         private string _ip;
-        public DateTime LoginTime { get; protected set; }
+        public DateTime LoginTime { get; protected set; } = DateTime.MinValue;
 
         // Logic
         public Account Account { get; set; }
@@ -63,15 +63,16 @@ namespace PolskaBot.Core
             _remoteClient = new RemoteClient(this);
             _vanillaClient = new VanillaClient(this, proxy, _remoteClient);
 
-            Account.LoginSucceed += (s, e) =>
-            {
-                Connect();
-                LoginTime = DateTime.Now;
-            };
+            Account.LoginSucceed += (s, e) => Connect();
 
             _vanillaClient.AuthFailed += (s, e) => AuthFailed?.Invoke(s, e);
             _vanillaClient.Disconnected += (s, e) => Disconnected?.Invoke(s, e);
-            _vanillaClient.HeroInited += (s, e) => HeroInited?.Invoke(s, e);
+            _vanillaClient.HeroInited += (s, e) =>
+            {
+                HeroInited?.Invoke(s, e);
+                if (LoginTime == DateTime.MinValue)
+                    LoginTime = DateTime.Now;
+            };
             _vanillaClient.Attacked += (s, e) => Attacked?.Invoke(s, e);
             _vanillaClient.ShipMoving += (s, e) => ShipMoving?.Invoke(s, e);
             _vanillaClient.Destroyed += (s, e) => Destroyed?.Invoke(s, e);
@@ -86,7 +87,7 @@ namespace PolskaBot.Core
 
         public void Login(string username = null, string password = null)
         {
-            if(username == null || password == null)
+            if (username == null || password == null)
             {
                 username = Environment.GetEnvironmentVariable(Config.USERNAME_ENV);
                 password = Environment.GetEnvironmentVariable(Config.PASSWORD_ENV);
@@ -101,11 +102,16 @@ namespace PolskaBot.Core
             {
                 Console.WriteLine("Connected to remoteServer");
                 ((Client)s).thread.Abort();
-                _vanillaClient.Connect(GetIP(), 8080);
+                var serverIP = GetIP();
+                if (serverIP != null)
+                    _vanillaClient.Connect(serverIP, 8080);
+                else
+                    Reconnect();
             };
 
             _vanillaClient.OnConnected += (o, e) => _vanillaClient.Send(new ClientVersionCheck(Config.MAJOR, Config.MINOR, Config.BUILD));
             _vanillaClient.Disconnected += (o, e) => Reconnect();
+            _remoteClient.Disconnected += (o, e) => Reconnect();
 
             Connecting?.Invoke(this, EventArgs.Empty);
             _remoteClient.Connect(_ip, 8082);
@@ -119,7 +125,7 @@ namespace PolskaBot.Core
         public void Reconnect()
         {
             Console.WriteLine("Connection lost. Reconnecting.");
-            _vanillaClient.pingThread.Abort();
+            _vanillaClient.pingThread?.Abort();
             Boxes.Clear();
             MemorizedBoxes.Clear();
             Ores.Clear();
@@ -127,18 +133,29 @@ namespace PolskaBot.Core
             Gates.Clear();
             Buildings.Clear();
             _proxy.Reset();
-            _remoteClient.Disconnect();
-            _vanillaClient.Disconnect();
-            _vanillaClient.thread.Abort();
+            if(_remoteClient.tcpClient.Connected)
+                _remoteClient.Disconnect();
+            if(_vanillaClient.tcpClient.Connected)
+                _vanillaClient.Disconnect();
+            _vanillaClient.thread?.Abort();
             _remoteClient.Connect(_ip, 8082);
         }
 
         public string GetIP()
         {
-            var webClient = new WebClient();
-            var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
-            var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
-            return match.Groups[1].ToString();
+            using (var webClient = new WebClient())
+            {
+                try
+                {
+                    var response = webClient.DownloadString($"http://{Account.Server}.darkorbit.bigpoint.com/spacemap/xml/maps.php");
+                    var match = Regex.Match(response, $"<map id=\"{Account.Map}\"><gameserverIP>([0-9\\.]+)</gameserverIP></map>");
+                    return match.Groups[1].ToString();
+                }
+                catch
+                {
+                    return null;
+                }
+            }
         }
     }
 }
